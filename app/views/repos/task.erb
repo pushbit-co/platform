@@ -1,7 +1,7 @@
 <h1>
   <%= @repo.github_owner %>/<a href="/repos/<%= @repo.github_full_name %>"><%= @repo.name %></a> <small>#<%= @task.sequential_id %></small>
 </h1>
-<p><strong><%= @task.kind %></strong> triggered by <strong><%= @task.trigger.kind %></strong> from <strong><%= @task.triggered_by_login %></strong> <%= readable @task.created_at %></p>
+<p><strong><%= @task.behavior.kind %></strong> triggered by <strong><%= @task.trigger.kind %></strong> from <strong><%= @task.triggered_by_login %></strong> <%= readable @task.created_at %></p>
 
 <h2>Events</h2>
 <% if @events.length > 0 %>
