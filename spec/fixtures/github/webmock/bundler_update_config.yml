@@ -1,0 +1,6 @@
+kind: bundler-update
+name: Bundler Update
+description: Runs once a day to make sure your bundle is kept upto date with the latest releases.
+discovers: outdated dependency
+tone: negative
+active: true

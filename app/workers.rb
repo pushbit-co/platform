@@ -8,6 +8,7 @@ module Pushbit
   autoload :SetupEventWorker, "app/workers/setup_event_worker"
   autoload :TaskCompletedEventWorker, "app/workers/task_completed_event_worker"
   autoload :RepoSyncronizationWorker, "app/workers/repo_syncronization_worker"
+  autoload :BehaviorSyncronizationWorker, "app/workers/behavior_syncronization_worker"
   autoload :TaskCompletedWorker, "app/workers/task_completed_worker"
   autoload :GithubIssueWorker, "app/workers/github_issue_worker"
   autoload :GithubPullRequestWorker, "app/workers/github_pull_request_worker"

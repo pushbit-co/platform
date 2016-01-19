@@ -1,0 +1,6 @@
+kind: bundler-audit
+name: Bundler Audit
+description: Runs on every commit and ensures youre not falling prey to known security vulnerabilities.
+discovers: security vulnerabilty
+tone: negative
+active: true
