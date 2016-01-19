@@ -14,7 +14,7 @@ Pushbit::Behavior.find_or_create_with(
   description: "Suggests who would be the best person to review a pull request based on previous commits.",
   discovers: "team mate",
   active: false,
-  triggers: ['pull_request'],
+  triggers: ['pull_request_opened'],
   actions: ['comment']
 )
 
@@ -27,7 +27,7 @@ Pushbit::Behavior.find_or_create_with(
   active: true,
   tags: ['Ruby'],
   files: ['Gemfile', 'Gemfile.lock'],
-  triggers: ['cron', 'pull_request', 'task_completed_unbox'],
+  triggers: ['cron', 'pull_request_opened', 'task_completed_unbox'],
   actions: ['issue']
 )
 
@@ -51,7 +51,7 @@ Pushbit::Behavior.find_or_create_with(
   discovers: "sensitive file",
   tone: 'negative',
   active: true,
-  triggers: ['pull_request'],
+  triggers: ['pull_request_opened'],
   actions: ['line_comment']
 )
 
@@ -64,7 +64,7 @@ Pushbit::Behavior.find_or_create_with(
   active: true,
   tags: ['Ruby'],
   files: ['.+\.rb\z'],
-  triggers: ['pull_request', 'task_completed_unbox'],
+  triggers: ['pull_request_opened', 'task_completed_unbox'],
   actions: ['pull_request']
 )
 
@@ -77,7 +77,7 @@ Pushbit::Behavior.find_or_create_with(
   active: true,
   tags: ['Ruby'],
   files: ['.+\.rb\z'],
-  triggers: ['pull_request', 'task_completed_unbox'],
+  triggers: ['pull_request_opened', 'task_completed_unbox'],
   actions: ['line_comment', 'issue']
 )
 
@@ -89,6 +89,6 @@ Pushbit::Behavior.find_or_create_with(
   tone: 'negative',
   active: false,
   files: ['.+\.md\z', '.+\.txt\z'],
-  triggers: ['pull_request'],
+  triggers: ['pull_request_opened'],
   actions: ['line_comment']
 )
