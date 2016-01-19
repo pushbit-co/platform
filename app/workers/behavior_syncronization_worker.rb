@@ -7,14 +7,16 @@ module Pushbit
     def work
       Octokit.auto_paginate = true
 
+      kinds = []
       repos = Octokit.organization_repositories('pushbit-behaviors')
       repos.each do |data|
         begin
           # load configuration from yml file in root of repo
           config = YAML.load open("https://raw.githubusercontent.com/#{data.full_name}/master/config.yml").read
-          
+
           if config.class == Hash
-            Pushbit::Behavior.find_or_create_with(config)
+            kinds << config['kind']
+            Behavior.find_or_create_with(config)
           else
             logger.info "config.yml corrupt or invalid for #{data.full_name}"
           end
@@ -26,6 +28,9 @@ module Pushbit
           end
         end
       end
+      
+      # remove behaviors that are no longer available or corrupt
+      Behavior.where.not(kind: kinds).delete_all
     end
   end
 end
