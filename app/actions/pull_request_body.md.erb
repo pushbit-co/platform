@@ -1,0 +1,27 @@
+<% if count == 1 %>
+<% discovery = task.discoveries.unactioned.first %>
+
+<%= greeting %>! I've got a <%= behavior.discovers %> <%= behavior.negative? ? 'fix' : 'change' %> for you to check out...
+
+<%= discovery.message %>
+
+<%= signoff %>
+
+<% else %>
+
+<%= greeting %>! I found some <%= pluralize(count, behavior.discovers) %> that could easily be <%= behavior.negative? ? 'fixed' : 'updated' %>, <%= signoff %>.
+
+  <% task.discoveries.unactioned.each do |discovery| %>
+    <% if discovery.title %>
+## <%= discovery.title.capitalize %>
+<%= discovery.message %>
+    <% else %>
+- <%= discovery.message %>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+---
+
+Not happy with the changes in this pull request? Take a look at [my settings](<%= ENV.fetch('APP_URL') %>/repos/<%= task.repo.github_full_name %>/settings) to change options or disable the <%= task.behavior.kind %> behavior.

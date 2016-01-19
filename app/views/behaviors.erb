@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1>Behaviors</h1>
+
+    <p>Pushbit is made up of many different behaviors, by default we turn them all on and Pushbit quickly learns which ones are applicable to your individual projects. As we add new behaviors we'll automatically enable them and your team will immediately benefit!</p>
+
+    <p>You can also customize the behaviors manually through config files or the web interface if that's your bag! We'll be open sourcing the individual behaviors in the near future so that the community can modify and improve them!</p>
+  </div>
+</div>
+
+<div class="row" id="behaviors">
+  <ul>
+  <% @behaviors.each do |behavior| %>
+    <li class="col-md-4">
+      <section>
+        <h3><%= behavior.name %></h3>
+        <% if behavior.active %>
+          <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(', ') : "All" %></p>
+        <% else %>
+          <p class="tags coming-soon"><%= behavior.active ? '' : 'coming soon' %></p>
+        <% end %>
+        <p><%= behavior.description %></p>
+      </section>
+    </li>
+  <% end %>
+  </ul>
+</div>

@@ -1,0 +1,31 @@
+default: &default
+  adapter:  postgresql
+  database: <%= ENV["DATABASE_NAME"] %>
+  username: <%= ENV["DATABASE_USERNAME"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host:     <%= ENV["DATABASE_HOST"] %>
+  pool: 50
+  timeout: 5000
+
+staging:
+  <<: *default
+  pool: 50
+
+production:
+  url: <%= ENV["DATABASE_URL"]  %>
+  pool: 50
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  database: test
+
+ci:
+  database: circle_ruby_test
+  timeout: 5000
+  pool: 5
+  username: ubuntu
+  adapter: postgresql
+  host: localhost

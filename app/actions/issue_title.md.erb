@@ -1,0 +1,5 @@
+<% if count == 1 %>
+<%= task.discoveries.unactioned.first.title.capitalize %> 
+<% else %>
+<%= count %> <%= pluralize(count, behavior.discovers) %>
+<% end %>

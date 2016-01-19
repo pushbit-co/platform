@@ -1,0 +1,37 @@
+<h1>
+  <%= @repo.github_owner %>/<a href="/repos/<%= @repo.github_full_name %>"><%= @repo.name %></a> <small>#<%= @task.sequential_id %></small>
+</h1>
+<p><strong><%= @task.kind %></strong> triggered by <strong><%= @task.trigger.kind %></strong> from <strong><%= @task.triggered_by_login %></strong> <%= readable @task.created_at %></p>
+
+<h2>Events</h2>
+<% if @events.length > 0 %>
+  <ol class="task-events">
+  <% @events.each do |event| %>
+    <li><%= event.status%> <small><%= readable event.created_at %></small></li>
+  <% end %>    
+  </ol>
+<% else %>
+  <p>No events for this task.</p>
+<% end %>
+
+
+<h2>Actions</h2>
+<% if @actions.length > 0 %>
+  <ol>
+  <% @actions.each do |action| %>
+    <%= partial :action, locals: {action: action} %>
+  <% end %>    
+  </ol>
+<% else %>
+  <p>No actions for this task.</p>
+<% end %>
+
+
+<h2>Logs</h2>
+<% if @task.logs %>
+<code>
+  <%= Rack::Utils.escape_html @task.logs.strip %>
+</code>
+<% else %>
+  <p>No logs for this task.</p>
+<% end %>

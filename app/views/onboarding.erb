@@ -1,0 +1,37 @@
+<h1>Get Started</h1>
+<p>Pushbit works by checking out your pull requests, pushes, comments and other actions on Github to provide fixes and suggestions. Get started in just a few minutes by following these steps&hellip;</p>
+
+<div id="onboarding" class="row">
+  <ol>
+    <li class="col-md-4">
+      <section class="<%= @repos.length>0 ? 'completed' : '' %>">
+        <span class="octicon octicon-repo"></span>
+        <h3>Add a Project</h3>
+        <p>First you'll need to <a href="/subscribe">add a project</a> to Pushbit so our bot can start to help out.</p>
+        <span class="octicon octicon-check"></span>
+      </section>
+    </li>
+    <li class="col-md-4">
+      <section class="<%= @pull_requests_opened.count>0 ? 'completed' : '' %>">
+      <span class="octicon octicon-git-pull-request"></span>
+      <h3>Pull Request</h3>
+      <p>The easiest way to trigger Pushbit is to open a pull request on a subscribed project.</p>
+      <span class="octicon octicon-check"></span>
+    </section>
+    </li>
+    <li class="col-md-4">
+      <section class="<%= @pull_requests_merged.count>0 ? 'completed' : '' %>">
+      <span class="octicon octicon-git-merge"></span>
+      <h3>Merge Fixes</h3>
+      <p>Within a few minutes Pushbit will look at your pull request and suggest fixes and improvements.</p>
+      <span class="octicon octicon-check"></span>
+    </section>
+    </li>
+  </ol>
+  
+  <form action="/users/me" class="col-md-12" id="skip-onboarding" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="onboarding_skipped" value="true" />
+    <input type="submit" value="Skip Onboarding" class="btn btn-sm btn-default" />
+  </form>
+</div>

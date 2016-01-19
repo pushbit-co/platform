@@ -1,0 +1,21 @@
+<h2>Tasks</h2>
+
+<table class="table tasks table-hover">
+  <thead>
+    <tr>
+      <td>Task</td>
+      <td>Project</td>
+      <td>Type</td>
+      <td>Trigger</td>
+      <td>By</td>
+      <td>Time</td>
+      <td>Status</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <%= partial :task, locals: {task: task, name: true} %>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @tasks %>

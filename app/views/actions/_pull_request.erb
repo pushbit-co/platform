@@ -1,0 +1,1 @@
+Submitted <a href="<%= action.github_url %>" target="_blank">a pull request</a>  <%= action.task.behavior.negative? ? 'fixing' : 'covering' %> <%= action.discoveries.length %> <%= pluralize(action.discoveries.length, action.task.behavior.discovers) %> in <a href="/repos/<%= action.repo.github_full_name %>"><%= action.repo.github_full_name %></a>

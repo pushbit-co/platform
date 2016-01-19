@@ -1,0 +1,35 @@
+machine:
+  ruby:
+    version: 2.1.5
+  services:
+    - docker
+  environment:
+    GITHUB_CLIENT_ID:
+    GITHUB_CLIENT_SECRET:
+    GITHUB_WEBHOOK_TOKEN: 060ffa03a3dc77ec3d477dd1d0761a49
+    GITHUB_BOT_LOGIN: dev-pushbit-bot
+    GITHUB_TOKEN: thisisnotarealtoken
+    APP_URL: http://example.com
+    AES_KEY: e987987dd21c6d4eb5627890be54a0aa
+    HMAC_KEY: 060ffa03a3dc77ec3d477dd1d0761a49
+    SESSION_SECRET: 419eec0ecdb3b0373fd5f2a83d6832eb
+    BASIC_AUTH_SECRET: 101050d232ec0ecdbfd5f2a83d6cfb8b1ca37378
+    STRIPE_SECRET_KEY: totally_fake_key
+
+database:
+  override:
+    - RACK_ENV=ci bundle exec rake db:create db:schema:load --trace
+
+test:
+  override:
+    - RACK_ENV=ci bundle exec rspec --format progress 
+
+deployment:
+  production:
+    branch: production
+    commands:
+      - docker info
+      - docker build -t pushbit/app .
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push pushbit/app
+

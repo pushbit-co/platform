@@ -1,0 +1,9 @@
+<li class="action <%= action.kind.gsub("_", "-") %> <%= action.task_id ? "task-#{action.task_id}" : nil %>">
+  <div class="icon">
+    <%= action.icon %>
+  </div>
+  <div class="message">
+    <%= action.message %>
+  </div>
+  <small><%= readable action.created_at %></small>
+</li>

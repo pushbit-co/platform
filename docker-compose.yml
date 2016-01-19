@@ -1,0 +1,66 @@
+postgres:
+  build: ./build/postgres/
+  ports:
+    - "5432:5432"
+  volumes:
+    - /var/lib/docker/data/postgres:/var/lib/postgresql
+
+redis:
+  image: redis
+  volumes:
+    - /var/lib/docker/speak_data/redis:/data
+  ports:
+    - "6379:6379"
+
+box:
+  image: busybox
+  volumes:
+    - /box
+
+app:
+  build: ./
+  command: ./script/app.sh 
+  volumes:
+    - ./:/app
+    - ./docker_cert_path:/docker_cert_path
+  volumes_from:
+    - box
+  ports:
+    - "8080:8080"
+  links:
+    - postgres
+    - redis
+  env_file: .env
+  environment:
+    RACK_ENV: development
+    DATABASE_NAME: development
+    DATABASE_USERNAME: postgres
+    DATABASE_PASSWORD: postgres
+    DATABASE_HOST: postgres
+    DATABASE_NAME: development
+    BUNDLE_PATH: /box
+    DOCKER_CERT_PATH: /docker_cert_path
+    REDIS_URL: redis://redis:6379
+
+workers:
+  build: ./
+  command: ./script/workers.sh
+  volumes:
+    - ./:/app
+    - ./docker_cert_path:/docker_cert_path
+  volumes_from:
+    - box
+  links:
+    - postgres
+    - redis
+  env_file: .env
+  environment:
+    RACK_ENV: development
+    DATABASE_NAME: development
+    DATABASE_USERNAME: postgres
+    DATABASE_PASSWORD: postgres
+    DATABASE_HOST: postgres
+    DATABASE_NAME: development
+    BUNDLE_PATH: /box
+    DOCKER_CERT_PATH: /docker_cert_path
+    REDIS_URL: redis://redis:6379

@@ -1,0 +1,43 @@
+<h1>Add Project</h1>
+
+<div class="row">
+  <p class="col-md-9">Lets setup a new project. Pushbit helps your team work faster by automating the tedious but important tasks so you can concentrate on the things that really matter.</p>
+  <div class="col-md-3">
+    <% unless current_user.has_access_to_private_repos? %>
+    <a href="/auth/login/private" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+      Show Private Repos
+    </a>
+    <% end %>
+  </div>
+</div>
+
+<section id="subscribe">
+  <% if @organizations.length > 0 %>
+  <form class="row">
+    <ul class="organizations">
+      <li class="col-md-4"><label>
+        <input type="radio" name="organization_id" value="" checked /> All</label></li>
+      </li>
+
+      <% @organizations.each do |org| %>
+        <li class="col-md-4"><label>
+          <img src="<%= org.avatar_url %>" class="logo"/>
+          <input type="radio" name="organization_id" value="<%= org.login %>" /> <%= org.login %></label></li>
+        </li>
+      <% end %>
+    </ul>
+  </form>
+  <% end %>
+
+  <div class="search">
+    <% if current_user.last_synchronized_at %>
+    <small id="last-sync">Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
+    <% end %>
+    <input type="search" id="search" placeholder="Find a project..." class="form-control" />
+  </div>
+
+  <div id="repositories">
+    <p class="empty">Syncing&hellip;</p>
+  </div>
+</section>

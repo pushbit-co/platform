@@ -1,0 +1,45 @@
+<nav class="navbar">
+  <div class="container">
+    <a class="brand navbar-left" href="/">
+      <div class="logo"></div>
+      <span>Pushbit</span>
+    </a>
+    <% if current_user && current_user.beta %>
+    <ul class="nav nav-pills navbar-left">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subscribe">Add Project</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="mailto:help@pushbit.co">Contact</a>
+      </li>
+    </ul>
+    <% end %>
+  
+    <ul class="nav nav-pills navbar-right">
+      <% if current_user %>
+      <li class="nav-item">
+        <a class="nav-link" href="/account/billing">
+          <img class="avatar circular" src="<%= current_user.avatar_url %>" />
+          <%= current_user.login %>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/logout">Sign Out</a>
+      </li>
+      <% else %>
+      <li class="nav-item">
+        <a class="nav-link" href="/pricing">Pricing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/login">Log In</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/login">Sign Up</a>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,12 @@
+<li class="repo <%= active ? 'active' : '' %>">
+  <a href="/repos/<%= repo.github_full_name %>">
+    <div class="name"><span class="organization"><%= repo.github_owner %>/</span><%= repo.name %></div>
+    <time>
+      <% if repo.tasks.last %>
+        <%= readable repo.tasks.last.created_at %>
+      <% else %>
+        <%= readable repo.updated_at %>
+      <% end %>
+    </time>
+  </a>
+</li>

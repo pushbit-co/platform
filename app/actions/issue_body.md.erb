@@ -1,0 +1,8 @@
+<% if count == 1 %>
+<%= task.discoveries.first.message %>
+<% else %>
+  <% task.discoveries.unactioned.each do |discovery| %>
+## <%= discovery.title.capitalize %>
+<%= discovery.message %>
+  <% end %>
+<% end %>

@@ -1,0 +1,11 @@
+<tr class="task">
+  <td><a href="/repos/<%= task.repo.github_full_name %>/<%= task.sequential_id %>"><%= task.sequential_id %></a></td>
+  <% if name %>
+  <td><%= task.repo.github_full_name %></td>
+  <% end %>
+  <td><%= task.behavior.name %></td>
+  <td><%= task.trigger.kind %> <small>#<%= task.trigger_id %></small></td>
+  <td><a href="https://github.com/<%= task.triggered_by_login %>"><%= task.triggered_by_login %></a></td>
+  <td><%= readable task.created_at %></td>
+  <td><%= task.status %></td>
+</tr>
