@@ -24,7 +24,7 @@ describe "perform" do
       expect(Pushbit::Action.last.github_url).to eql('http://www.example.com')
       expect(Pushbit::Action.last.title).to eql("Whitespace")
     end
-    
+
     it "handles pull request already existing" do
       error_response = {
         "message" => "Validation Failed",
@@ -52,7 +52,7 @@ describe "perform" do
     let(:trigger) {create(:trigger, repo: repo, kind: 'pull_request') }
     let(:task) { create(:task, repo: repo, trigger: trigger, behavior: behavior) }
     let!(:discovery) { Pushbit::Discovery.create(title:"Whitespace", path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon after return") }
-    
+
     context "with open pull request from trigger" do
       it "creates a pull request on github" do
         stub_request(:get, "https://api.github.com/repos/#{repo.github_full_name}/labels?per_page=100").
@@ -72,7 +72,7 @@ describe "perform" do
         expect(Pushbit::Action.last.title).to eql("Whitespace")
       end
     end
-    
+
     context "with closed pull request from trigger" do
       it "does not create a pull request" do
         stub_request(:get, "https://api.github.com/repos/#{repo.github_full_name}/labels?per_page=100").

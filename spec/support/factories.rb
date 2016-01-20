@@ -11,6 +11,9 @@ FactoryGirl.define do
     factory :cron_trigger do
       kind { :cron }
     end
+    factory :github_push_trigger do
+      kind { :push }
+    end
     factory :github_pull_request_opened_trigger do
       kind { :pull_request_opened }
     end

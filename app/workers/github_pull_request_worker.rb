@@ -6,7 +6,7 @@ module Pushbit
       body = pull_request_body(task)
 
       # check if the branch we're basing off still has an open PR
-      if task.trigger.kind == 'pull_request'
+      if task.trigger.kind == 'pull_request_opened'
         pr = client.pull_request(task.repo.github_full_name, task.trigger.payload['number'])
         if pr.state != 'open'
           logger.info "Pull request #{task.trigger.payload['number']} no longer open"
