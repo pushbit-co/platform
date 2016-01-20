@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= partial :head %>
+  
+  <body>
+    <div class="wrapper">
+      <header>
+        <%= partial :header %>
+      </header>
+
+      <section id="content">
+        <div class="container">
+          <%= partial :flash %>
+          <%= yield %>
+        </div>
+      </section>
+
+      <footer>
+        <%= partial :footer %>
+      </footer>
+    </div>
+    <%= partial :scripts %>
+  </body>
+</html>

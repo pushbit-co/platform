@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= partial :head %>
+  
+  <body>
+    <div class="wrapper">
+      <header>
+        <%= partial :header %>
+      </header>
+
+      <section id="content">
+        <div class="container">
+          <%= partial :flash %>
+          
+          <h1 class="no-subheader">Documentation</h1>
+          <div class="row">
+            <nav id="sidebar" class="col-md-3">
+              <%= partial :'docs/nav' %>
+            </nav>
+            <section id="docs" class="col-md-9">
+              <%= yield %>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <%= partial :footer %>
+      </footer>
+    </div>
+    <%= partial :scripts %>
+  </body>
+</html>

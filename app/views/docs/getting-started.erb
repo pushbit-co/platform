@@ -1,0 +1,23 @@
+<h2>Getting Started</h2>
+
+<p>Pushbit can be tricky to get your head around, this getting started guide should familiarize you with the core concepts and data flows! It might help to take a look at some of our <a href="https://github.com/pushbit-behaviors">existing behaviors</a> to get a feel for how they are built.</p>
+
+
+<h3>Triggers</h3>
+
+<p>A trigger on Pushbit is an event which causes a behavior to run. This is usually a git event such as a push or pull request, however it can also be time, a comment, an issue creation or something else. Each behavior registers which triggers it should listen to as part of its config file.</p>
+
+
+<h3>Tasks</h3>
+
+<p>A task describes a single instance of a behavior running in response to a trigger, you can think of it as being similar to a build in CI terminology.</p>
+
+
+<h3>Discoveries</h3>
+
+<p>Discoveries are created by tasks, they are how behaviors communicate their output with the Pushbit platform. A discovery might describe an error, vulnerability, mistake or message that the task has found or created. Discoveries are always given a unique, reproducible id such as a CVE.</p>
+
+
+<h3>Actions</h3>
+
+<p>Once a task has run the discoveries are filtered and combined to create an output that the user sees, this might be a pull request, a line comment or a chat message depending on the behaviors configuration and the trigger type.</p>
