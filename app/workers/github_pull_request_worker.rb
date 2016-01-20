@@ -47,7 +47,7 @@ module Pushbit
     end
 
     def base_branch(task)
-      if task.trigger.kind == 'pull_request'
+      if task.trigger.kind == 'pull_request_opened'
         task.trigger.payload['pull_request']['head']['ref']
       else
         task.repo.default_branch || 'master'
