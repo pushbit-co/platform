@@ -20,7 +20,7 @@ describe "github" do
 
     context "with pull_request event" do
       let(:event) { File.read('spec/fixtures/github/pull_request.json') }
-      let!(:repo) { Pushbit::Repo.create(github_id: 35_129_377, github_full_name: "baxterthehacker/public-repo") }
+      let!(:repo) { create(:repo, github_id: 35_129_377, github_full_name: "baxterthehacker/public-repo") }
 
       it "should respond with successful create" do
         header "X-Github-Event", "pull_request"

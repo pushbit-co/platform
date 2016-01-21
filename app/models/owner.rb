@@ -1,5 +1,7 @@
 module Pushbit
   class Owner < ActiveRecord::Base
+    include ActiveModel::MassAssignmentSecurity
+
     has_many :repos
 
     def self.find_or_create_with(attributes)
