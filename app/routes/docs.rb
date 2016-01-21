@@ -3,7 +3,7 @@ module Pushbit
     get "/docs" do
       erb :'docs/index', layout: :docs
     end
-    
+
     get "/docs/*" do
       erb :"docs/#{params['splat'].first}", layout: :docs
     end

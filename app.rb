@@ -53,7 +53,7 @@ module Pushbit
       set :raise_errors, false
       set :method_override, true
       set :views, 'app/views'
-      set :erb, :layout_options => { :views => 'app/views/layouts' }
+      set :erb, layout_options: { views: 'app/views/layouts' }
 
       register Sinatra::AssetPack
     end
