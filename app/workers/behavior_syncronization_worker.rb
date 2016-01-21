@@ -3,7 +3,6 @@ require 'yaml'
 
 module Pushbit
   class BehaviorSyncronizationWorker < BaseWorker
-
     def work
       Octokit.auto_paginate = true
 
@@ -14,18 +13,17 @@ module Pushbit
           config = YAML.load open("https://raw.githubusercontent.com/#{data.full_name}/master/config.yml").read
 
           if config.class == Hash
-            
+
             # convert nested subobjects into individual underscored keys
             # eg: see repository and author fields in config
             config.clone.each do |key, value|
-              if value.class == Hash
-                value.each do |subkey, subvalue|
-                  config["#{key}_#{subkey}"] = subvalue
-                end
-                config.delete key
+              next unless value.class == Hash
+              value.each do |subkey, subvalue|
+                config["#{key}_#{subkey}"] = subvalue
               end
+              config.delete key
             end
-            
+
             Behavior.find_or_create_with(config)
           else
             logger.info "config.yml corrupt or invalid for #{data.full_name}"
