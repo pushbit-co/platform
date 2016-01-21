@@ -60,7 +60,7 @@ module Pushbit
 
     def execute!(changed_files = [], head_sha = nil)
       changed_files = changed_files.map { |f| f['filename'] }
-      DockerContainerWorker.perform_async(id, changed_files, head_sha)
+      DockerContainerWorker.perform_async(id, src_volume, changed_files, head_sha)
     end
 
     def image

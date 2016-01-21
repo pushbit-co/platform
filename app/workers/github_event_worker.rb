@@ -18,6 +18,7 @@ module Pushbit
         Octokit.auto_paginate = true
         changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
 
+        tasks = []
         behaviors.each do |behavior|
           if (repo.tags & behavior.tags).length > 0 || behavior.tags.length == 0
             if behavior.matches_files?(changed_files)
@@ -27,16 +28,16 @@ module Pushbit
                 trigger: trigger,
                 commit: payload.head_sha
               )
-
-              # TODO: we can store payload against trigger and avoid passing head_sha
-              task.execute!(changed_files, payload.head_sha)
-              logger.info "Starting task #{task.id} (#{behavior.name}) for #{repo.github_full_name}"
+              tasks << task
             else
               logger.info "#{behavior.name} did not match changed files"
             end
           else
             logger.info "#{behavior.tags.join(',')} did not match repo tags (#{repo.tags.join(',')})"
           end
+        end
+        if tasks.length > 0
+          CloneRepoWorker.perform_async(trigger.id)
         end
       end
     end
