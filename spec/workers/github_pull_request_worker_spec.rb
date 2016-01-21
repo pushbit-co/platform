@@ -48,8 +48,8 @@ describe "perform" do
     end
   end
 
-  context "with pull_request trigger" do
-    let(:trigger) {create(:trigger, repo: repo, kind: 'pull_request') }
+  context "when pull request opened" do
+    let(:trigger) {create(:github_pull_request_opened_trigger, repo: repo) }
     let(:task) { create(:task, repo: repo, trigger: trigger, behavior: behavior) }
     let!(:discovery) { Pushbit::Discovery.create(title:"Whitespace", path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon after return") }
 
