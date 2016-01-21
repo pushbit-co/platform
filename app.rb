@@ -184,22 +184,20 @@ module Pushbit
       end
     end
 
-    get '/account' do
-      authenticate!
-
-      erb :account
-    end
-
     get '/pricing' do
+      @title = "Pricing"
       erb :pricing
     end
 
     get '/security' do
+      @title = "Security"
       erb :security
     end
 
     get '/behaviors' do
       @behaviors = Behavior.all
+      @title = "Behaviors"
+
       erb :behaviors
     end
 
@@ -215,6 +213,7 @@ module Pushbit
       end
 
       flash[:notice] = "Note: During the beta Pushbit works best with projects written in Ruby, other languages coming soon!"
+      @title = "Add Project"
       erb :subscribe
     end
 

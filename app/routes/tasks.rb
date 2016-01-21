@@ -3,6 +3,8 @@ module Pushbit
     get "/tasks" do
       authenticate!
       @tasks = Task.paginate(page: params['page']).where(repo_id: current_user.repos.pluck(:id)).includes(:repo)
+      @title = "Tasks"
+
       erb :'tasks/index', layout: !request.xhr?
     end
 
@@ -10,6 +12,8 @@ module Pushbit
       authenticate!
       @repo = current_user.repos.find(params['id'])
       @tasks = Task.paginate(page: params['page']).where(repo: @repo).includes(:repo)
+      @title = "Tasks - #{@repo.github_full_name}"
+
       erb :'tasks/index', layout: !request.xhr?
     end
 

@@ -39,6 +39,7 @@ module Pushbit
 
     get "/repos" do
       authenticate!
+      @title = "Repositories"
 
       erb :'repos/index', layout: !request.xhr?
     end
@@ -59,7 +60,7 @@ module Pushbit
 
       @repo = repo_from_params
       @behaviors = Behavior.all
-      @title = "#{@repo.github_full_name} Settings"
+      @title = "Settings - #{@repo.github_full_name}"
 
       erb :'repos/settings'
     end
@@ -71,7 +72,7 @@ module Pushbit
       @task = Task.find_by!(repo: @repo, sequential_id: params['task_sequential_id'])
       @events = @task.docker_events
       @actions = @task.actions.map { |a| ActionPresenter.new(a) }
-      @title = "Task #{@task.sequential_id}"
+      @title = "Task #{@task.sequential_id} - #{@repo.github_full_name}"
 
       erb :'repos/task'
     end
