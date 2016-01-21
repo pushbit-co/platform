@@ -1,7 +1,7 @@
 module Pushbit
   class Repo < ActiveRecord::Base
     include ActiveModel::MassAssignmentSecurity
-    
+
     has_many :tasks
     has_many :triggers
     has_many :memberships, dependent: :destroy
@@ -63,11 +63,11 @@ module Pushbit
       trigger.execute!
 
       Action.create!({
-        kind: 'subscribe',
-        repo: self,
-        user: user,
-        github_id: github_id
-      }, without_protection: true)
+                       kind: 'subscribe',
+                       repo: self,
+                       user: user,
+                       github_id: github_id
+                     }, without_protection: true)
     end
 
     def deactivate!(user)

@@ -85,10 +85,10 @@ module Pushbit
 
     def create_action
       Action.create!({
-        kind: 'signedup',
-        user: self,
-        github_id: github_id
-      }, without_protection: true)
+                       kind: 'signedup',
+                       user: self,
+                       github_id: github_id
+                     }, without_protection: true)
     end
 
     def send_welcome_email

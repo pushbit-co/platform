@@ -1,6 +1,6 @@
 module Pushbit
   class ManualEventWorker < BaseWorker
-    sidekiq_options :retry => false
+    sidekiq_options retry: false
 
     def work(trigger_id)
       trigger = Trigger.find(trigger_id)
@@ -9,14 +9,13 @@ module Pushbit
 
       repo.behaviors.active.each do |behavior|
         task = Task.create!({
-          behavior: behavior,
-          repo: repo,
-          trigger: trigger
-        }, without_protection: true)
+                              behavior: behavior,
+                              repo: repo,
+                              trigger: trigger
+                            }, without_protection: true)
         task.execute!
         logger.info "Starting task #{task.id} (#{behavior.name}) for #{repo.github_full_name}"
       end
     end
-    
   end
 end
