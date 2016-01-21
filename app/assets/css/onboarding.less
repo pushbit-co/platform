@@ -1,0 +1,58 @@
+#onboarding {
+  ol {
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+    
+    li {
+      text-align: center;
+      
+      p {
+        text-align: left;
+      }
+      
+      .octicon:first-child {
+        background: #efefef;
+        color: #666;
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        font-size: 35px;
+        line-height: 60px;
+        text-align: center;
+        margin: 10px auto;
+      }
+      
+      .octicon-check {
+        display: none;
+      }
+    }
+    
+    section {
+      position: relative;
+      min-height: 280px;
+    }
+
+    section.completed {
+      .octicon:first-child {
+        color: #3c763d;
+        background-color: #dff0d8;
+      }
+      
+      .octicon-check {
+        display: block;
+        position: absolute;
+        top: 70px;
+        left: 52%;
+        font-size: 21px;
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-radius: 30px;
+        width: 30px;
+        height: 30px;
+        line-height: 25px;
+        border: 2px solid #3c763d;
+      }
+    }
+  }
+}

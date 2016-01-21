@@ -11,6 +11,9 @@ FactoryGirl.define do
     factory :cron_trigger do
       kind { :cron }
     end
+    factory :github_push_trigger do
+      kind { :push }
+    end
     factory :github_pull_request_opened_trigger do
       kind { :pull_request_opened }
     end
@@ -31,6 +34,13 @@ FactoryGirl.define do
       }
     end
     repo
+  end
+
+  factory :discovery, class: Pushbit::Discovery do
+    task
+    identifier { Faker::Number.number(10) }
+    kind { :problem }
+    message { "A problem was found" }
   end
 
   factory :repo, class: Pushbit::Repo do

@@ -6,7 +6,7 @@ module Pushbit
       body = pull_request_body(task)
 
       # check if the branch we're basing off still has an open PR
-      if task.trigger.kind == 'pull_request'
+      if task.trigger.kind == 'pull_request_opened'
         pr = client.pull_request(task.repo.github_full_name, task.trigger.payload['number'])
         if pr.state != 'open'
           logger.info "Pull request #{task.trigger.payload['number']} no longer open"
@@ -23,15 +23,15 @@ module Pushbit
         labels: task.labels.join(",")
       )
 
-      action = Action.create!(
-        kind: 'pull_request',
-        title: title,
-        body: body,
-        repo_id: task.repo_id,
-        task_id: task.id,
-        github_id: response.id,
-        github_url: response.html_url
-      )
+      action = Action.create!({
+                                kind: 'pull_request',
+                                title: title,
+                                body: body,
+                                repo_id: task.repo_id,
+                                task_id: task.id,
+                                github_id: response.id,
+                                github_url: response.html_url
+                              }, without_protection: true)
 
       task.discoveries.pull_requestable.unactioned.update_all(action_id: action.id)
     rescue Octokit::UnprocessableEntity => e
@@ -47,7 +47,7 @@ module Pushbit
     end
 
     def base_branch(task)
-      if task.trigger.kind == 'pull_request'
+      if task.trigger.kind == 'pull_request_opened'
         task.trigger.payload['pull_request']['head']['ref']
       else
         task.repo.default_branch || 'master'

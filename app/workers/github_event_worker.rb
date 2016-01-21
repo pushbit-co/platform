@@ -16,19 +16,26 @@ module Pushbit
       else
         behaviors = Behavior.active.trigger(event).where(id: repo.behaviors.pluck(:id))
         Octokit.auto_paginate = true
-        changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
+
+        # we only read changed files for PR's, perhaps push in the future
+        if payload.pull_request_number
+          changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
+        end
 
         tasks = []
         behaviors.each do |behavior|
           if (repo.tags & behavior.tags).length > 0 || behavior.tags.length == 0
-            if behavior.matches_files?(changed_files)
-              task = Task.create!(
-                behavior: behavior,
-                repo: repo,
-                trigger: trigger,
-                commit: payload.head_sha
-              )
-              tasks << task
+            if behavior.matches_files?(changed_files) || !changed_files
+              task = Task.create!({
+                                    behavior: behavior,
+                                    repo: repo,
+                                    trigger: trigger,
+                                    commit: payload.head_sha
+                                  }, without_protection: true)
+
+              # TODO: we can store payload against trigger and avoid passing head_sha
+              task.execute!(changed_files, payload.head_sha)
+              logger.info "Starting task #{task.id} (#{behavior.name}) for #{repo.github_full_name}"
             else
               logger.info "#{behavior.name} did not match changed files"
             end

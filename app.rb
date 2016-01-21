@@ -55,6 +55,10 @@ module Pushbit
       set :views, 'app/views'
 
       register Sinatra::AssetPack
+      
+      # trigger the app to sync with behaviors stored on github when 
+      # the application starts up
+      BehaviorSyncronizationWorker.perform_async
     end
 
     Warden::Strategies.add(:basic) do
@@ -112,7 +116,7 @@ module Pushbit
       config.x_permitted_cross_domain_policies = "none"
       config.csp = {
         default_src: %w('self'),
-        connect_src: %w(wws: 'self'),
+        connect_src: %w(wws: 'self' checkout.stripe.com),
         frame_src: %w(checkout.stripe.com),
         img_src: %w(avatars.githubusercontent.com www.google-analytics.com avatars2.githubusercontent.com q.stripe.com avatars.githubusercontent.com 'self'),
         script_src: %w('unsafe-inline' www.google-analytics.com checkout.stripe.com code.jquery.com maxcdn.bootstrapcdn.com 'self'),
@@ -159,9 +163,7 @@ module Pushbit
 
     get '/' do
       if current_user
-        if !current_user.beta?
-          redirect '/beta'
-        elsif current_user.has_active_repos?
+        if current_user.has_active_repos?
           @repos = current_user.repos.active
           erb :dashboard
         else
@@ -182,26 +184,20 @@ module Pushbit
       end
     end
 
-    get '/beta' do
-      erb :beta
-    end
-
-    get '/account' do
-      authenticate!
-
-      erb :account
-    end
-
     get '/pricing' do
+      @title = "Pricing"
       erb :pricing
     end
 
     get '/security' do
+      @title = "Security"
       erb :security
     end
 
     get '/behaviors' do
       @behaviors = Behavior.all
+      @title = "Behaviors"
+
       erb :behaviors
     end
 
@@ -217,6 +213,7 @@ module Pushbit
       end
 
       flash[:notice] = "Note: During the beta Pushbit works best with projects written in Ruby, other languages coming soon!"
+      @title = "Add Project"
       erb :subscribe
     end
 

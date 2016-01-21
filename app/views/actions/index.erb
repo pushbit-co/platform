@@ -6,7 +6,7 @@
   <h2><%= readable_header action.created_at %></h2>
   <ol class="actions">
     <% start_of_day = DateTime.new(action.created_at.year, action.created_at.mon, action.created_at.mday) %>
-    <% days_tasks = Pushbit::Task.where("created_at > ? AND created_at < ?", start_of_day, start_of_day+24.hours) %>
+    <% days_tasks = Pushbit::Task.where(repo_id: @repo_ids).where("created_at > ? AND created_at < ?", start_of_day, start_of_day+24.hours) %>
     <% if days_tasks.length > 0 %>
     <li class="action summary">
       <div class="icon">

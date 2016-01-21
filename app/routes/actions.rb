@@ -3,6 +3,7 @@ module Pushbit
     get "/actions" do
       authenticate!
       @actions = Action.paginate(page: params['page']).for_user(current_user).includes(:task, :user)
+      @repo_ids = current_user.repos.pluck(:id)
       erb :'actions/index', layout: !request.xhr?
     end
 
@@ -10,6 +11,8 @@ module Pushbit
       authenticate!
       @repo = current_user.repos.find(params['id'])
       @actions = Action.paginate(page: params['page']).where(repo: @repo).includes(:task, :user)
+      @repo_ids = @repo.id
+      
       erb :'actions/index', layout: !request.xhr?
     end
 

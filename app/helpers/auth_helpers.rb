@@ -9,12 +9,6 @@ module Pushbit
       unless authenticated?
         warden.authenticate!
       end
-
-      if authenticated?
-        if current_user && !current_user.beta && request.path != '/beta'
-          redirect '/beta'
-        end
-      end
     end
 
     def warden

@@ -5,8 +5,8 @@ describe "perform" do
 
   context "repo has bot" do
     let!(:behavior) { create(:behavior, kind: 'unbox') }
-    let!(:repo) { Pushbit::Repo.create(github_id: 35_129_377, github_full_name: "baxterthehacker/public-repo") }
-    let!(:trigger) { Pushbit::Trigger.create(kind: 'setup') }
+    let!(:repo) { create(:repo, github_id: 35_129_377, github_full_name: "baxterthehacker/public-repo") }
+    let!(:trigger) { create(:trigger, kind: 'setup') }
     let!(:task) { create(:task, behavior: behavior, repo: repo, trigger: trigger) }
 
     context "bot has task_completed_kind trigger" do

@@ -4,6 +4,16 @@ describe "perform" do
   let(:payload) { File.read('spec/fixtures/github/pull_request.json') }
   let(:worker) { Pushbit::GithubEventWorker.new }
 
+  context "push" do
+    let(:payload) { File.read('spec/fixtures/github/push.json') }
+    let!(:repo) { create(:repo, tags: ['Ruby']) }
+    let!(:trigger) { create(:github_push_trigger, repo: repo) }
+
+    it "does not request pr changed files" do
+      worker.perform(trigger.id, payload)
+    end
+  end
+  
   context "issue closed" do
     let(:payload) { File.read('spec/fixtures/github/issue_closed.json') }
     let!(:repo) { create(:repo, tags: ['Ruby']) }

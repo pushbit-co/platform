@@ -1,4 +1,4 @@
-<% behaviors_count = days_tasks.map {|t| t.kind }.uniq.length %>
+<% behaviors_count = days_tasks.map {|t| t.behavior_id }.uniq.length %>
 <% repo_count = days_tasks.map {|t| t.repo_id }.uniq.length %>
 
 Ran <%= days_tasks.length %> tasks with <%= behaviors_count %> <%= pluralize(behaviors_count, "behavior") %> across <%= repo_count %> <%= pluralize(repo_count, "project") %>, taking <%= tasks_duration_in_minutes(days_tasks) %> minutes.
