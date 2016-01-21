@@ -18,7 +18,7 @@ You can find their location by running the following command. (Swap default with
 docker-machine env default
 ```
 
-Secondly you will need to copy .env.example to a file called .env in the porject root and replace with appropriate keys
+Secondly you will need to copy .env.example to a file called .env in the project root and replace with appropriate keys
 
 ## Test
 
