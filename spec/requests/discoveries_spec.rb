@@ -9,11 +9,11 @@ describe "create" do
   end
   
   context "when authenticated" do
-    let(:repo) { Pushbit::Repo.create!(github_id: 123) }
-    let(:trigger) { Pushbit::Trigger.create!(kind: 'manual') }
-    let(:behavior) { Pushbit::Behavior.create!(kind: 'bundler-update', tone: 'negative', discovers: 'security issue') }
-    let(:task) { Pushbit::Task.create!(behavior: behavior, trigger_id: trigger.id, repo_id: repo.id) }
-    let(:action) { Pushbit::Action.create!(kind: 'issue', task_id: task.id, repo_id: repo.id, body: "test") }
+    let(:repo) { create(:repo, github_id: 123) }
+    let(:trigger) { create(:trigger, kind: 'manual') }
+    let(:behavior) { create(:behavior, kind: 'bundler-update', tone: 'negative', discovers: 'security issue') }
+    let(:task) { create(:task, behavior: behavior, trigger_id: trigger.id, repo_id: repo.id) }
+    let(:action) { create(:action, kind: 'issue', task_id: task.id, repo_id: repo.id, body: "test") }
     
     context "with required fields" do
       it "should respond with success" do
@@ -25,13 +25,12 @@ describe "create" do
       end
       
       it "should update existing discoveries" do
-        post_with_basic_auth '/discoveries', {kind: 'security update', task_id: task.id, identifier: 'cve-123', action_id: action.id, title: "Some problem"}
+        post_with_basic_auth '/discoveries', {kind: 'security update', task_id: task.id, identifier: 'cve-123', title: "Some problem"}
         expect(last_json.discovery.title).to eql("Some problem")
 
         post_with_basic_auth '/discoveries', {kind: 'security update', task_id: task.id, identifier: 'cve-123', title: "Some problem with security"}
         expect(last_response.status).to eql(201)
         expect(last_json.discovery.title).to eql("Some problem with security")
-        expect(last_json.discovery.action_id).to eql(action.id)
       end
     end
     

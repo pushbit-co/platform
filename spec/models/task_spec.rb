@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Pushbit::Task do
-  let(:repo) { Pushbit::Repo.create!(github_id: 123456, github_full_name: "baxterthehacker/public-repo") }
-  let(:trigger) { Pushbit::Trigger.create!(kind: 'manual') }
-  let(:behavior) { Pushbit::Behavior.create!(kind: 'bundler-update', tone: 'negative') }
-  let(:task) { Pushbit::Task.create!(behavior: behavior, trigger: trigger, repo: repo) }
-  let!(:user) { Pushbit::User.create!({github_id: 123456, login: 'tommoor'}, without_protection: true) }
+  let(:repo) { create(:repo, github_id: 123456, github_full_name: "baxterthehacker/public-repo") }
+  let(:trigger) { create(:trigger, kind: 'manual') }
+  let(:behavior) { create(:behavior, kind: 'bundler-update', tone: 'negative') }
+  let(:task) { create(:task, behavior: behavior, trigger: trigger, repo: repo) }
+  let!(:user) { create(:user, github_id: 123456, login: 'tommoor') }
   
   describe "save" do
     it "is invalid with invalid status" do
@@ -30,19 +30,19 @@ describe Pushbit::Task do
   end
   
   describe "has_unactioned_discoveries" do
-    let(:action) { Pushbit::Action.create!(kind: 'issue', task_id: task.id, body: "test") }
+    let(:action) { create(:action, kind: 'issue', task_id: task.id, body: "test") }
     
     it "returns false when there are no discoveries" do
       expect(task.has_unactioned_discoveries).to eql(false)
     end
     
     it "returns false when there are only actioned discoveries" do
-      Pushbit::Discovery.create!(kind: 'security update', task_id: task.id, identifier: 'unique-123', action: action)
+      create(:discovery, kind: 'security update', task_id: task.id, identifier: 'unique-123', action: action)
       expect(task.has_unactioned_discoveries).to eql(false)
     end
     
     it "returns true when there are discoveries without actions" do
-      Pushbit::Discovery.create!(kind: 'security update', task_id: task.id, identifier: 'unique-123')
+      create(:discovery, kind: 'security update', task_id: task.id, identifier: 'unique-123')
       expect(task.has_unactioned_discoveries).to eql(true)
     end
   end

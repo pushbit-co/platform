@@ -13,11 +13,11 @@ module Pushbit
           .pluck(:repo_id)
 
         Repo.joins(:repo_behaviors).active.where("repo_behaviors.behavior_id = ?", behavior.id).where.not(id: done_ids).each do |repo|
-          task = Task.create!(
+          task = Task.create!({
             behavior: behavior,
             repo: repo,
             trigger_id: trigger_id
-          )
+          }, without_protection: true)
           task.execute!
           logger.info "Starting task #{task.id} (#{behavior.name}) for #{repo.github_full_name}"
         end

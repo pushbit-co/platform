@@ -9,11 +9,11 @@ module Pushbit
 
       behaviors = Behavior.trigger(event).where(id: repo.behaviors.pluck(:id))
       behaviors.each do |behavior|
-        task = Task.create!(
+        task = Task.create!({
           behavior: behavior,
           repo: repo,
           trigger: trigger
-        )
+        }, without_protection: true)
         task.execute!
         logger.info "Starting task #{task.id} (#{behavior.name}) for #{repo.github_full_name}"
       end

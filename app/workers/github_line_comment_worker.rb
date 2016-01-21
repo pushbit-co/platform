@@ -48,14 +48,14 @@ module Pushbit
           comment.line.patch_position
         )
 
-        action = Action.create!(
+        action = Action.create!({
           kind: 'line_comment',
           body: comment.message(task),
           repo_id: task.repo_id,
           task_id: task.id,
           github_id: response.id,
           github_url: response.html_url
-        )
+        }, without_protection: true)
 
         comment.discoveries.each do |discovery|
           discovery.update_attribute(:action_id, action.id)

@@ -36,6 +36,13 @@ FactoryGirl.define do
     repo
   end
 
+  factory :discovery, class: Pushbit::Discovery do
+    task
+    identifier { Faker::Number.number(10) }
+    kind { :problem }
+    message { "A problem was found" }
+  end
+  
   factory :repo, class: Pushbit::Repo do
     active { true }
     github_id { Faker::Number.number(5) }

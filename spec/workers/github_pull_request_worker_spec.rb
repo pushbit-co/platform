@@ -8,7 +8,7 @@ describe "perform" do
   context "with manual trigger" do
     let(:trigger) {create(:trigger, repo: repo) }
     let(:task) { create(:task, repo: repo, trigger: trigger, behavior: behavior) }
-    let!(:discovery) { Pushbit::Discovery.create(title:"Whitespace", path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon after return") }
+    let!(:discovery) { create(:discovery, title:"Whitespace", path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon after return") }
 
     it "creates a pull request on github" do
       stub_request(:get, "https://api.github.com/repos/#{repo.github_full_name}/labels?per_page=100").
@@ -51,7 +51,7 @@ describe "perform" do
   context "when pull request opened" do
     let(:trigger) {create(:github_pull_request_opened_trigger, repo: repo) }
     let(:task) { create(:task, repo: repo, trigger: trigger, behavior: behavior) }
-    let!(:discovery) { Pushbit::Discovery.create(title:"Whitespace", path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon after return") }
+    let!(:discovery) { create(:discovery, title:"Whitespace", path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon after return") }
 
     context "with open pull request from trigger" do
       it "creates a pull request on github" do

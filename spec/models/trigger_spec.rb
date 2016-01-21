@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Pushbit::Trigger do
-  let(:repo) { Pushbit::Repo.create!(github_id: 123_456, github_full_name: "baxterthehacker/public-repo") }
+  let(:repo) { create(:repo, github_id: 123_456, github_full_name: "baxterthehacker/public-repo") }
 
   describe "save" do
     it "is valid with kind" do

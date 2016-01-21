@@ -8,8 +8,8 @@ describe "perform" do
   let(:task) { create(:task, behavior:behavior, repo:repo, trigger:trigger) }
 
   context "with multiple discoveries on the same line" do
-    let!(:discovery2) { Pushbit::Discovery.create(path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon") }
-    let!(:discovery3) { Pushbit::Discovery.create(path: "app.rb", identifier: 3, kind: 'style violation', task: task, line: 22, message: "Trailing whitespace") }
+    let!(:discovery2) { create(:discovery, path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon") }
+    let!(:discovery3) { create(:discovery, path: "app.rb", identifier: 3, kind: 'style violation', task: task, line: 22, message: "Trailing whitespace") }
 
     it "creates a single comment" do
       body = JSON.parse File.read('spec/fixtures/github/webmock/pull_request_changed_files_ruby.json')
@@ -29,8 +29,8 @@ describe "perform" do
   end
   
   context "with multiple discoveries on different lines" do
-    let!(:discovery2) { Pushbit::Discovery.create(path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon") }
-    let!(:discovery3) { Pushbit::Discovery.create(path: "app.rb", identifier: 3, kind: 'style violation', task: task, line: 54, message: "Trailing whitespace") }
+    let!(:discovery2) { create(:discovery, path: "app.rb", identifier: 2, kind: 'style violation', task: task, line: 22, message: "Missing semicolon") }
+    let!(:discovery3) { create(:discovery, path: "app.rb", identifier: 3, kind: 'style violation', task: task, line: 54, message: "Trailing whitespace") }
 
     it "creates multiple line comments" do
       body = JSON.parse File.read('spec/fixtures/github/webmock/pull_request_changed_files_ruby.json')

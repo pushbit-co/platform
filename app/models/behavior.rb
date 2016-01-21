@@ -1,5 +1,6 @@
 module Pushbit
   class Behavior < ActiveRecord::Base
+    include ActiveModel::MassAssignmentSecurity
 
     default_scope -> { order('active DESC') }
 
@@ -21,7 +22,7 @@ module Pushbit
         columns = Behavior.columns.map { |c| c.name.to_sym }
         columns.include? k.to_sym
       end
-      behave.update_attributes attributes, without_protection: true
+      behave.update_attributes(attributes, without_protection: true)
       behave
     end
 

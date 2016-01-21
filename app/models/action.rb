@@ -1,5 +1,6 @@
 module Pushbit
   class Action < ActiveRecord::Base
+    include ActiveModel::MassAssignmentSecurity
     
     default_scope -> { order('actions.id DESC') }
     

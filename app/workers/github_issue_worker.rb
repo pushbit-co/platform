@@ -13,7 +13,7 @@ module Pushbit
         labels: task.labels.join(",")
       )
       
-      action = Action.create!(
+      action = Action.create!({
         kind: 'issue',
         title: title,
         body: body,
@@ -21,7 +21,7 @@ module Pushbit
         task_id: task.id,
         github_id: response.id,
         github_url: response.html_url
-      )
+      }, without_protection: true)
       
       task.discoveries.unactioned.update_all(action_id: action.id)
     end
