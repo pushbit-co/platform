@@ -4,3 +4,7 @@ description: Runs on every commit and ensures youre not falling prey to known se
 discovers: security vulnerabilty
 tone: negative
 active: true
+repository:
+  url: 'http://example.com'
+author:
+  name: 'Alex'
