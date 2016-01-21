@@ -17,7 +17,7 @@ box:
   volumes:
     - /box
 
-app:
+platform:
   build: ./
   command: ./script/app.sh 
   volumes:

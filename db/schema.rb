@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230164720) do
+ActiveRecord::Schema.define(version: 20160121005727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20151230164720) do
     t.string  "tags",        default: [], array: true
   end
 
-  add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", using: :btree
+  add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", unique: true, using: :btree
 
   create_table "discoveries", force: :cascade do |t|
     t.integer  "task_id"

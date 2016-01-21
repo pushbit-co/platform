@@ -55,6 +55,10 @@ module Pushbit
       set :views, 'app/views'
 
       register Sinatra::AssetPack
+      
+      # trigger the app to sync with behaviors stored on github when 
+      # the application starts up
+      BehaviorSyncronizationWorker.perform_async
     end
 
     Warden::Strategies.add(:basic) do
