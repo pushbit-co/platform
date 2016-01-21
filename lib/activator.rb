@@ -17,18 +17,13 @@ module Pushbit
     end
 
     def activate
-      if repo.private?
-        add_collaborator
-        add_webhook
-        repo.activate!(user)
-      else
-        add_webhook
-        repo.activate!(user)
-      end
+      add_collaborator
+      add_webhook
+      repo.activate!(user)
     end
 
     def deactivate
-      remove_collaborator if repo.private?
+      remove_collaborator
       remove_webhook
       repo.deactivate!(user)
     end
