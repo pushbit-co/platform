@@ -2,7 +2,7 @@ module Pushbit
   class Discovery < ActiveRecord::Base
     include ActiveModel::MassAssignmentSecurity
 
-    attr_accessible :task_id, :identifier, :kind, :code_changed, :priority, 
+    attr_accessible :task_id, :identifier, :kind, :code_changed, :priority,
                     :title, :message, :path, :line, :column, :length, :branch
     belongs_to :task
     belongs_to :action

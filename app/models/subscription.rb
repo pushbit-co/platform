@@ -22,11 +22,11 @@ module Pushbit
       stripe_sub = user.customer.subscriptions.create(plan: plan, metadata: { repo_ids: repo.id.to_s }) unless stripe_sub
 
       Subscription.create!({
-        user: user,
-        repo: repo,
-        stripe_subscription: stripe_sub,
-        stripe_subscription_id: stripe_sub.id
-      }, without_protection: true)
+                             user: user,
+                             repo: repo,
+                             stripe_subscription: stripe_sub,
+                             stripe_subscription_id: stripe_sub.id
+                           }, without_protection: true)
     end
 
     def stripe_subscription

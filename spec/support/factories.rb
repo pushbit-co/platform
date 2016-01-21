@@ -42,7 +42,7 @@ FactoryGirl.define do
     kind { :problem }
     message { "A problem was found" }
   end
-  
+
   factory :repo, class: Pushbit::Repo do
     active { true }
     github_id { Faker::Number.number(5) }
