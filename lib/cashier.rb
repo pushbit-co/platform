@@ -23,8 +23,10 @@ module Pushbit
     end
 
     def unsubscribe
-      remove_repo_from_subscription
-      subscription.destroy
+      if user.has_customer?
+        remove_repo_from_subscription
+        subscription.destroy
+      end
     end
 
     def subscription

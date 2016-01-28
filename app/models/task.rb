@@ -10,7 +10,6 @@ module Pushbit
     belongs_to :behavior
     before_update :set_duration
 
-    has_many :docker_events
     has_many :actions
     has_many :discoveries
 

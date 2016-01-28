@@ -70,7 +70,6 @@ module Pushbit
 
       @repo = repo_from_params
       @task = Task.find_by!(repo: @repo, sequential_id: params['task_sequential_id'])
-      @events = @task.docker_events
       @actions = @task.actions.map { |a| ActionPresenter.new(a) }
       @title = "Task #{@task.sequential_id} - #{@repo.github_full_name}"
 
