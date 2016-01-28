@@ -21,6 +21,7 @@ module Pushbit
         if payload.pull_request_number
           changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
         end
+        raise [payload.pull_request_number, data].inspect
 
         tasks = []
         behaviors.each do |behavior|

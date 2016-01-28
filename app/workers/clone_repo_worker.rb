@@ -4,7 +4,7 @@ module Pushbit
     def work(id, params=nil, image="pushbit/base")
       trigger = Trigger.find(id)
       Docker::Volume.create(volume_name(trigger))
-      head_sha = trigger.payload ? trigger.payload.head_sha : nil
+      head_sha = trigger.payload ? Payload.new(trigger.payload).head_sha : nil
       container = Docker::Container.create({
         "Image" => image,
         "Env" => [
@@ -45,7 +45,9 @@ module Pushbit
     def changed_files(trigger)
       #TODO remove from docker container worker and this worker and add as a
       #method on trigger
-      return [] unless trigger.payload && trigger.payload.pull_request_number
+      return [] unless trigger.payload
+      payload = Payload.new(trigger.payload)
+      return [] unless payload.pull_request_number
       client.pull_request_files(trigger.repo.github_full_name, payload.pull_request_number)
     end
   end
