@@ -3,18 +3,6 @@
 </h1>
 <p><strong><%= @task.behavior.kind %></strong> triggered by <strong><%= @task.trigger.kind %></strong> from <strong><%= @task.triggered_by_login %></strong> <%= readable @task.created_at %></p>
 
-<h2>Events</h2>
-<% if @events.length > 0 %>
-  <ol class="task-events">
-  <% @events.each do |event| %>
-    <li><%= event.status%> <small><%= readable event.created_at %></small></li>
-  <% end %>    
-  </ol>
-<% else %>
-  <p>No events for this task.</p>
-<% end %>
-
-
 <h2>Actions</h2>
 <% if @actions.length > 0 %>
   <ol>

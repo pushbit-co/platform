@@ -6,6 +6,7 @@ module Pushbit
       if request.xhr?
         json ok: false, error: "The endpoint you requested does not exist."
       else
+        @title = "Error 404"
         erb :'errors/404'
       end
     end
@@ -52,6 +53,7 @@ module Pushbit
       if request.xhr?
         json ok: false, error: "The resource you requested does not exist. Perhaps it was recently deleted."
       else
+        @title = "Error 404"
         erb :'errors/404'
       end
     end
@@ -62,6 +64,7 @@ module Pushbit
       if request.xhr?
         json ok: false, error: "An unexpected error occurred, we've been alerted about the issue. Perhaps try the request again?"
       else
+        @title = "Error 500"
         erb :'errors/500'
       end
     end

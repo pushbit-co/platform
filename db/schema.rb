@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121005727) do
+ActiveRecord::Schema.define(version: 20160121205026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,10 +42,17 @@ ActiveRecord::Schema.define(version: 20160121005727) do
     t.string  "image"
     t.text    "description"
     t.boolean "active"
-    t.string  "triggers",    default: [], array: true
-    t.string  "actions",     default: [], array: true
-    t.string  "files",       default: [], array: true
-    t.string  "tags",        default: [], array: true
+    t.string  "triggers",        default: [], array: true
+    t.string  "actions",         default: [], array: true
+    t.string  "files",           default: [], array: true
+    t.string  "tags",            default: [], array: true
+    t.string  "repository_type"
+    t.string  "repository_url"
+    t.string  "author_name"
+    t.string  "author_email"
+    t.string  "icon_url"
+    t.string  "checkout"
+    t.string  "keywords",        default: [], array: true
   end
 
   add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", unique: true, using: :btree

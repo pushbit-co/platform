@@ -1,5 +1,7 @@
 module Pushbit
   class Task < ActiveRecord::Base
+    include ActiveModel::MassAssignmentSecurity
+
     default_scope -> { order('tasks.id DESC') }
     sequential scope: :repo_id
 
@@ -8,7 +10,6 @@ module Pushbit
     belongs_to :behavior
     before_update :set_duration
 
-    has_many :docker_events
     has_many :actions
     has_many :discoveries
 

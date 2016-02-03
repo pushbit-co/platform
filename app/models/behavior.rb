@@ -1,11 +1,12 @@
 module Pushbit
   class Behavior < ActiveRecord::Base
+    include ActiveModel::MassAssignmentSecurity
 
     default_scope -> { order('active DESC') }
 
-    scope :any_tags, -> (tags){where('tags && ARRAY[?]::varchar[]', tags)}
-    scope :all_tags, -> (tags){where('tags @> ARRAY[?]::varchar[]', tags)}
-    scope :trigger, -> (trigger){where('triggers @> ARRAY[?]::varchar[]', trigger)}
+    scope :any_tags, -> (tags) { where('tags && ARRAY[?]::varchar[]', tags) }
+    scope :all_tags, -> (tags) { where('tags @> ARRAY[?]::varchar[]', tags) }
+    scope :trigger, -> (trigger) { where('triggers @> ARRAY[?]::varchar[]', trigger) }
 
     has_many :repos, through: :repo_behaviors
     has_many :tasks
@@ -14,14 +15,14 @@ module Pushbit
     def self.active
       where(active: true)
     end
-    
+
     def self.find_or_create_with(attributes)
       behave = find_by(kind: attributes["kind"]) || Behavior.new
-      attributes = attributes.select do |k,v| 
+      attributes = attributes.select do |k, _v|
         columns = Behavior.columns.map { |c| c.name.to_sym }
         columns.include? k.to_sym
       end
-      behave.update_attributes attributes, without_protection: true
+      behave.update_attributes(attributes, without_protection: true)
       behave
     end
 
@@ -37,11 +38,11 @@ module Pushbit
 
       run
     end
-    
+
     def negative?
       tone == 'negative'
     end
-    
+
     def positive?
       tone == 'positive'
     end
