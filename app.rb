@@ -58,7 +58,7 @@ module Pushbit
       
       # trigger the app to sync with behaviors stored on github when 
       # the application starts up
-      BehaviorSyncronizationWorker.perform_async
+      # BehaviorSyncronizationWorker.perform_async
     end
 
     Warden::Strategies.add(:basic) do

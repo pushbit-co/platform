@@ -13,9 +13,13 @@ module Pushbit
       @user ||= User.find_by(github_id: triggered_by)
     end
 
+    def src_volume
+      "trigger_volume_#{id}"
+    end
+
     def execute!(params = nil)
       # Finds the correct worker class based on the trigger name
-      # worker = kind.match('task_completed') ? 'task_completed' : kind
+      worker = kind.match('task_completed') ? 'task_completed' : kind
       klass = Pushbit.const_get("#{worker.split('_').collect(&:capitalize).join}EventWorker")
       klass.perform_async(id)
     rescue NameError => e

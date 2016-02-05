@@ -10,7 +10,6 @@ module Pushbit
     belongs_to :behavior
     before_update :set_duration
 
-    has_many :docker_events
     has_many :actions
     has_many :discoveries
 
@@ -62,8 +61,14 @@ module Pushbit
 
     def execute!(changed_files = [], head_sha = nil)
       changed_files = changed_files.map { |f| f['filename'] }
-      DockerContainerWorker.perform_async(id, src_volume, changed_files, head_sha)
+      DockerContainerWorker.perform_async(id, changed_files, head_sha)
     end
+
+    def src_volume
+      return nil unless trigger
+      trigger.src_volume
+    end
+
 
     def image
       @image ||= load_image

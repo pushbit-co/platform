@@ -10,18 +10,28 @@ module Pushbit
 
       logger.info "Using image: #{image.id})"
 
-      container = Docker::Container.create("Image" => image.id,
-                                           "Env" => [
-                                             "GITHUB_USER=#{repo.github_owner}",
-                                             "GITHUB_REPO=#{repo.name}",
-                                             "GITHUB_TOKEN=#{ENV.fetch('GITHUB_TOKEN')}",
-                                             "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
-                                             "BASE_BRANCH=#{head_sha || repo.default_branch || 'master'}",
-                                             "CHANGED_FILES=#{changed_files.join(' ')}",
-                                             "TASK_ID=#{id}",
-                                             "ACCESS_TOKEN=#{task.access_token}",
-                                             "APP_URL=#{ENV.fetch('APP_URL')}"
-                                           ])
+      container = Docker::Container.create({
+        "Image" => image.id,
+        "Env" => [
+          "GITHUB_USER=#{repo.github_owner}",
+          "GITHUB_REPO=#{repo.name}",
+          "GITHUB_TOKEN=#{ENV.fetch('GITHUB_TOKEN')}",
+          "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
+          "BASE_BRANCH=#{head_sha || repo.default_branch || 'master'}",
+          "CHANGED_FILES=#{changed_files.join(' ')}",
+          "TASK_ID=#{id}",
+          "ACCESS_TOKEN=#{task.access_token}",
+          "APP_URL=#{ENV.fetch('APP_URL')}"
+        ],
+        "Volumes" => {
+          "/pushbit/code" => {}
+        }, 
+        "HostConfig" => {
+          "Binds" => [
+            "#{trigger.src_volume}:/pushbit/code:ro"
+          ]
+        }
+      })
 
       # TODO: what happens to container if this fails
       task.update!(
