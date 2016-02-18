@@ -8,7 +8,7 @@ postgres:
 redis:
   image: redis
   volumes:
-    - /var/lib/docker/speak_data/redis:/data
+    - /var/lib/docker/pushbit_data/redis:/data
   ports:
     - "6379:6379"
 
@@ -19,7 +19,7 @@ box:
 
 platform:
   build: ./
-  command: ./script/app.sh 
+  command: ./script/app.sh
   volumes:
     - ./:/app
     - ./docker_cert_path:/docker_cert_path
