@@ -19,8 +19,8 @@ module Pushbit
         "Volumes" => {
           "/pushbit/code" => {}
         }, 
-        "Entrypoint": "/bin/bash",
-        "Cmd": "./clone.sh",
+        "Entrypoint" => "/bin/bash",
+        "Cmd" => "./clone.sh",
         "HostConfig" => {
           "Binds" => [
             "#{volume_name(trigger)}:/pushbit/code"
