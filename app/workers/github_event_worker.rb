@@ -6,7 +6,7 @@ module Pushbit
       trigger = Trigger.find(trigger_id)
       repo = trigger.repo
       event = trigger.kind
-      payload = Payload.new(data['params'])
+      payload = Payload.new(data)
 
       # first check to see if we have a ruby handler for this event
       if respond_to?(event)

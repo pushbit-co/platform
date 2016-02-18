@@ -25,13 +25,20 @@ docker-compose up
 ```
 
 
-## Test
+## Tests
 
-Tests also run inside the development container, use the following command:
+Tests also run inside the development docker container, use the following command:
 
 ```
-docker-compose run --rm platform bundle exec rspec
+./script/test.sh
 ```
+
+If you get gem errors you'll need to make sure they are installed first, you can do this automatically by running the app first:
+
+```
+docker-compose up
+```
+
 
 ## Contributing
 
