@@ -79,6 +79,13 @@ ActiveRecord::Schema.define(version: 20160121005727) do
     t.string  "actions",     default: [], array: true
     t.string  "files",       default: [], array: true
     t.string  "tags",        default: [], array: true
+    t.string  "repository_type"
+    t.string  "repository_url"
+    t.string  "author_name"
+    t.string  "author_email"
+    t.string  "icon_url"
+    t.string  "checkout"
+    t.string  "keywords",    default: [], array: true
   end
 
   add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", unique: true, using: :btree

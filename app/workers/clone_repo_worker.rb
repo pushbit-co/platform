@@ -4,8 +4,7 @@ module Pushbit
     def work(id, params=nil, image="pushbit/base")
       trigger = Trigger.find(id)
       volume = Docker::Volume.create(volume_name(trigger))
-      logger.info "VOLUME:"
-      logger.info volume.inspect
+
       head_sha = trigger.payload ? Payload.new(trigger.payload).head_sha : nil
       container = Docker::Container.create({
         "Image" => image,
@@ -35,8 +34,6 @@ module Pushbit
         logger.info "Clone for trigger: #{trigger.id}: #{line}"
       end
       exitcode = container.json['State']['ExitCode']
-      logger.info "CLONE EXIT CODE"
-      logger.info exitcode
 
       GithubEventWorker.perform_async(id, params)
     end
