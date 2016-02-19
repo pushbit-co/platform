@@ -2,8 +2,9 @@ module Pushbit
   class App < Sinatra::Base
     post "/repos/:user/:repo/subscribe" do
       authenticate!
-
       repo = repo_from_params
+      authorize! :subscribe, repo
+
       Cashier.subscribe(repo, current_user, params['token']) if repo.private?
       Activator.activate(repo, current_user)
 
@@ -13,8 +14,9 @@ module Pushbit
 
     post "/repos/:user/:repo/unsubscribe" do
       authenticate!
-
       repo = repo_from_params
+      authorize! :unsubscribe, repo
+      
       Cashier.unsubscribe(repo, current_user) if repo.private?
       Activator.deactivate(repo, current_user)
 
@@ -24,8 +26,9 @@ module Pushbit
 
     get "/repos/:user/:repo/trigger" do
       authenticate!
-
       repo = repo_from_params
+      authorize! :trigger, repo
+      
       trigger = Trigger.create!(
         kind: "manual",
         repo: repo,
@@ -45,9 +48,10 @@ module Pushbit
     end
 
     get "/repos/:user/:repo" do
-      authenticate!
+      repo = repo_from_params
+      authorize! :read, repo
 
-      @repo = repo_from_params
+      @repo = repo
       @tasks = @repo.tasks.paginate(page: params['page'])
       @actions = Action.paginate(page: params['page']).where(repo_id: @repo.id).includes(:task, :user)
       @title = @repo.github_full_name
@@ -57,8 +61,10 @@ module Pushbit
 
     get "/repos/:user/:repo/settings" do
       authenticate!
-
-      @repo = repo_from_params
+      repo = repo_from_params
+      authorize! :update, repo
+      
+      @repo = repo
       @behaviors = Behavior.all
       @title = "Settings - #{@repo.github_full_name}"
 
@@ -67,8 +73,10 @@ module Pushbit
 
     get "/repos/:user/:repo/:task_sequential_id" do
       authenticate!
-
-      @repo = repo_from_params
+      repo = repo_from_params
+      authorize! :read, repo
+  
+      @repo = repo
       @task = Task.find_by!(repo: @repo, sequential_id: params['task_sequential_id'])
       @actions = @task.actions.map { |a| ActionPresenter.new(a) }
       @title = "Task #{@task.sequential_id} - #{@repo.github_full_name}"
@@ -76,17 +84,11 @@ module Pushbit
       erb :'repos/task'
     end
 
-    delete "/repos/:id" do
-      authenticate!
-
-      Repo.find(params["id"]).destroy
-      200
-    end
-
     put "/repos/:user/:repo" do
       authenticate!
-
       repo = repo_from_params
+      authorize! :update, repo
+
       repo.behaviors = Behavior.where(id: params['behavior_ids']) if params['behavior_ids']
       repo.tags = params['tags'] if params['tags']
       repo.save!
@@ -102,10 +104,10 @@ module Pushbit
     private
 
     def repo_from_params
-      if current_user
-        current_user.repos.find_by!(github_full_name: "#{params['user']}/#{params['repo']}")
-      else
+      if params["task_id"]
         Task.find(params["task_id"]).repo
+      else
+        Repo.find_by!(github_full_name: "#{params['user']}/#{params['repo']}")
       end
     end
   end

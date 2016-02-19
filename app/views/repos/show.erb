@@ -1,9 +1,11 @@
 <h1><%= @repo.github_full_name %></h1>
 
 <ul class="subtext">
+  <% if(current_user) %>
   <li><a href="<%= "/repos/#{@repo.github_full_name}/settings" %>"> Settings</a></li>
+  <% end %>
   <li><a href="<%= "https://github.com/#{@repo.github_full_name}" %>" target="_blank">Source</a></li>
-  <% if ['awsmsrc', 'tommoor'].include? current_user.login %>
+  <% if(current_user && ['awsmsrc', 'tommoor'].include?(current_user.login)) %>
   <li><a href="<%= "/repos/#{@repo.github_full_name}/trigger" %>">Trigger  Build</a></li>
   <% end %>
 </ul>
@@ -11,8 +13,12 @@
 <div class="row">
   <nav id="sidebar" class="col-md-3">
     <ol class="repos active">
-      <% current_user.repos.active.each do |repo| %>
-        <%= partial :repo, locals: {repo: repo, active: repo.id == @repo.id} %>
+      <% if current_user %>
+        <% current_user.repos.active.each do |repo| %>
+          <%= partial :repo, locals: {repo: repo, active: repo.id == @repo.id} %>
+        <% end %>
+      <% else %>
+        <%= partial :repo, locals: {repo: @repo, active: true} %>
       <% end %>
     </ol>
   </nav>

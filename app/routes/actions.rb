@@ -2,14 +2,17 @@ module Pushbit
   class App < Sinatra::Base
     get "/actions" do
       authenticate!
+      
       @actions = Action.paginate(page: params['page']).for_user(current_user).includes(:task, :user)
       @repo_ids = current_user.repos.pluck(:id)
       erb :'actions/index', layout: !request.xhr?
     end
 
     get "/repos/:id/actions" do
-      authenticate!
-      @repo = current_user.repos.find(params['id'])
+      repo = Repo.find(params['id'])
+      authorize! :read, repo
+      
+      @repo = repo
       @actions = Action.paginate(page: params['page']).where(repo: @repo).includes(:task, :user)
       @repo_ids = @repo.id
       
