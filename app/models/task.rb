@@ -64,6 +64,12 @@ module Pushbit
       DockerContainerWorker.perform_async(id, changed_files, head_sha)
     end
 
+    def src_volume
+      return nil unless trigger
+      trigger.src_volume
+    end
+
+
     def image
       @image ||= load_image
     end

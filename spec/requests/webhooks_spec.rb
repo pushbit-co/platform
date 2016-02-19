@@ -14,7 +14,7 @@ describe "github" do
         header "X-Github-Event", "ping"
         post_with_gh_signature '/webhooks/github', { zen: true }.to_json
         expect(last_response.status).to eql(204)
-        expect(Pushbit::GithubEventWorker.jobs.length).to eql(0)
+        expect(Pushbit::CloneRepoWorker.jobs.length).to eql(0)
       end
     end
 
@@ -26,7 +26,7 @@ describe "github" do
         header "X-Github-Event", "pull_request"
         post_with_gh_signature '/webhooks/github', event
         expect(last_response.status).to eql(200)
-        expect(Pushbit::GithubEventWorker.jobs.length).to eql(1)
+        expect(Pushbit::CloneRepoWorker.jobs.length).to eql(1)
       end
     end
 
@@ -39,7 +39,7 @@ describe "github" do
         header "X-Github-Event", "pull_request"
         post_with_gh_signature '/webhooks/github', event.to_json
         expect(last_response.status).to eql(204)
-        expect(Pushbit::GithubEventWorker.jobs.length).to eql(0)
+        expect(Pushbit::CloneRepoWorker.jobs.length).to eql(0)
       end
     end
   end

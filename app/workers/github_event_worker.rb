@@ -22,6 +22,7 @@ module Pushbit
           changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
         end
 
+        tasks = []
         behaviors.each do |behavior|
           if (repo.tags & behavior.tags).length > 0 || behavior.tags.length == 0
             if behavior.matches_files?(changed_files) || !changed_files
@@ -41,6 +42,9 @@ module Pushbit
           else
             logger.info "#{behavior.tags.join(',')} did not match repo tags (#{repo.tags.join(',')})"
           end
+        end
+        if tasks.length > 0
+          CloneRepoWorker.perform_async(trigger.id)
         end
       end
     end
