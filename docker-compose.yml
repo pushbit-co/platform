@@ -19,7 +19,7 @@ box:
 
 platform:
   build: ./
-  command: ./script/app.sh 
+  command: ./script/app.sh
   volumes:
     - ./:/app
     - ./docker_cert_path:/docker_cert_path
