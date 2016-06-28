@@ -38,6 +38,7 @@ require_relative "app/presenters/action_presenter"
 require_relative "app/models"
 require_relative "app/routes"
 require_relative "app/workers"
+require_relative "app/policies"
 
 Stripe.api_key = ENV.fetch('STRIPE_SECRET_KEY')
 WillPaginate.per_page = 20

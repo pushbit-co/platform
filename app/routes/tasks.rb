@@ -9,8 +9,10 @@ module Pushbit
     end
 
     get "/repos/:id/tasks" do
-      authenticate!
-      @repo = current_user.repos.find(params['id'])
+      repo = Repo.find(params['id'])
+      authorize! :read, repo
+
+      @repo = repo
       @tasks = Task.paginate(page: params['page']).where(repo: @repo).includes(:repo)
       @title = "Tasks - #{@repo.github_full_name}"
 

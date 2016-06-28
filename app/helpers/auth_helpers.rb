@@ -26,6 +26,18 @@ module Pushbit
         end
       end
     end
+    
+    def authorize!(action, record, user=current_user)
+      record_class = (record.class.name == "Class" ? record.to_s : record.class.name) + "Policy"
+      class_path = "../policies/#{record_class.underscore.gsub("pushbit/","")}"
+      
+      require_relative class_path
+      policy_class = Object.const_get(record_class)
+      
+      unless policy_class.new(user || current_user, record).send(:"#{action}?")
+        raise Pushbit::AuthorizationError.new("Unauthorized Error")
+      end
+    end
 
     private
 

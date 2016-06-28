@@ -31,6 +31,14 @@ module Pushbit
       repo.save!
       repo
     end
+    
+    def public?
+      !private?
+    end
+    
+    def inactive?
+      !active?
+    end
 
     def name
       github_full_name.split('/').last if github_full_name
