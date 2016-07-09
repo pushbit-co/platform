@@ -31,13 +31,13 @@ Pony.options = {
   }
 }
 
-Docker.authenticate!({
-                       'username' => ENV.fetch("DOCKER_USERNAME"),
-                       'password' => ENV.fetch("DOCKER_PASSWORD"),
-                       'email' => ENV.fetch("DOCKER_EMAIL")
-                     })
-
-Docker.options[:read_timeout] = 3600
+#Docker.authenticate!({
+#                       'username' => ENV.fetch("DOCKER_USERNAME"),
+#                       'password' => ENV.fetch("DOCKER_PASSWORD"),
+#                       'email' => ENV.fetch("DOCKER_EMAIL")
+#                     })
+#
+#Docker.options[:read_timeout] = 3600
 
 unless %w(test ci).include? ENV["RACK_ENV"]
   $redis = Redis.new(url: ENV.fetch('REDIS_URL'))

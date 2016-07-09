@@ -56,8 +56,8 @@ module Pushbit
       set :views, 'app/views'
 
       register Sinatra::AssetPack
-      
-      # trigger the app to sync with behaviors stored on github when 
+
+      # trigger the app to sync with behaviors stored on github when
       # the application starts up
       BehaviorSyncronizationWorker.perform_async
     end
@@ -213,7 +213,6 @@ module Pushbit
         @organizations = []
       end
 
-      flash[:notice] = "Note: During the beta Pushbit works best with projects written in Ruby, other languages coming soon!"
       @title = "Add Project"
       erb :subscribe
     end
