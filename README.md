@@ -1,6 +1,6 @@
 # Pushbit Platform
 
-Pushbit is a platform for automated code changes and github bots. Pushbit takes care of hundreds of tedious tasks through pre built behaviors so your team can spend their time on writing great code. Check out more about Pushbit on our [homepage](https://www.pushbit.co).
+Pushbit is a platform for automated workflows built ontop of GitHub. Pushbit takes care of hundreds of tedious tasks through pre built behaviors so your team can spend their time writing great software. Check out more about Pushbit on our [homepage](https://www.pushbit.co).
 
 ## Environment
 
@@ -44,4 +44,4 @@ docker-compose up
 
 * Open a [GitHub Issue](https://github.com/pushbit-co/platform/new) for bugs and feature requests
 * Initiate a [GitHub Pull Request](https://help.github.com/articles/using-pull-requests/) for patches
-* Don't be shocked if Pushbit comments or improves on your PR 😉
+* Don't be shocked if Pushbit comments on your PR 😉
