@@ -10,6 +10,12 @@ module Pushbit
       "#{distance_of_time_in_words(time.to_i, Time.now.to_i, true)} ago"
     end
 
+    def signup_button
+      unless current_user
+        "<a href=\"/auth/login\" class=\"btn btn-primary btn-block\">Sign up</a>"
+      end
+    end
+
     def greeting
       [
         "Hey there",

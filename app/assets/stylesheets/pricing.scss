@@ -1,9 +1,9 @@
-#pricing {
+.pricing {
   h1 {
     font-size: 100px;
     line-height: 1;
     margin-top: 0;
-    
+
     .currency {
       vertical-align: top;
       font-size: 35px;
@@ -11,27 +11,34 @@
       top: 15px;
       left: -5px;
     }
+
+    .period {
+      color: #999;
+      font-size: 16px;
+      position: relative;
+      left: 0;
+    }
   }
-  
+
   h2 {
     color: #999;
     font-size: 20px;
     margin-top: 10px;
     margin-bottom: 30px;
   }
-  
+
   .pricing-box {
-    border: 4px solid #efefef;
+    background: #F1F1F1;
     border-radius: 4px;
     padding: 30px;
     margin: 30px 10px;
     text-align: center;
-    
+
     hr {
       margin: 0 -30px;
       border-top-width: 2px;
     }
-    
+
     ul {
       list-style: none;
       text-align: left;
@@ -40,11 +47,11 @@
       display: inline-block;
       margin-top: 20px;
       margin-bottom: 20px;
-      
+
       li {
         color: #666;
         font-size: 16px;
-        
+
         &:before {
           content: "";
           display: block;
