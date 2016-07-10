@@ -79,6 +79,12 @@ ol.actions {
   }
 }
 
+.vertically-centered {
+  top: 50%;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
 #behaviors {
   ul {
     list-style: none;
