@@ -1,5 +1,11 @@
 module Pushbit
   module ViewHelpers
+
+    def nav_link(path, title)
+      className = request.path_info.include?(path) ? 'active' : ''
+      "<a href=\"#{path}\" class=\"#{className}\">#{title}</a>"
+    end
+
     def readable(time)
       "#{distance_of_time_in_words(time.to_i, Time.now.to_i, true)} ago"
     end

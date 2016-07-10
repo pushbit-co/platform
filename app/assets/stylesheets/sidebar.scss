@@ -1,14 +1,19 @@
 .sidebar {
   text-align: right;
   font-size: 20px;
+  margin-top: -6px;
 
   ul {
-    list-style: none;
     margin: 0;
     padding: 0;
+    list-style: none;
 
     li {
       padding: 6px 0;
+    }
+
+    .active {
+      text-decoration: underline;
     }
   }
 }
