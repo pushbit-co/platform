@@ -9,7 +9,7 @@ require "rack-flash"
 require "secure_headers"
 require "sinatra/base"
 require "sinatra/json"
-require "sinatra/assetpack"
+require "sinatra/asset_pipeline"
 require "sentry-raven"
 require "bcrypt"
 require "warden"
@@ -55,7 +55,11 @@ module Pushbit
       set :method_override, true
       set :views, 'app/views'
 
-      register Sinatra::AssetPack
+      # settings for asset pipeline
+      set :assets_precompile, %w(app.js app.scss *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2)
+      set :assets_css_compressor, :sass
+      set :assets_js_compressor, :uglifier
+      set :assets_prefix, %w(assets app/assets)
 
       # trigger the app to sync with behaviors stored on github when
       # the application starts up
@@ -91,6 +95,7 @@ module Pushbit
     helpers AuthHelpers
     helpers ViewHelpers
     helpers DateHelpers
+    register Sinatra::AssetPipeline
 
     use Rack::Session::Cookie, key: 'session',
                                secret: ENV.fetch("SESSION_SECRET"),
@@ -140,21 +145,6 @@ module Pushbit
       }
       config.serialize_from_session { |key| Warden::GitHub::Verifier.load(key) }
       config.serialize_into_session { |user| Warden::GitHub::Verifier.dump(user) }
-    end
-
-    assets do
-      serve '/js',     from: 'app/assets/js'
-      serve '/css',    from: 'app/assets/css'
-      serve '/images', from: 'app/assets/images'
-
-      # Add all the paths that Less should look in for @import'ed files
-      Less.paths << File.join(App.root, 'app/assets/css')
-
-      css :app, 'css/app.css', ['/css/app.css']
-      css_compression :less
-
-      js :app, 'js/app.js', ['/js/libs/jstz.min.js', '/js/app.js']
-      js_compression :jsmin
     end
 
     before do
