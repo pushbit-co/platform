@@ -1,15 +1,17 @@
-<h1>Add Project</h1>
+<h1>Connect Repo</h1>
 
 <div class="row">
-  <p class="col-md-9">Lets setup a new project. Pushbit helps your team work faster by automating the tedious but important tasks so you can concentrate on the things that really matter.</p>
+  <div class="<%= current_user.has_access_to_private_repos? ? 'col-md-12' : 'col-md-9' %>">
+    <p class="subtitle">Pushbit helps your team work faster by automating tedious tasks so you can concentrate on the things that really matter.</p>
+  </div>
+  <% unless current_user.has_access_to_private_repos? %>
   <div class="col-md-3">
-    <% unless current_user.has_access_to_private_repos? %>
     <a href="/auth/login/private" class="btn btn-default btn-lg">
       <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
       Show Private Repos
     </a>
-    <% end %>
   </div>
+  <% end %>
 </div>
 
 <section id="subscribe">

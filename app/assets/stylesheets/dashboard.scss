@@ -1,23 +1,22 @@
-#dashboard {
-  .nav-tabs {
+.dashboard {
+  ol {
+    list-style: none;
     margin: 0;
-    margin-top: -40px;
-    border-bottom-color: #F1F1F1;
-    
-    li {
-      a:hover {
-        border-bottom-color: transparent;
-      }
+    padding: 0;
+  }
+
+  .repo {
+    padding: 6px 0;
+    border-bottom: 1px solid #F1F1F1;
+
+    .name {
+      font-size: 20px;
+      line-height: 1;
     }
 
-    li.active {
-      a {
-        padding: 8px 15px;
-        border-width: 3px;
-        border-color: #F1F1F1;
-        border-bottom-color: transparent;
-        margin-right: 0;
-      }
+    time {
+      font-size: 14px;
+      color: #999;
     }
   }
 }

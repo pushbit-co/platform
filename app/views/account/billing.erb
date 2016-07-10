@@ -1,60 +1,59 @@
-<h1>Account</h1>
+<h1>Billing</h1>
+<p class="subtitle">
+  Manage your subscription and payment method.
+</p>
 
-<div id="account">
-  <ul class="subtext">
-    <li></li>
-  </ul>
-  
-  <div class="row">
-    <%= partial :'account/sidebar' %>
-    <div class="col-md-9">
-      <section>
-        <h2>Summary</h2>
-        <% if current_user.has_customer? %>
-        <p>Stripe customer id: <%= current_user.customer.id %></p>
-        <p>Stripe subscription id: <%= current_user.customer.subscriptions.first.id %></p>
-        <p>Repos paid for on Stripe: <%= current_user.customer.subscriptions.first.quantity %></p>
-        <p>Private repos active: <%= current_user.repos.active.private.count %></p>
-        <p>Subscription models: <%= current_user.subscriptions.count %></p>
-        <p>Monthly cost: $<%= current_user.subscriptions.count * 15 %></p>
-        <% else %>
-        <p>No private repos yet.</p>
+<div class="row">
+  <nav class="col-md-2 col-md-push-10 sidebar">
+    <%= partial :'account/menu' %>
+  </nav>
+  <div class="col-md-9 col-md-pull-2">
+    <section>
+      <h2>Summary</h2>
+      <% if current_user.has_customer? %>
+      <p>Stripe customer id: <%= current_user.customer.id %></p>
+      <p>Stripe subscription id: <%= current_user.customer.subscriptions.first.id %></p>
+      <p>Repos paid for on Stripe: <%= current_user.customer.subscriptions.first.quantity %></p>
+      <p>Private repos active: <%= current_user.repos.active.private.count %></p>
+      <p>Subscription models: <%= current_user.subscriptions.count %></p>
+      <p>Monthly cost: $<%= current_user.subscriptions.count * 15 %></p>
+      <% else %>
+      <p>No private repos yet.</p>
+      <% end %>
+    </section>
+    <section>
+      <h2>Payment Method</h2>
+      <% if current_user.has_customer? %>
+
+      <% card = current_user.customer.sources.all(:object => "card").first %>
+      <p>Card Identifier: <%= card.brand %> <%= card.last4 %></p>
+      <p>Expires <%= card.exp_month %>/<%= card.exp_year %></p>
+
+      <% else %>
+      <p>No payment methods yet.</p>
+      <% end %>
+    </section>
+    <section>
+      <h2>Billing History</h2>
+      <% if current_user.has_customer? %>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <td>Date</td>
+            <td>Item</td>
+            <td>Amount</td>
+          </tr>
+        </thead>
+        <tbody>
+        <% current_user.customer.charges.each do |charge| %>
+          <%= partial :'account/charge', locals: {charge: charge} %>
         <% end %>
-      </section>
-      <section>
-        <h2>Payment Method</h2>
-        <% if current_user.has_customer? %>
-        
-        <% card = current_user.customer.sources.all(:object => "card").first %>
-        <p>Card Identifier: <%= card.brand %> <%= card.last4 %></p>
-        <p>Expires <%= card.exp_month %>/<%= card.exp_year %></p>
-        
-        <% else %>
-        <p>No payment methods yet.</p>
-        <% end %>
-      </section>
-      <section>
-        <h2>Billing History</h2>
-        <% if current_user.has_customer? %>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <td>Date</td>
-              <td>Item</td>
-              <td>Amount</td>
-            </tr>
-          </thead>
-          <tbody>
-          <% current_user.customer.charges.each do |charge| %>
-            <%= partial :'account/charge', locals: {charge: charge} %>
-          <% end %>
-          </tbody>
-        </table>
-        </ol>
-        <% else %>
-        <p>No billing history yet.</p>
-        <% end %>
-      </section>
-    </div>
+        </tbody>
+      </table>
+      </ol>
+      <% else %>
+      <p>No billing history yet.</p>
+      <% end %>
+    </section>
   </div>
 </div>

@@ -62,12 +62,12 @@ ol.actions {
   }
 }
 
-.subtext {
+.subtitle {
   list-style: none;
   margin: 0;
   padding: 0 0 20px 0;
   color: #888;
-  font-size: 18px;
+  font-size: 17px;
 
   li {
     display: inline-block;
@@ -76,6 +76,13 @@ ol.actions {
     a {
       color: #888;
     }
+  }
+}
+
+.titlebar {
+  a {
+    float: right;
+    margin-top: 60px;
   }
 }
 
@@ -126,21 +133,6 @@ ol.actions {
 
   table {
     margin-top: 20px;
-  }
-
-  section {
-    border: 3px solid #F1F1F1;
-    border-radius: 3px;
-    margin-bottom: 30px;
-    padding: 30px;
-
-    > p:last-child {
-      margin-bottom: 0;
-    }
-
-    > h2:first-child {
-      margin-top: 0;
-    }
   }
 
   .logo {

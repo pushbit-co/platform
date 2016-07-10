@@ -1,28 +1,17 @@
-<h1>Dashboard</h1>
-<ul class="subtext">
-  <li><%= @repos.length %> <%= pluralize(@repos.length, "Project") %></li>
-</ul>
-
-<div class="row">
-  <nav id="sidebar" class="col-md-3">
-    <ol class="repos">
-      <% @repos.each do |repo| %>
-        <%= partial :repo, locals: {repo: repo, active: false} %>
-      <% end %>
-    </ol>
-  </nav>
-  <div id="dashboard" class="col-md-9">
-    <ul class="nav nav-tabs navbar-right" role="tablist">
-      <li role="presentation" class="active"><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
-      <li role="presentation"><a href="#tasks" aria-controls="tasks" role="tab" data-toggle="tab">Tasks</a></li>
-    </ul>
-    <div class="tab-content">
-      <section role="tabpanel" class="tab-pane active" id="actions">
-        <p class="empty">Loading&hellip;</p>
-      </section>
-      <section role="tabpanel" class="tab-pane" id="tasks">
-        <p class="empty">Loading&hellip;</p>
-      </section>
-    </div>
+<div class="titlebar row">
+  <div class="col-md-10">
+    <h1>Dashboard</h1>
+    <p class="subtitle">Behaviors run automatically as you work, keep an eye on them here.</p>
   </div>
+  <div class="col-md-2">
+    <a href="/subscribe" class="btn btn-primary">Connect Repo</a>
+  </div>
+</div>
+
+<div class="dashboard">
+  <ol class="repos">
+    <% @repos.each do |repo| %>
+      <%= partial :repo, locals: {repo: repo, active: false} %>
+    <% end %>
+  </ol>
 </div>

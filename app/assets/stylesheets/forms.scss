@@ -1,16 +1,25 @@
 .btn-primary {
-  background-color: #5f1d8e;
-  border-color: #5f1d8e;
-  
+  background-color: #00A5FF;
+  border-color: #00A5FF;
+  box-shadow: 0 2px 0 rgba(0,0,0,.1);
+  position: relative;
+
   &:hover,
   &:active,
+  &:active:focus,
+  &:active:hover,
   &:focus {
-    background-color: lighten(#5f1d8e, 10%);
-    border-color: lighten(#5f1d8e, 10%);
+    background-color: lighten(#00A5FF, 10%);
+    border-color: lighten(#00A5FF, 10%);
   }
-  
+
+  &:active {
+    box-shadow: none;
+    top: 2px;
+  }
+
   &:disabled {
-    background-color: lighten(#5f1d8e, 20%);
-    border-color: lighten(#5f1d8e, 20%);
+    background-color: lighten(#00A5FF, 20%);
+    border-color: lighten(#00A5FF, 20%);
   }
 }

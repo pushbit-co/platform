@@ -2,7 +2,7 @@
   <%= @repo.github_owner %>/<a href="/repos/<%= @repo.github_full_name %>"><%= @repo.name %></a>
 </h1>
 
-<ul class="subtext">
+<ul class="subtitle">
   <li><a href="<%= "/repos/#{@repo.github_full_name}" %>">Actions</a></li>
   <li><a href="<%= "https://github.com/#{@repo.github_full_name}" %>" target="_blank">Source</a></li>
   <% if ['awsmsrc', 'tommoor'].include? current_user.login %>

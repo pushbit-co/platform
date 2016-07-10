@@ -1,6 +1,6 @@
 <h1><%= @repo.github_full_name %></h1>
 
-<ul class="subtext">
+<ul class="subtitle">
   <% if(current_user) %>
   <li><a href="<%= "/repos/#{@repo.github_full_name}/settings" %>"> Settings</a></li>
   <% end %>
