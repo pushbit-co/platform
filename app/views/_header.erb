@@ -1,30 +1,34 @@
 <nav class="navbar">
   <div class="container">
-    <a class="brand navbar-left" href="/">
-      <img src="<%= image_path 'logo.png' %>" alt="Pushbit" height="36" />
-    </a>
-    <ul class="nav nav-pills navbar-right">
-      <% if current_user %>
-      <li class="nav-item">
-        <a class="nav-link" href="/">Dashboard</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/account/billing">
-          Account
-          <img class="avatar circular" src="<%= current_user.avatar_url %>" />
-        </a>
-      </li>
-      <% else %>
-      <li class="nav-item">
-        <a class="nav-link" href="/pricing">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/auth/login">Log In</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/auth/login">Sign Up</a>
-      </li>
-      <% end %>
-    </ul>
+    <div class="row">
+      <a class="brand navbar-left col-md-3 col-xs-5" href="/">
+        <img src="<%= image_path 'logo.png' %>" alt="Pushbit" height="36" />
+      </a>
+      <div class="col-md-9 col-xs-7">
+        <ul class="nav nav-pills navbar-right">
+          <% if current_user %>
+          <li class="nav-item">
+            <a class="nav-link hidden-xs" href="/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account/billing">
+              Account
+              <img class="avatar circular" src="<%= current_user.avatar_url %>" />
+            </a>
+          </li>
+          <% else %>
+          <li class="nav-item">
+            <a class="nav-link" href="/pricing">Pricing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/login">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/login">Sign Up</a>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
   </div>
 </nav>

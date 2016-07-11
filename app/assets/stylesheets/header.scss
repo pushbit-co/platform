@@ -12,7 +12,7 @@ header {
       font-family: 'Asap', sans-serif;
       font-weight: bold;
       font-style: italic;
-      color: #5f1d8e;
+      color: #5F1D8E;
       margin-right: 40px;
     }
   }
@@ -36,9 +36,20 @@ header {
       color: #666;
       background: none;
     }
+
+    li:first-child a {
+      margin-left: 0;
+    }
   }
 
   .navbar-right {
     margin-right: 0;
+    float: right;
+  }
+}
+
+@media only screen and (max-width : 480px) {
+  header {
+    padding-top: 20px;
   }
 }

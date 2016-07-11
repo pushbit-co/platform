@@ -1,7 +1,7 @@
 .sidebar {
   text-align: right;
   font-size: 20px;
-  margin-top: -6px;
+  margin-top: 104px;
 
   ul {
     margin: 0;
@@ -14,6 +14,21 @@
 
     .active {
       text-decoration: underline;
+    }
+  }
+}
+
+@media only screen and (max-width : 480px) {
+  .sidebar {
+    text-align: left;
+    border-bottom: 1px solid #F1F1F1;
+    padding-bottom: 20px;
+    margin-top: 0;
+
+    ul {
+      li {
+        padding: 3px 0;
+      }
     }
   }
 }
