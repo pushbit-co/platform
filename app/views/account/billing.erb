@@ -1,13 +1,13 @@
-<h1>Billing</h1>
-<p class="subtitle">
-  Manage your subscription and payment method.
-</p>
-
 <div class="row">
   <nav class="col-md-2 col-md-push-10 sidebar">
     <%= partial :'account/menu' %>
   </nav>
   <div class="col-md-9 col-md-pull-2">
+    <h1>Billing</h1>
+    <p class="subtitle">
+      Manage your subscription and payment method.
+    </p>
+
     <section>
       <h2>Summary</h2>
       <% if current_user.has_customer? %>

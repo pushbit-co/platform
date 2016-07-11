@@ -27,13 +27,13 @@
   </head>
   <body>
     <div class="wrapper">
+      <%= partial :flash %>
       <header>
         <%= partial :header %>
       </header>
 
       <section id="content">
         <div class="container">
-          <%= partial :flash %>
           <%= yield %>
         </div>
       </section>

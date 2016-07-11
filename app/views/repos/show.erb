@@ -1,39 +1,9 @@
-<h1><%= @repo.github_full_name %></h1>
-
-<ul class="subtitle">
-  <% if(current_user) %>
-  <li><a href="<%= "/repos/#{@repo.github_full_name}/settings" %>"> Settings</a></li>
-  <% end %>
-  <li><a href="<%= "https://github.com/#{@repo.github_full_name}" %>" target="_blank">Source</a></li>
-  <% if(current_user && ['awsmsrc', 'tommoor'].include?(current_user.login)) %>
-  <li><a href="<%= "/repos/#{@repo.github_full_name}/trigger" %>">Trigger  Build</a></li>
-  <% end %>
-</ul>
-
-<div class="row">
-  <nav id="sidebar" class="col-md-3">
-    <ol class="repos active">
-      <% if current_user %>
-        <% current_user.repos.active.each do |repo| %>
-          <%= partial :repo, locals: {repo: repo, active: repo.id == @repo.id} %>
-        <% end %>
-      <% else %>
-        <%= partial :repo, locals: {repo: @repo, active: true} %>
-      <% end %>
-    </ol>
-  </nav>
-  <div id="dashboard" class="col-md-9" data-repo-id="<%= @repo.id %>">
-    <ul class="nav nav-tabs navbar-right" role="tablist">
-      <li role="presentation" class="active"><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
-      <li role="presentation"><a href="#tasks" aria-controls="tasks" role="tab" data-toggle="tab">Tasks</a></li>
-    </ul>
-    <div class="tab-content">
-      <section role="tabpanel" class="tab-pane active" id="actions">
-        <p class="empty">Loading&hellip;</p>
-      </section>
-      <section role="tabpanel" class="tab-pane" id="tasks">
-        <p class="empty">Loading&hellip;</p>
-      </section>
-    </div>
+<div class="titlebar row">
+  <div class="col-md-10 col-xs-9">
+    <h1><%= @repo.github_full_name.downcase %></h1>
+    <p class="subtitle">A behavior last triggered <%= readable @repo.tasks.last.created_at %></p>
   </div>
+  <nav class="col-md-2 col-xs-3">
+    <a href="<%= "/repos/#{@repo.github_full_name}/settings" %>" class="btn btn-primary">Settings</a>
+  </nav>
 </div>
