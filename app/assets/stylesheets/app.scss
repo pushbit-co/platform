@@ -10,6 +10,8 @@
 @import "pricing";
 @import "subscribe";
 @import "onboarding";
+@import "behaviors";
+@import "repo";
 
 ol.actions {
   margin: 0;
@@ -93,30 +95,6 @@ ol.actions {
   transform: translateY(-50%);
 }
 
-#behaviors {
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    min-height: 200px;
-
-    h3 {
-      margin-bottom: 0;
-    }
-
-    .languages {
-      color: #666;
-    }
-
-    .coming-soon {
-      color: #888;
-    }
-  }
-}
-
 #content {
   min-height: 300px;
   padding-bottom: 300px;
@@ -143,30 +121,5 @@ ol.actions {
     border-radius: 4px;
     margin-right: 5px;
     background: #efefef;
-  }
-}
-
-#settings,
-#behaviors {
-  margin-top: 20px;
-
-  section {
-    min-height: 220px;
-    font-weight: normal;
-
-    h3 {
-      margin: 0;
-
-      input {
-        float: right;
-        margin-left: 10px;
-        margin-top: 6px;
-      }
-    }
-
-    .tags {
-      color: #666;
-      font-size: 14px;
-    }
   }
 }

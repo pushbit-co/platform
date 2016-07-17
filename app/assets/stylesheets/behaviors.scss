@@ -1,0 +1,43 @@
+.behaviors {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    min-height: 200px;
+
+    h3 {
+      margin-bottom: 0;
+    }
+
+    .languages {
+      color: #666;
+    }
+
+    .coming-soon {
+      color: #888;
+    }
+  }
+}
+
+.behavior {
+  min-height: 220px;
+  font-weight: normal;
+
+  h3 {
+    margin: 0;
+
+    input {
+      float: right;
+      margin-left: 10px;
+      margin-top: 6px;
+    }
+  }
+
+  .tags {
+    color: #666;
+    font-size: 14px;
+  }
+}

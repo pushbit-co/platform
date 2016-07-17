@@ -5,3 +5,5 @@ admin.yml
 up.sh
 docker_cert_path/*
 public/assets
+node_modules
+app/assets/javascripts/bundle.js

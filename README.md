@@ -24,6 +24,13 @@ Secondly you will need to copy .env.example to a file called .env in the project
 docker-compose up
 ```
 
+To work on the javascript make sure to first install all of the dependencies `npm i` and then watch
+for changes to rebuild the JS bundle with:
+
+```
+npm run watch
+```
+
 
 ## Tests
 

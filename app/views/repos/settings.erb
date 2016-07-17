@@ -9,16 +9,16 @@
   <li><a href="<%= "/repos/#{@repo.github_full_name}/trigger" %>">Trigger  Build</a></li>
   <% end %>
 </ul>
-  
+
 <div id="settings">
   <form action="/repos/<%= @repo.github_full_name %>" method="POST">
     <input type="hidden" name="_method" value="PUT">
-  
+
     <div class="row">
     <% behavior_ids = @repo.behaviors.pluck(:id) %>
     <% @behaviors.each do |behavior| %>
       <label class="col-md-4">
-        <section>
+        <section class="behavior">
           <h3><input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %> <%= behavior.active ? "" : "disabled" %> /> <%= behavior.name %></h3>
           <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
           <p><%= behavior.description %></p>

@@ -4,6 +4,30 @@
     <p class="subtitle">A behavior last triggered <%= readable @repo.tasks.last.created_at %></p>
   </div>
   <nav class="col-md-2 col-xs-3">
-    <a href="<%= "/repos/#{@repo.github_full_name}/settings" %>" class="btn btn-primary">Settings</a>
+    <a href="<%= "/repos/#{@repo.github_full_name}/logs" %>" class="btn btn-primary">Logs</a>
   </nav>
+</div>
+
+<div class="settings">
+  <form action="/repos/<%= @repo.github_full_name %>" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+
+    <div class="search">
+      <input type="search" placeholder="search behaviors..." class="form-control" />
+    </div>
+    <div class="row behaviors">
+    <% behavior_ids = @repo.behaviors.pluck(:id) %>
+    <% @behaviors.each do |behavior| %>
+      <label class="col-md-4">
+        <section class="behavior">
+          <h3><input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %> <%= behavior.active ? "" : "disabled" %> /> <%= behavior.name %></h3>
+          <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
+          <p><%= behavior.description %></p>
+        </section>
+      </label>
+    <% end %>
+    </div>
+
+    <input type="submit" value="Save Settings" class="btn btn-primary" />
+  </form>
 </div>

@@ -25,7 +25,7 @@ gem "secure_headers", "3.0.0.pre"
 gem "sequential"
 gem "redcarpet"
 gem "stripe"
-gem 'stripe-ruby-mock', '~> 2.2.1', require: 'stripe_mock'
+gem "stripe-ruby-mock", "~> 2.2.1", require: "stripe_mock"
 gem "will_paginate", "~> 3.0.6"
 gem "pony"
 
