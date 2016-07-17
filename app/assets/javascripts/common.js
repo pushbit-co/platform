@@ -1,31 +1,24 @@
 import jstz from 'jstz';
+import $ from 'jquery';
+import {addCSRFField} from './libs/forms';
 
-export default const common = {
+export default {
   init: () => {
-    document.cookie = 'timezone='+jstz.determine().name()+';';
+    const timezoneName = jstz.determine().name();
+    document.cookie = `timezone=${timezoneName}`;
 
-    $(document).on('submit', 'form', function(){
-      var $form   = $(this);
-      var method = $form.attr('method').toUpperCase();
-      var token  = $('meta[name=csrf-token]').attr('content');
-
-      // add the CSRF token as a hidden input to the form
-      if (method && method !== 'GET') {
-        $form.prepend($('<input>', {name: '_csrf', type: 'hidden', value: token}));
-      }
-    });
+    $(document).on('submit', 'form', addCSRFField);
 
     $.extend($.expr[':'], {
-      'containsi': function(elem, i, match, array){
-        return (elem.textContent || elem.innerText || '').toLowerCase()
-        .indexOf((match[3] || "").toLowerCase()) >= 0;
-      }
+      containsi: (elem, i, match) =>
+        (elem.textContent || elem.innerText || '').toLowerCase()
+        .indexOf((match[3] || '').toLowerCase()) >= 0
     });
 
-    $.fn.serializeObject = function(){
-      var o = {};
-      var a = this.serializeArray();
-      $.each(a, function() {
+    $.fn.serializeObject = () => {
+      const o = {};
+      const a = this.serializeArray();
+      $.each(a, () => {
         if (o[this.name] !== undefined) {
           if (!o[this.name].push) {
             o[this.name] = [o[this.name]];
@@ -38,4 +31,4 @@ export default const common = {
       return o;
     };
   }
-}
+};

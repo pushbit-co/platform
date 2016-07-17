@@ -1,4 +1,4 @@
-import subscribe from './subscribe';
+import subscribe from './routes/subscribe';
 
 export default {
   subscribe
