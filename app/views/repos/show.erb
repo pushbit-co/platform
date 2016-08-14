@@ -1,6 +1,6 @@
 <div class="titlebar row">
   <div class="col-md-10 col-xs-9">
-    <h1><%= @repo.github_full_name.downcase %></h1>
+    <h1><%= @repo.github_full_name %></h1>
     <p class="subtitle">A behavior last triggered <%= readable @repo.tasks.last.created_at %></p>
   </div>
   <nav class="col-md-2 col-xs-3">
@@ -19,11 +19,11 @@
     <% behavior_ids = @repo.behaviors.pluck(:id) %>
     <% @behaviors.each do |behavior| %>
       <label class="col-md-4">
-        <section class="behavior">
+        <a href="/repos/<%= @repo.github_full_name %>/<%= behavior.kind %>" class="behavior">
           <h3><input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %> <%= behavior.active ? "" : "disabled" %> /> <%= behavior.name %></h3>
           <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
           <p><%= behavior.description %></p>
-        </section>
+        </a>
       </label>
     <% end %>
     </div>

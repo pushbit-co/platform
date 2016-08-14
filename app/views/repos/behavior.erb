@@ -1,0 +1,13 @@
+<div class="titlebar row">
+  <div class="col-md-10 col-xs-9">
+    <h1><%= @behavior.name %></h1>
+  </div>
+</div>
+
+<div class="settings">
+  <form action="/repos/<%= @repo.github_full_name %>/behavior" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+
+    <input type="submit" value="Save Settings" class="btn btn-primary" />
+  </form>
+</div>

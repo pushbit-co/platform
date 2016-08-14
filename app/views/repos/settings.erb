@@ -6,7 +6,7 @@
   <li><a href="<%= "/repos/#{@repo.github_full_name}" %>">Actions</a></li>
   <li><a href="<%= "https://github.com/#{@repo.github_full_name}" %>" target="_blank">Source</a></li>
   <% if ['awsmsrc', 'tommoor'].include? current_user.login %>
-  <li><a href="<%= "/repos/#{@repo.github_full_name}/trigger" %>">Trigger  Build</a></li>
+  <li><a href="<%= "/repos/#{@repo.github_full_name}/trigger" %>">Trigger Build</a></li>
   <% end %>
 </ul>
 

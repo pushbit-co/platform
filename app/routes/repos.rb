@@ -58,6 +58,17 @@ module Pushbit
       erb :'repos/show'
     end
 
+    get "/repos/:user/:repo/:behavior" do
+      repo = repo_from_params
+      authorize! :read, repo
+
+      @repo = repo
+      @behavior = repo.behaviors.find_by!(kind: params["behavior"])
+      @title = "#{@behavior.name} - #{@repo.github_full_name}"
+
+      erb :'repos/behavior'
+    end
+
     get "/repos/:user/:repo/logs" do
       authenticate!
       repo = repo_from_params
@@ -69,19 +80,6 @@ module Pushbit
       @title = "Logs - #{@repo.github_full_name}"
 
       erb :'repos/logs'
-    end
-
-    get "/repos/:user/:repo/:task_sequential_id" do
-      authenticate!
-      repo = repo_from_params
-      authorize! :read, repo
-
-      @repo = repo
-      @task = Task.find_by!(repo: @repo, sequential_id: params['task_sequential_id'])
-      @actions = @task.actions.map { |a| ActionPresenter.new(a) }
-      @title = "Task #{@task.sequential_id} - #{@repo.github_full_name}"
-
-      erb :'repos/task'
     end
 
     put "/repos/:user/:repo" do
