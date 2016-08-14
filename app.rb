@@ -56,8 +56,8 @@ module Pushbit
       set :views, 'app/views'
 
       register Sinatra::AssetPack
-      
-      # trigger the app to sync with behaviors stored on github when 
+
+      # trigger the app to sync with behaviors stored on github when
       # the application starts up
       BehaviorSyncronizationWorker.perform_async
     end
@@ -142,9 +142,6 @@ module Pushbit
       config.serialize_from_session { |key| Warden::GitHub::Verifier.load(key) }
       config.serialize_into_session { |user| Warden::GitHub::Verifier.dump(user) }
     end
-
-    puts "IDENTIFIABLE STRING"
-    puts User.all.inspect
 
     assets do
       serve '/js',     from: 'app/assets/js'
