@@ -56,7 +56,7 @@ module Pushbit
       set :views, 'app/views'
 
       # settings for asset pipeline
-      set :assets_precompile, %w(app.js app.scss *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2)
+      set :assets_precompile, %w(bundle.js app.scss *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2)
       set :assets_css_compressor, :sass
       set :assets_js_compressor, :uglifier
       set :assets_prefix, %w(assets app/assets)

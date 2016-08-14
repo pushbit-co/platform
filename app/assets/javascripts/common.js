@@ -7,6 +7,6 @@ export default {
     const timezoneName = jstz.determine().name();
     document.cookie = `timezone=${timezoneName}`;
 
-    $(document).on('submit', 'form', form => addCSRFField(form));
+    $(document).on('submit', 'form', ev => addCSRFField(ev));
   }
 };
