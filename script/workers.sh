@@ -2,7 +2,6 @@
 
 if [ $RACK_ENV = "development" ]
 then
-  sleep 6
   bundle check || bundle install
 fi
 
