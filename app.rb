@@ -93,7 +93,8 @@ module Pushbit
     helpers DateHelpers
 
     use Rack::Session::Cookie, key: 'session',
-                               secret: ENV.fetch("SESSION_SECRET"),
+                               # secret: ENV.fetch("SESSION_SECRET"),
+                               secret: "foo",
                                path: '/',
                                expire_after: 60 * 60 * 24 * 365,
                                httponly: true,
@@ -141,6 +142,9 @@ module Pushbit
       config.serialize_from_session { |key| Warden::GitHub::Verifier.load(key) }
       config.serialize_into_session { |user| Warden::GitHub::Verifier.dump(user) }
     end
+
+    puts "IDENTIFIABLE STRING"
+    puts User.all.inspect
 
     assets do
       serve '/js',     from: 'app/assets/js'

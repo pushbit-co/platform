@@ -3,7 +3,6 @@ default: &default
   database: <%= ENV["DATABASE_NAME"] %>
   username: <%= ENV["DATABASE_USERNAME"] %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
-  host:     <%= ENV["DATABASE_HOST"] %>
   pool: 50
   timeout: 5000
 
@@ -16,7 +15,8 @@ production:
   pool: 50
 
 development:
-  <<: *default
+  url: <%= ENV["DATABASE_URL"]  %>
+  connect_retry_timeout: 1
 
 test:
   <<: *default

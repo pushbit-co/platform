@@ -1,4 +1,4 @@
-FROM ruby:latest
+FROM convox/rails
 ADD ./Gemfile ./Gemfile
 ADD ./Gemfile.lock ./Gemfile.lock
 RUN bundle install
