@@ -60,13 +60,28 @@ module Pushbit
 
     get "/repos/:user/:repo/:behavior" do
       repo = repo_from_params
-      authorize! :read, repo
+      authorize! :update, repo
 
       @repo = repo
       @behavior = repo.behaviors.find_by!(kind: params["behavior"])
       @title = "#{@behavior.name} - #{@repo.github_full_name}"
 
       erb :'repos/behavior'
+    end
+
+    post "/repos/:user/:repo/:behavior" do
+      repo = repo_from_params
+      authorize! :update, repo
+
+      behavior = repo.behaviors.find_by!(kind: params["behavior"])
+
+      behavior.settings.each do |options, key|
+        setting = behavior.setting.find_or_create_by(key: key, behavior: behavior)
+        setting.update(value: params["setting_#{key}"])
+      end
+
+      flash[:notice] = "Updated successfully"
+      redirect "/repos/#{repo.github_full_name}"
     end
 
     get "/repos/:user/:repo/logs" do

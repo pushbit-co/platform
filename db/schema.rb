@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160814001730) do
+ActiveRecord::Schema.define(version: 20160814065913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,13 @@ ActiveRecord::Schema.define(version: 20160814001730) do
 
   add_index "actions", ["repo_id"], name: "index_actions_on_repo_id", using: :btree
   add_index "actions", ["task_id"], name: "index_actions_on_task_id", using: :btree
+
+  create_table "behavior_settings", id: false, force: :cascade do |t|
+    t.integer "behavior_id"
+    t.integer "setting_id"
+  end
+
+  add_index "behavior_settings", ["behavior_id", "setting_id"], name: "index_behavior_settings_on_behavior_id_and_setting_id", unique: true, using: :btree
 
   create_table "behaviors", force: :cascade do |t|
     t.string  "kind"
@@ -158,6 +165,14 @@ ActiveRecord::Schema.define(version: 20160814001730) do
   end
 
   add_index "sequential", ["model", "column", "scope", "scope_value"], name: "index_sequential_on_model_and_column_and_scope_and_scope_value", unique: true, using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "behavior_id"
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id"

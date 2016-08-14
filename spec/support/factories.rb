@@ -63,8 +63,17 @@ FactoryGirl.define do
   end
 
   factory :behavior, class: Pushbit::Behavior do
+    kind { 'bundle-update' }
     tone { 'negative' }
     active { true }
     discovers { 'style issue' }
+    settings do
+      {
+        filter: {
+          label: "Setting label",
+          type: :string
+        }
+      }
+    end
   end
 end

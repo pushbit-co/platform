@@ -5,9 +5,22 @@
 </div>
 
 <div class="settings">
-  <form action="/repos/<%= @repo.github_full_name %>/behavior" method="POST">
+  <form action="/repos/<%= @repo.github_full_name %>/behavior/<%= @behavior.kind %>" method="POST">
     <input type="hidden" name="_method" value="PUT">
 
-    <input type="submit" value="Save Settings" class="btn btn-primary" />
+    <% if @behavior.settings.present? %>
+      <% @behavior.settings.each do |setting, key| %>
+        <div class="row">
+          <label>
+            <%= setting.label %>
+            <input name="setting_<%= key %>" type="text" />
+          </label>
+        </div>
+      <% end %>
+
+      <input type="submit" value="Save" class="btn btn-primary" />
+    <% else %>
+      <p>There are no settings for this behavior.</p>
+    <% end %>
   </form>
 </div>
