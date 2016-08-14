@@ -31,8 +31,14 @@ for changes to rebuild the JS bundle with:
 npm run watch
 ```
 
+### Migrations
 
-## Tests
+We're using Sinatra and ActiveRecord, to create a new migration simply run a command like the following and change the NAME parameter at the end:
+
+`docker-compose run --rm platform bundle exec rake db:create_migration NAME=add_column_to_table`
+
+
+### Tests
 
 Tests also run inside the development docker container, use the following command:
 

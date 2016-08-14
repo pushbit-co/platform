@@ -1,4 +1,3 @@
-/* global $ */
 import Routes from './routes';
 
 const manager = {

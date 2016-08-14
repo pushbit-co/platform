@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121205026) do
+ActiveRecord::Schema.define(version: 20160814001730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20160121205026) do
     t.string  "icon_url"
     t.string  "checkout"
     t.string  "keywords",        default: [], array: true
+    t.json    "settings"
   end
 
   add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", unique: true, using: :btree

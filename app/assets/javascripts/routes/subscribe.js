@@ -1,5 +1,12 @@
 /* global StripeCheckout */
 import $ from 'jquery';
+import {serializeObject} from '../libs/forms';
+
+$.extend($.expr[':'], {
+  containsi: (elem, i, match) =>
+    (elem.textContent || elem.innerText || '').toLowerCase()
+    .indexOf((match[3] || '').toLowerCase()) >= 0
+});
 
 const subscribe = {
   loading: false,
@@ -21,8 +28,8 @@ const subscribe = {
   },
 
   requestPaymentDetails: (ev) => {
-    const $form = $(this);
-    const data = $form.serializeObject();
+    const $form = $(ev.target).parents('form');
+    const data = serializeObject(this);
     const privateRepo = (data.private === 'true');
 
     if (privateRepo && !data.has_customer && !data.token) {
@@ -49,8 +56,8 @@ const subscribe = {
     subscribe.handler.close();
   },
 
-  filterRepos: () => {
-    const term = $(this).val();
+  filterRepos: (ev) => {
+    const term = $(ev.currentTarget).val();
     $('li.repo').hide();
     $(`li.repo:containsi(${term})`).show();
   },

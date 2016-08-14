@@ -6,7 +6,7 @@
           <% if repo.active %>
           <form action="/repos/<%= repo.github_full_name %>/unsubscribe" method="POST">
             <input type="hidden" name="id" value="<%= repo.id %>" />
-            <button type="submit" class="btn btn-default">Unsubscribe</button>
+            <button type="submit" class="btn btn-default">Disconnect</button>
           </form>
           <% else %>
           <form action="/repos/<%= repo.github_full_name %>/subscribe" class="subscribe" method="POST">
@@ -15,7 +15,7 @@
             <input type="hidden" name="has_customer" value="<%= current_user.has_customer? ? "true" : "" %>" />
             <input type="hidden" name="name" value="<%= repo.github_full_name %>" />
             <input type="hidden" name="private" value="<%= repo.private %>" />
-            <button type="submit" class="btn btn-primary"><%= repo.private ? "<span class=\"cost\">$15/mo</span>" : "" %> Subscribe</button>
+            <button type="submit" class="btn btn-primary">Connect</button>
           </form>
           <% end %>
 
