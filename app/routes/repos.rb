@@ -63,7 +63,7 @@ module Pushbit
       authorize! :update, repo
 
       @repo = repo
-      @behavior = repo.behaviors.find_by!(kind: params["behavior"])
+      @behavior = Behavior.find_by!(kind: params["behavior"])
       @title = "#{@behavior.name} - #{@repo.github_full_name}"
 
       erb :'repos/behavior'
@@ -73,11 +73,12 @@ module Pushbit
       repo = repo_from_params
       authorize! :update, repo
 
-      behavior = repo.behaviors.find_by!(kind: params["behavior"])
+      behavior = Behavior.find_by!(kind: params["behavior"])
+      repo_behavior = repo.repo_behaviors.find_by!(behavior: behavior)
 
-      behavior.settings.each do |options, key|
-        setting = behavior.setting.find_or_create_by(key: key, behavior: behavior)
-        setting.update(value: params["setting_#{key}"])
+      behavior.settings.each do |(key, value)|
+        setting = Setting.find_or_create_by(key: key, repo_behavior: repo_behavior)
+        setting.update_attribute(:value, params["setting_#{key}"])
       end
 
       flash[:notice] = "Updated successfully"

@@ -8,8 +8,8 @@ module Pushbit
     has_many :users, through: :memberships
     has_many :repo_behaviors, dependent: :destroy
     has_many :behaviors, through: :repo_behaviors
-    belongs_to :owner
     has_one :subscription
+    belongs_to :owner
 
     def self.active
       where(active: true)
@@ -31,11 +31,11 @@ module Pushbit
       repo.save!
       repo
     end
-    
+
     def public?
       !private?
     end
-    
+
     def inactive?
       !active?
     end

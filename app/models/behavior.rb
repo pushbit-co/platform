@@ -11,7 +11,6 @@ module Pushbit
     has_many :repos, through: :repo_behaviors
     has_many :tasks
     has_many :discoveries, through: :tasks
-    has_many :settings
 
     def self.active
       where(active: true)

@@ -5,14 +5,12 @@
 </div>
 
 <div class="settings">
-  <form action="/repos/<%= @repo.github_full_name %>/behavior/<%= @behavior.kind %>" method="POST">
-    <input type="hidden" name="_method" value="PUT">
-
+  <form action="/repos/<%= @repo.github_full_name %>/<%= @behavior.kind %>" method="POST">
     <% if @behavior.settings.present? %>
-      <% @behavior.settings.each do |setting, key| %>
+      <% @behavior.settings.each do |key, setting| %>
         <div class="row">
           <label>
-            <%= setting.label %>
+            <%= setting["label"] %>
             <input name="setting_<%= key %>" type="text" />
           </label>
         </div>

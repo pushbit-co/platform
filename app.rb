@@ -103,6 +103,7 @@ module Pushbit
                                expire_after: 60 * 60 * 24 * 365,
                                httponly: true,
                                secure: ENV.fetch("RACK_ENV") != 'development'
+
     use Rack::Deflater
     use Rack::PostBodyContentTypeParser
     use Raven::Rack

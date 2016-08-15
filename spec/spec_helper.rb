@@ -25,6 +25,8 @@ ENV['RACK_ENV'] = 'test'
 
 module RSpecMixin
   include Rack::Test::Methods
+  include Warden::Test::Helpers
+
   def app
     Pushbit::App
   end
