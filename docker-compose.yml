@@ -1,22 +1,27 @@
 database:
   image: convox/postgres
   ports:
-    - "5432"
+    - 5432:5432
   volumes:
     - /var/lib/postgresql/data
 
 redis:
   image: convox/redis
   ports:
-    - "6379"
+    - 6379:6379
 
 platform:
   build: .
   command: ./script/app.sh
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
+  labels:
+      - convox.port.443.protocol=tls
+      - convox.port.443.proxy=true
   ports:
-    - "8080:8080"
+      - 5000:5000
+      - 80:4000
+      - 443:4001
   links:
     - database
     - redis

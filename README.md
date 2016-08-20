@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/pushbit-co/platform.svg?style=svg)](https://circleci.com/gh/pushbit-co/platform)
+
 # Pushbit Platform
 
 Pushbit is a platform for automated workflows built ontop of GitHub. Pushbit takes care of hundreds of tedious tasks through pre built behaviors so your team can spend their time writing great software. Check out more about Pushbit on our [homepage](https://www.pushbit.co).
