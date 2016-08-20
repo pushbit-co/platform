@@ -64,6 +64,8 @@ module Pushbit
 
       @repo = repo
       @behavior = Behavior.find_by!(kind: params["behavior"])
+      repo_behavior = repo.repo_behaviors.find_by!(behavior: @behavior)
+      @settings = repo_behavior.settings
       @title = "#{@behavior.name} - #{@repo.github_full_name}"
 
       erb :'repos/behavior'

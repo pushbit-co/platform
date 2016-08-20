@@ -98,7 +98,7 @@ module Pushbit
     register Sinatra::AssetPipeline
 
     use Rack::Session::Cookie, key: 'session',
-                               secret: ENV.fetch("SESSION_SECRET"),
+                               # secret: ENV.fetch("SESSION_SECRET"),
                                path: '/',
                                expire_after: 60 * 60 * 24 * 365,
                                httponly: true,

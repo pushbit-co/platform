@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20160814065913) do
 
   add_index "owners", ["github_id"], name: "index_owners_on_github_id", unique: true, using: :btree
 
-  create_table "repo_behaviors", force: :cascade do |t|
+  create_table "repo_behaviors", id: false, force: :cascade do |t|
     t.integer "behavior_id"
     t.integer "repo_id"
   end
@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(version: 20160814065913) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end
+
+  add_index "settings", ["repo_behavior_id", "key"], name: "index_settings_on_repo_behavior_id_and_key", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id"

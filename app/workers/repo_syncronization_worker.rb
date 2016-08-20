@@ -2,6 +2,7 @@ module Pushbit
   class RepoSyncronizationWorker < BaseWorker
 
     def work(user_id)
+      puts "YOPP"
       Octokit.auto_paginate = true
 
       # clear any existing memberships as we may have been removed as well as 
@@ -11,6 +12,9 @@ module Pushbit
 
       Repo.transaction do
         user.client.repositories.each do |data|
+          puts "IDENTX"
+          puts data
+
           repo = Repo.find_or_create_with({
             private: data.private,
             default_branch: data.default_branch,

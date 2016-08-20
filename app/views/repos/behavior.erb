@@ -8,12 +8,16 @@
   <form action="/repos/<%= @repo.github_full_name %>/<%= @behavior.kind %>" method="POST">
     <% if @behavior.settings.present? %>
       <% @behavior.settings.each do |key, setting| %>
-        <div class="row">
-          <label>
-            <%= setting["label"] %>
-            <input name="setting_<%= key %>" type="text" />
-          </label>
-        </div>
+        <% @settings.each do |saved_setting| %>
+          <% if saved_setting["key"] === key %>
+            <div class="row">
+              <label>
+                <%= setting["label"] %>
+                <input name="setting_<%= key %>" type="text" value="<%= saved_setting.value%>" />
+              </label>
+            </div>
+          <% end %>
+        <% end %>
       <% end %>
 
       <input type="submit" value="Save" class="btn btn-primary" />
