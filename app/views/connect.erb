@@ -1,8 +1,11 @@
-<h1>Connect</h1>
-
+<h1><%= @onboarding ? "Get Started" : "Connect" %></h1>
 <div class="row">
   <div class="<%= current_user.has_access_to_private_repos? ? 'col-md-12' : 'col-md-9' %>">
-    <p class="subtitle">Pushbit helps your team productivity by automating tasks so you can concentrate on the work that really matters.</p>
+    <% if @onboarding %>
+    <p class="subtitle">Choose a project to get started with Pushbit.</p>
+    <% else %>
+    <p class="subtitle">Choose another project to connect to Pushbit.</p>
+    <% end %>
   </div>
   <% unless current_user.has_access_to_private_repos? %>
   <div class="col-md-3">
@@ -40,6 +43,6 @@
   </div>
 
   <div id="repositories">
-    <p class="empty">Syncing&hellip;</p>
+    <p class="empty">Beep boop&hellip;</p>
   </div>
 </section>

@@ -1,7 +1,7 @@
 import common from './common';
-import subscribe from './routes/subscribe';
+import connect from './routes/connect';
 
 export default {
   common,
-  subscribe
+  connect
 };

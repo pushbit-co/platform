@@ -8,11 +8,11 @@ $.extend($.expr[':'], {
     .indexOf((match[3] || '').toLowerCase()) >= 0
 });
 
-const subscribe = {
+const connect = {
   loading: false,
 
   init: () => {
-    subscribe.handler = StripeCheckout.configure({
+    connect.handler = StripeCheckout.configure({
       key: window.STRIPE_PUBLISHABLE_KEY,
       image: 'https://s3.amazonaws.com/stripe-uploads/acct_17FbXPKOnaks6VJBmerchant-icon-1450654427617-bot.png',
       locale: 'auto',
@@ -20,11 +20,11 @@ const subscribe = {
       allowRememberMe: false
     });
 
-    $(document).on('submit', '.subscribe', subscribe.requestPaymentDetails);
-    $(document).on('input', '#search', subscribe.filterRepos);
-    $(window).on('popstate', subscribe.closePaymentDetails);
-    setInterval(subscribe.loadRepos, 2000);
-    setImmediate(subscribe.loadRepos);
+    $(document).on('submit', '.subscribe', connect.requestPaymentDetails);
+    $(document).on('input', '#search', connect.filterRepos);
+    $(window).on('popstate', connect.closePaymentDetails);
+    setInterval(connect.loadRepos, 2000);
+    setImmediate(connect.loadRepos);
   },
 
   requestPaymentDetails: (ev) => {
@@ -33,7 +33,7 @@ const subscribe = {
     const privateRepo = (data.private === 'true');
 
     if (privateRepo && !data.has_customer && !data.token) {
-      subscribe.handler.open({
+      connect.handler.open({
         name: 'Pushbit',
         description: data.name,
         panelLabel: 'Subscribe',
@@ -53,7 +53,7 @@ const subscribe = {
   },
 
   closePaymentDetails: () => {
-    subscribe.handler.close();
+    connect.handler.close();
   },
 
   filterRepos: (ev) => {
@@ -66,11 +66,11 @@ const subscribe = {
     const $holder = $('#repositories');
     const hasRepos = !$holder.find('ul').length;
 
-    if (!subscribe.loading && $holder.length && hasRepos) {
-      subscribe.loading = true;
+    if (!connect.loading && $holder.length && hasRepos) {
+      connect.loading = true;
 
       $holder.load('/repos', () => {
-        subscribe.loading = false;
+        connect.loading = false;
 
         if ($holder.find('ul').length) {
           $('.search').show();
@@ -80,4 +80,4 @@ const subscribe = {
   }
 };
 
-export default subscribe;
+export default connect;

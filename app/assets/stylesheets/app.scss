@@ -1,17 +1,17 @@
-@import "base";
-@import "alert";
-@import "forms";
-@import "header";
-@import "footer";
-@import "sidebar";
-@import "home";
-@import "dashboard";
-@import "task";
-@import "pricing";
-@import "subscribe";
-@import "onboarding";
-@import "behaviors";
-@import "repo";
+@import 'base';
+@import 'alert';
+@import 'forms';
+@import 'header';
+@import 'footer';
+@import 'sidebar';
+@import 'home';
+@import 'dashboard';
+@import 'task';
+@import 'pricing';
+@import 'connect';
+@import 'onboarding';
+@import 'behaviors';
+@import 'repo';
 
 ol.actions {
   margin: 0;
@@ -21,7 +21,7 @@ ol.actions {
   .action {
     position: relative;
     padding: 15px 0;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid #EFEFEF;
 
     &:last-child {
       border-bottom: 0;
@@ -85,7 +85,7 @@ ol.actions {
 .titlebar {
   a {
     float: right;
-    margin-top: 60px;
+    margin-top: 50px;
   }
 }
 

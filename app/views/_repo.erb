@@ -3,7 +3,7 @@
     <div class="name"><span class="organization"><%= repo.github_owner %> / </span><%= repo.name %></div>
     <time>
       <% if repo.tasks.last %>
-        Last run <%= readable repo.tasks.last.created_at %>
+        Last behavior ran <%= readable repo.tasks.last.created_at %>
       <% else %>
         Connected <%= readable repo.updated_at %>
       <% end %>
