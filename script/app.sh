@@ -5,4 +5,5 @@ then
   bundle exec rake db:migrate
 fi
 
-bundle exec rackup -p ${1:-8080}
+service nginx restart
+bundle exec rackup -p ${1:-5000}
