@@ -1,3 +1,4 @@
+@import 'variables';
 @import 'base';
 @import 'alert';
 @import 'forms';
@@ -21,7 +22,7 @@ ol.actions {
   .action {
     position: relative;
     padding: 15px 0;
-    border-bottom: 1px solid #EFEFEF;
+    border-bottom: 1px solid $very-light-grey;
 
     &:last-child {
       border-bottom: 0;
@@ -58,7 +59,7 @@ ol.actions {
     }
 
     small {
-      color: #999;
+      color: $light-grey;
       font-weight: normal;
       margin-left: 30px;
     }
@@ -69,7 +70,7 @@ ol.actions {
   list-style: none;
   margin: 0;
   padding: 0 0 20px 0;
-  color: #888;
+  color: $medium-grey;
   font-size: 17px;
 
   li {
@@ -77,7 +78,7 @@ ol.actions {
     padding-right: 30px;
 
     a {
-      color: #888;
+      color: $medium-grey;
     }
   }
 }
@@ -107,19 +108,10 @@ ol.actions {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 30px 30px;
-    opacity: 0.5;
+    opacity: .5;
   }
 
   table {
     margin-top: 20px;
-  }
-
-  .logo {
-    display: inline-block;
-    width: 35px;
-    height: 35px;
-    border-radius: 4px;
-    margin-right: 5px;
-    background: #efefef;
   }
 }

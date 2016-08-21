@@ -87,7 +87,7 @@ module Pushbit
       redirect "/repos/#{repo.github_full_name}"
     end
 
-    get "/repos/:user/:repo/logs" do
+    get "/repos/:user/:repo/activity" do
       authenticate!
       repo = repo_from_params
       authorize! :update, repo
@@ -95,9 +95,9 @@ module Pushbit
       @repo = repo
       @actions = Action.paginate(page: params['page']).where(repo_id: @repo.id).includes(:task, :user)
       @tasks = @repo.tasks.paginate(page: params['page'])
-      @title = "Logs - #{@repo.github_full_name}"
+      @title = "Activity - #{@repo.github_full_name}"
 
-      erb :'repos/logs'
+      erb :'repos/activity'
     end
 
     put "/repos/:user/:repo" do

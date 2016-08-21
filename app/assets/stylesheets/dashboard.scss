@@ -1,13 +1,13 @@
 .dashboard {
   ol {
-    list-style: none;
     margin: 0;
     padding: 0;
+    list-style: none;
   }
 
   .repo {
     padding: 6px 0;
-    border-bottom: 1px solid #F1F1F1;
+    border-bottom: 1px solid $almost-white;
 
     .name {
       font-size: 20px;
@@ -16,7 +16,7 @@
 
     time {
       font-size: 14px;
-      color: #999;
+      color: $light-grey;
     }
   }
 }

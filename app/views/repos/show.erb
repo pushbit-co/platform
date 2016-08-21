@@ -3,31 +3,33 @@
     <h1><span class="organization"><%= @repo.github_owner %> / </span><%= @repo.name %></h1>
     <p class="subtitle">A behavior last ran for this project <%= readable @repo.tasks.last.created_at %></p>
   </div>
-  <nav class="col-md-2 col-xs-3">
-    <a href="<%= "/repos/#{@repo.github_full_name}/logs" %>" class="btn btn-primary">Logs</a>
-  </nav>
 </div>
 
-<div class="settings">
-  <form action="/repos/<%= @repo.github_full_name %>" method="POST">
-    <input type="hidden" name="_method" value="PUT">
+<div class="settings row">
+  <nav class="col-md-2 sidebar">
+    <%= partial :repo_menu, locals: {repo: @repo} %>
+  </nav>
+  <div class="col-md-10">
+    <form action="/repos/<%= @repo.github_full_name %>" method="POST">
+      <input type="hidden" name="_method" value="PUT">
 
-    <div class="search">
-      <input type="search" placeholder="search behaviors..." class="form-control" />
-    </div>
-    <div class="row behaviors">
-    <% behavior_ids = @repo.behaviors.pluck(:id) %>
-    <% @behaviors.each do |behavior| %>
-      <label class="col-md-4">
-        <a href="/repos/<%= @repo.github_full_name %>/<%= behavior.kind %>" class="behavior">
-          <h3><input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %> <%= behavior.active ? "" : "disabled" %> /> <%= behavior.name %></h3>
-          <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
-          <p><%= behavior.description %></p>
-        </a>
-      </label>
-    <% end %>
-    </div>
+      <div class="search">
+        <input type="search" placeholder="search behaviors..." class="form-control" />
+      </div>
+      <ul class="behaviors">
+        <% behavior_ids = @repo.behaviors.pluck(:id) %>
+        <% @behaviors.each do |behavior| %>
+          <li class="behavior">
+            <a href="/repos/<%= @repo.github_full_name %>/<%= behavior.kind %>">
+              <input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %><%= behavior.active ? "" : "disabled" %> />
+              <h3><%= behavior.name %></h3>
+              <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
+            </a>
+          </li>
+        <% end %>
+      </ul>
 
-    <input type="submit" value="Save Settings" class="btn btn-primary" />
-  </form>
+      <input type="submit" value="Save Settings" class="btn btn-primary" />
+    </form>
+  </div>
 </div>

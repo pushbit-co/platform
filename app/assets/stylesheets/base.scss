@@ -6,7 +6,7 @@ html {
 body {
   font-family: 'SF UI Text', Helvetica, sans-serif;
   font-size: 16px;
-  color: #444;
+  color: $almost-black;
 
   .wrapper {
     min-height: 100%;
@@ -14,17 +14,23 @@ body {
   }
 }
 
-h1,h2,h3,h4,h5 {
-  font-family: 'SF UI Display', Helvetica, sans-serif;
-  font-weight: 400;
+h1,
+h2,
+h3,
+h4,
+h5 {
   margin-top: 26px;
   margin-bottom: 6px;
+  font-family: 'SF UI Display', Helvetica, sans-serif;
+  font-weight: 400;
 
   a {
-    color: #333;
+    color: $almost-black;
   }
 
-  small a {
-    color: #666;
+  small {
+    a {
+      color: $dark-grey;
+    }
   }
 }

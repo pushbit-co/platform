@@ -5,14 +5,14 @@ section.splash {
   h3 {
     font-size: 25px;
     line-height: 1.4;
-    color: #777;
+    color: $dark-grey;
     font-weight: 400;
     margin-top: 15px;
   }
 
   .cta {
     margin-top: 30px;
-    background: #333;
+    background: $almost-black;
     border: 0;
   }
 
@@ -35,7 +35,7 @@ section.splash {
   padding-top: 40px;
 
   li {
-    color: #fff;
+    color: $white;
     border-radius: 4px;
     font-size: 15px;
     padding: 20px 30px;
@@ -63,9 +63,11 @@ section.splash {
 }
 
 
-@media only screen and (min-width : 992px) {
-  section.splash {
-    padding-top: 100px;
+@media only screen and (min-width: 992px) {
+  section {
+    .splash {
+      padding-top: 100px;
+    }
   }
 
   .shapes {

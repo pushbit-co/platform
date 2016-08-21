@@ -1,7 +1,7 @@
 .btn-primary {
-  background-color: #00A5FF;
-  border-color: #00A5FF;
-  box-shadow: 0 2px 0 rgba(0,0,0,.1);
+  background-color: $blue;
+  border-color: $blue;
+  box-shadow: 0 2px 0 $black-10;
   position: relative;
 
   &:hover,
@@ -9,8 +9,8 @@
   &:active:focus,
   &:active:hover,
   &:focus {
-    background-color: lighten(#00A5FF, 10%);
-    border-color: lighten(#00A5FF, 10%);
+    background-color: lighten($blue, 10%);
+    border-color: lighten($blue, 10%);
   }
 
   &:active {
@@ -19,7 +19,7 @@
   }
 
   &:disabled {
-    background-color: lighten(#00A5FF, 20%);
-    border-color: lighten(#00A5FF, 20%);
+    background-color: lighten($blue, 20%);
+    border-color: lighten($blue, 20%);
   }
 }

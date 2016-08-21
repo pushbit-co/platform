@@ -13,7 +13,7 @@
     }
 
     .period {
-      color: #999;
+      color: $light-grey;
       font-size: 16px;
       position: relative;
       left: 0;
@@ -21,18 +21,18 @@
   }
 
   h2 {
-    color: #999;
+    color: $light-grey;
     font-size: 20px;
     margin-top: 10px;
     margin-bottom: 30px;
   }
 
   .pricing-box {
-    background: #F1F1F1;
+    margin: 30px 10px;
     border-radius: 4px;
     padding: 30px;
-    margin: 30px 10px;
     text-align: center;
+    background: $almost-white;
 
     hr {
       margin: 0 -30px;
@@ -40,29 +40,29 @@
     }
 
     ul {
-      list-style: none;
-      text-align: left;
-      padding: 0;
-      margin: 0 auto;
       display: inline-block;
+      margin: 0 auto;
       margin-top: 20px;
       margin-bottom: 20px;
+      padding: 0;
+      list-style: none;
+      text-align: left;
+    }
 
-      li {
-        color: #666;
-        font-size: 16px;
+    li {
+      color: $dark-grey;
+      font-size: 16px;
 
-        &:before {
-          content: "";
-          display: block;
-          position: relative;
-          top: 14px;
-          left: -10px;
-          width: 5px;
-          height: 5px;
-          background: #666;
-          border-radius: 10px;
-        }
+      &:before {
+        display: block;
+        content: $content-empty;
+        position: relative;
+        top: 14px;
+        left: -10px;
+        width: 5px;
+        height: 5px;
+        background: $dark-grey;
+        border-radius: 10px;
       }
     }
   }

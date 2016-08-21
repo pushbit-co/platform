@@ -37,7 +37,7 @@
 
   <div class="search">
     <% if current_user.last_synchronized_at %>
-    <small id="last-sync">Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
+    <small class="last-sync">Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
     <% end %>
     <input type="search" id="search" placeholder="Find a project..." class="form-control" />
   </div>
