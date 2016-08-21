@@ -16,6 +16,7 @@ require 'pony'
 
 require_relative 'support/database_cleaner'
 require_relative 'support/route_helpers'
+require_relative 'support/auth_helpers'
 
 require_relative '../app'
 
@@ -25,7 +26,6 @@ ENV['RACK_ENV'] = 'test'
 
 module RSpecMixin
   include Rack::Test::Methods
-  include Warden::Test::Helpers
 
   def app
     Pushbit::App
@@ -42,5 +42,6 @@ RSpec.configure do |config|
   end
 
   config.include RouteHelpers
+  config.include AuthHelpers
   config.include RSpecMixin
 end

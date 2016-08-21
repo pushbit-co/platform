@@ -71,7 +71,21 @@ module Pushbit
       erb :'repos/behavior'
     end
 
+    get "/repos/:user/:repo/activity" do
+      authenticate!
+      repo = repo_from_params
+      authorize! :update, repo
+
+      @repo = repo
+      @actions = Action.paginate(page: params['page']).where(repo_id: @repo.id).includes(:task, :user)
+      @tasks = @repo.tasks.paginate(page: params['page'])
+      @title = "Activity - #{@repo.github_full_name}"
+
+      erb :'repos/activity'
+    end
+
     post "/repos/:user/:repo/:behavior" do
+      authenticate!
       repo = repo_from_params
       authorize! :update, repo
 
@@ -85,19 +99,6 @@ module Pushbit
 
       flash[:notice] = "Updated successfully"
       redirect "/repos/#{repo.github_full_name}"
-    end
-
-    get "/repos/:user/:repo/activity" do
-      authenticate!
-      repo = repo_from_params
-      authorize! :update, repo
-
-      @repo = repo
-      @actions = Action.paginate(page: params['page']).where(repo_id: @repo.id).includes(:task, :user)
-      @tasks = @repo.tasks.paginate(page: params['page'])
-      @title = "Activity - #{@repo.github_full_name}"
-
-      erb :'repos/activity'
     end
 
     put "/repos/:user/:repo" do

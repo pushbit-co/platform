@@ -1,7 +1,7 @@
 <div class="titlebar row">
   <div class="col-md-10 col-xs-9">
     <h1><span class="organization"><%= @repo.github_owner %> / </span><%= @repo.name %></h1>
-    <p class="subtitle">A behavior last ran for this project <%= readable @repo.tasks.last.created_at %></p>
+    <p class="subtitle">A behavior last ran for this project <%= readable @repo.tasks.last ? @repo.tasks.last.created_at : "never" %></p>
   </div>
 </div>
 

@@ -3,7 +3,7 @@ FactoryGirl.define do
     login { Faker::Internet.user_name }
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    github_id { 123 }
+    github_id { Faker::Number.number(6) }
   end
 
   factory :trigger, class: Pushbit::Trigger do
