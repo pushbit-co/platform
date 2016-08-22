@@ -26,7 +26,7 @@ module Pushbit
 
       @onboarding = current_user.repos.count <= 0
       @title = "Connect"
-      @id = "connect"
+      @id = :connect
       erb :connect
     end
   end

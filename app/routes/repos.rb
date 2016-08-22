@@ -54,6 +54,7 @@ module Pushbit
       @repo = repo
       @behaviors = Behavior.all
       @title = @repo.github_full_name
+      @id = :behaviors
 
       erb :'repos/show'
     end
