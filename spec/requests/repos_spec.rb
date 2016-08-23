@@ -19,7 +19,11 @@ describe "update repo behavior" do
       repo.save!
       user.repos << repo
       user.save!
-      login(user)
+      login_as user
+    end
+
+    after(:each) do
+      Warden.test_reset!
     end
 
     context "without existing settings" do

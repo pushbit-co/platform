@@ -1,28 +1,34 @@
 <div class="titlebar row">
   <div class="col-md-10 col-xs-9">
     <h1><%= @behavior.name %></h1>
+    <p class="subtitle"><span class="organization"><%= @repo.github_owner %> / </span><%= @repo.name %></p>
   </div>
 </div>
 
-<div class="settings">
-  <form action="/repos/<%= @repo.github_full_name %>/<%= @behavior.kind %>" method="POST">
-    <% if @behavior.settings.present? %>
-      <% @behavior.settings.each do |key, setting| %>
-        <% @settings.each do |saved_setting| %>
-          <% if saved_setting["key"] === key %>
-            <div class="row">
-              <label>
-                <%= setting["label"] %>
-                <input name="setting_<%= key %>" type="text" value="<%= saved_setting.value%>" />
-              </label>
-            </div>
-          <% end %>
+<div class="settings row">
+  <nav class="col-md-2 sidebar">
+    <%= partial :repo_menu, locals: {repo: @repo} %>
+  </nav>
+  <div class="col-md-10 settings">
+    <p>
+      <%= @behavior.description %>
+    </p>
+    <form action="/repos/<%= @repo.github_full_name %>/<%= @behavior.kind %>" method="POST">
+      <% if @behavior.settings.present? %>
+        <% @behavior.settings.each do |key, setting| %>
+          <% existing = @settings.detect {|s| s['key'] == key} %>
+          <div class="form-group">
+            <label>
+              <%= setting["label"] %>
+              <input name="setting_<%= key %>" type="text" value="<%= existing ? existing['value'] : '' %>" class="form-control" />
+            </label>
+          </div>
         <% end %>
-      <% end %>
 
-      <input type="submit" value="Save" class="btn btn-primary" />
-    <% else %>
-      <p>There are no settings for this behavior.</p>
-    <% end %>
-  </form>
+        <input type="submit" value="Save" class="btn btn-primary" />
+      <% else %>
+        <p>There are no settings for this behavior.</p>
+      <% end %>
+    </form>
+  </div>
 </div>

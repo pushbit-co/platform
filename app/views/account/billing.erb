@@ -1,13 +1,13 @@
+<h1>Billing</h1>
+<p class="subtitle">
+  Manage your subscription and payment method.
+</p>
+
 <div class="row">
-  <nav class="col-md-2 col-md-push-10 sidebar">
+  <nav class="col-md-2 sidebar">
     <%= partial :'account/menu' %>
   </nav>
-  <div class="col-md-9 col-md-pull-2">
-    <h1>Billing</h1>
-    <p class="subtitle">
-      Manage your subscription and payment method.
-    </p>
-
+  <div class="col-md-10">
     <section>
       <h2>Summary</h2>
       <% if current_user.has_customer? %>
@@ -18,7 +18,7 @@
       <p>Subscription models: <%= current_user.subscriptions.count %></p>
       <p>Monthly cost: $<%= current_user.subscriptions.count * 15 %></p>
       <% else %>
-      <p>No private repos yet.</p>
+      <p>No subscription yet.</p>
       <% end %>
     </section>
     <section>
