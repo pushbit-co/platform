@@ -14,9 +14,14 @@
       line-height: 1;
     }
 
-    time {
+    time,
+    .behaviors-count {
       font-size: 14px;
       color: $light-grey;
+    }
+
+    .behaviors-count {
+      float: right;
     }
   }
 }

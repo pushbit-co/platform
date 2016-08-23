@@ -3,10 +3,13 @@
     <div class="name"><span class="organization"><%= repo.github_owner %> / </span><%= repo.name %></div>
     <time>
       <% if repo.tasks.last %>
-        Last behavior ran <%= readable repo.tasks.last.created_at %>
+        Last behavior ran <%= readable repo.tasks.last.created_at %>.
       <% else %>
-        Connected <%= readable repo.updated_at %>
+        Connected <%= readable repo.updated_at %>.
       <% end %>
     </time>
+    <span class="behaviors-count">
+      <%= repo.behaviors.size %> behaviors active
+    </span>
   </a>
 </li>
