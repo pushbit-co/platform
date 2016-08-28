@@ -16,7 +16,6 @@ require 'pony'
 
 require_relative 'support/database_cleaner'
 require_relative 'support/route_helpers'
-# require_relative 'support/auth_helpers'
 
 require_relative '../app'
 
@@ -40,9 +39,14 @@ RSpec.configure do |config|
   end
   config.before(:each) do
     Sidekiq::Worker.clear_all
+    Warden::Manager.serialize_into_session do |user|
+      user.id
+    end
+    Warden::Manager.serialize_from_session do |id|
+      Pushbit::User.get(id)
+    end
   end
 
   config.include RouteHelpers
-  config.include AuthHelpers
   config.include RSpecMixin
 end
