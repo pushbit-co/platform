@@ -1,0 +1,84 @@
+section.splash {
+  min-height: 400px;
+  border: 0;
+
+  h3 {
+    font-size: 25px;
+    line-height: 1.4;
+    color: $dark-grey;
+    font-weight: 400;
+    margin-top: 15px;
+  }
+
+  .cta {
+    margin-top: 30px;
+    background: $almost-black;
+    border: 0;
+  }
+
+  .icon.octocat {
+    display: inline-block;
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+    margin-left: 6px;
+    background-image: url('/assets/github-mark-light-64px.png');
+    background-repeat: no-repeat;
+    background-size: 28px 28px;
+  }
+}
+
+.shapes {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  padding-top: 40px;
+
+  li {
+    color: $white;
+    border-radius: 4px;
+    font-size: 15px;
+    padding: 20px 30px;
+    margin: 20px 0;
+    position: relative;
+  }
+  li:nth-child(1) {
+    background: #00A5FF;
+  }
+  li:nth-child(2) {
+    background: #DD0E78;
+  }
+  li:nth-child(3) {
+    background: #92D923;
+  }
+  li:nth-child(4) {
+    background: #D9AA23;
+  }
+}
+
+.feature-block {
+  background: #F1F1F1;
+  padding: 60px 0;
+  margin-top: 40px;
+}
+
+
+@media only screen and (min-width: 992px) {
+  section {
+    .splash {
+      padding-top: 100px;
+    }
+  }
+
+  .shapes {
+    left: -10px;
+    margin-top: -100px;
+
+    li:nth-child(2) {
+      left: -20px;
+    }
+    li:nth-child(4) {
+      left: 20px;
+    }
+  }
+}

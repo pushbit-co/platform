@@ -1,0 +1,116 @@
+@import 'variables';
+@import 'base';
+@import 'alert';
+@import 'forms';
+@import 'header';
+@import 'footer';
+@import 'sidebar';
+@import 'home';
+@import 'dashboard';
+@import 'pricing';
+@import 'connect';
+@import 'onboarding';
+@import 'behaviors';
+@import 'repo';
+
+ol.actions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  .action {
+    position: relative;
+    padding: 15px 0;
+    border-bottom: 1px solid $very-light-grey;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    .icon {
+      position: absolute;
+      left: 0;
+      top: 14px;
+      min-width: 20px;
+      text-align: center;
+
+      .octicon {
+        font-size: 20px;
+      }
+      .octicon-heart {
+        color: #5F1D8E;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+      }
+    }
+
+    .message {
+      margin-left: 30px;
+      margin-bottom: 0;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    small {
+      color: $light-grey;
+      font-weight: normal;
+      margin-left: 30px;
+    }
+  }
+}
+
+.subtitle {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 20px 0;
+  color: $medium-grey;
+  font-size: 17px;
+
+  li {
+    display: inline-block;
+    padding-right: 30px;
+
+    a {
+      color: $medium-grey;
+    }
+  }
+}
+
+.titlebar {
+  a {
+    float: right;
+    margin-top: 50px;
+  }
+}
+
+.vertically-centered {
+  top: 50%;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+#content {
+  min-height: 300px;
+  padding-bottom: 300px;
+
+  .empty {
+    min-height: 150px;
+    text-align: center;
+    padding-top: 100px;
+    background: url('/assets/grid.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 30px 30px;
+    opacity: .5;
+  }
+
+  table {
+    margin-top: 20px;
+  }
+}

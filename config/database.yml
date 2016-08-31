@@ -1,8 +1,6 @@
 default: &default
   adapter:  postgresql
-  database: <%= ENV["DATABASE_NAME"] %>
-  username: <%= ENV["DATABASE_USERNAME"] %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"]  %>
   pool: 50
   timeout: 5000
 

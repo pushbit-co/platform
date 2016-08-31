@@ -1,0 +1,44 @@
+.behaviors {
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none;
+}
+
+.behavior {
+  display: block;
+  font-weight: normal;
+  padding: 10px 0 10px 30px;
+  text-decoration: none;
+  border-bottom: 1px solid $very-light-grey;
+  position: relative;
+
+  &:hover {
+    background: $almost-white;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  input {
+    position: absolute;
+    top: 18px;
+    left: 6px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+
+    input {
+      margin-left: 10px;
+      margin-top: 6px;
+    }
+  }
+
+  .tags {
+    margin: 0;
+    color: $light-grey;
+    font-size: 14px;
+  }
+}

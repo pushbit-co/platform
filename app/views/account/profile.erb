@@ -1,18 +1,13 @@
-<h1>Account</h1>
+<h1>Profile</h1>
+<p class="subtitle">
+  Your account details and preferences.
+</p>
 
-<div id="account">
-  <ul class="subtext">
-    <li></li>
-  </ul>
-  
-  <div class="row">
-    <%= partial :'account/sidebar' %>
-    <div class="col-md-9">
-      <section class="tab-pane">
-        <h2>Profile</h2>
-        
-        <p>Your profile will be here.</p>
-      </section>
-    </div>
+<div class="row">
+  <nav class="col-md-2 sidebar">
+    <%= partial :'account/menu' %>
+  </nav>
+  <div class="col-md-10">
+    <p>Profile will be here</p>
   </div>
 </div>

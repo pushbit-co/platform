@@ -1,34 +1,42 @@
-  <section class="splash">
-    <h1>Automated code fixes and reviews</h1>
-    <h3>Pushbit is a proactive GitHub bot with personality! Pushbit reviews your code against hundreds of rules and automatically fixes problems it finds. </h3>
-  
-    <a href="/auth/login" class="cta btn btn-primary btn-lg">Join Public Beta</a>
+  <section class="splash row">
+    <div class="col-md-7">
+      <h1>Automated workflows built on GitHub</h1>
+      <h3>Manage issues, contributors, pull requests, documentation and much more… without lifting a finger!</h3>
+
+      <a href="/auth/login" class="cta btn btn-primary btn-lg">Signin with GitHub <i class="icon octocat"></i></a>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+      <ol class="shapes">
+        <li>Detect unoptimized images, compresses them and creates a new pull request.</li>
+        <li>Find issues that need more information and ask the creator in a comment.</li>
+        <li>Automatically assign a reviewer for new pull requests based on the code that changed.</li>
+        <li>Merge pull requests when enough collaborators have given a thumbs up.</li>
+      </ol>
+    </div>
   </section>
 </div>
 
-<section class="feature" id="how-it-works">
+<section class="feature-block">
   <div class="container">
-    <h2>How it Works</h2>
-  
     <div class="row">
-      <div class="col-md-3">
-        <h3>Triggers</h3>
-    
+      <div class="col-md-4 col-md-offset-1 feature">
+        <h2>Triggers</h2>
+
         <p>Pushbit is triggered by scheduled events, pull requests, code pushes, comments, and other actions your team takes.</p>
       </div>
-      <div class="col-md-3">
-        <h3>Behaviors</h3>
-    
+      <div class="col-md-4 col-md-offset-2 feature">
+        <h2>Behaviors</h2>
+
         <p>Pushbit runs many different <a href="/behaviors">behaviors</a> against your project depending on the trigger. We're adding new behaviors all the time!</p>
       </div>
-      <div class="col-md-3">
-        <h3>Actions</h3>
+      <div class="col-md-4 col-md-offset-1 feature">
+        <h2>Actions</h2>
 
         <p>Pushbit will create pull requests, comments and issues that help out your team or directly fix and improve your codebase.</p>
       </div>
-      <div class="col-md-3">
-        <h3>Merge Away</h3>
-    
+      <div class="col-md-4 col-md-offset-2 feature">
+        <h2>Merge Away</h2>
+
         <p>Pushbit's pull requests will be checked through your normal continuous integration flow, once everything passes then simply click merge!</p>
       </div>
     </div>

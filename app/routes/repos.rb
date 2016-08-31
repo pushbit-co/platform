@@ -16,7 +16,7 @@ module Pushbit
       authenticate!
       repo = repo_from_params
       authorize! :unsubscribe, repo
-      
+
       Cashier.unsubscribe(repo, current_user) if repo.private?
       Activator.deactivate(repo, current_user)
 
@@ -28,7 +28,7 @@ module Pushbit
       authenticate!
       repo = repo_from_params
       authorize! :trigger, repo
-      
+
       trigger = Trigger.create!(
         kind: "manual",
         repo: repo,
@@ -52,36 +52,54 @@ module Pushbit
       authorize! :read, repo
 
       @repo = repo
-      @tasks = @repo.tasks.paginate(page: params['page'])
-      @actions = Action.paginate(page: params['page']).where(repo_id: @repo.id).includes(:task, :user)
+      @behaviors = Behavior.all
       @title = @repo.github_full_name
+      @id = :behaviors
 
       erb :'repos/show'
     end
 
-    get "/repos/:user/:repo/settings" do
+    get "/repos/:user/:repo/:behavior" do
+      repo = repo_from_params
+      authorize! :update, repo
+
+      @repo = repo
+      @behavior = Behavior.find_by!(kind: params["behavior"])
+      repo_behavior = repo.repo_behaviors.find_by!(behavior: @behavior)
+      @settings = repo_behavior.settings
+      @title = "#{@behavior.name} - #{@repo.github_full_name}"
+
+      erb :'repos/behavior'
+    end
+
+    get "/repos/:user/:repo/activity" do
       authenticate!
       repo = repo_from_params
       authorize! :update, repo
-      
-      @repo = repo
-      @behaviors = Behavior.all
-      @title = "Settings - #{@repo.github_full_name}"
 
-      erb :'repos/settings'
+      @repo = repo
+      @actions = Action.paginate(page: params['page']).where(repo_id: @repo.id).includes(:task, :user)
+      @tasks = @repo.tasks.paginate(page: params['page'])
+      @title = "Activity - #{@repo.github_full_name}"
+
+      erb :'repos/activity'
     end
 
-    get "/repos/:user/:repo/:task_sequential_id" do
+    post "/repos/:user/:repo/:behavior" do
       authenticate!
       repo = repo_from_params
-      authorize! :read, repo
-  
-      @repo = repo
-      @task = Task.find_by!(repo: @repo, sequential_id: params['task_sequential_id'])
-      @actions = @task.actions.map { |a| ActionPresenter.new(a) }
-      @title = "Task #{@task.sequential_id} - #{@repo.github_full_name}"
+      authorize! :update, repo
 
-      erb :'repos/task'
+      behavior = Behavior.find_by!(kind: params["behavior"])
+      repo_behavior = repo.repo_behaviors.find_by!(behavior: behavior)
+
+      behavior.settings.each do |(key, value)|
+        setting = Setting.find_or_create_by(key: key, repo_behavior: repo_behavior)
+        setting.update_attribute(:value, params["setting_#{key}"])
+      end
+
+      flash[:notice] = "Updated successfully"
+      redirect "/repos/#{repo.github_full_name}"
     end
 
     put "/repos/:user/:repo" do

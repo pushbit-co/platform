@@ -5,16 +5,13 @@ module Pushbit
       puts "YOPP"
       Octokit.auto_paginate = true
 
-      # clear any existing memberships as we may have been removed as well as 
+      # clear any existing memberships as we may have been removed as well as
       # added to repositories since the last sync
       user = User.find(user_id)
       user.repos.clear
 
       Repo.transaction do
         user.client.repositories.each do |data|
-          puts "IDENTX"
-          puts data
-
           repo = Repo.find_or_create_with({
             private: data.private,
             default_branch: data.default_branch,

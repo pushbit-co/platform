@@ -1,0 +1,35 @@
+header {
+  padding: 20px 0 0;
+
+  .avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    margin-left: 5px;
+  }
+
+  .nav {
+    li > a {
+      padding: 0;
+      margin: 0 0 0 20px;
+      line-height: 35px;
+      color: $light-grey;
+    }
+
+    li > a:hover,
+    li > a:active:hover,
+    li > a:active:focus {
+      color: $dark-grey;
+      background: none;
+    }
+
+    li:first-child a {
+      margin-left: 0;
+    }
+  }
+
+  .navbar-right {
+    margin-right: 0;
+    float: right;
+  }
+}

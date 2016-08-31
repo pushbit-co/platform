@@ -1,15 +1,20 @@
-<h1>Add Project</h1>
-
+<h1><%= @onboarding ? "Get Started" : "Connect" %></h1>
 <div class="row">
-  <p class="col-md-9">Lets setup a new project. Pushbit helps your team work faster by automating the tedious but important tasks so you can concentrate on the things that really matter.</p>
+  <div class="<%= current_user.has_access_to_private_repos? ? 'col-md-12' : 'col-md-9' %>">
+    <% if @onboarding %>
+    <p class="subtitle">Choose a project to get started with Pushbit.</p>
+    <% else %>
+    <p class="subtitle">Choose another project to connect to Pushbit.</p>
+    <% end %>
+  </div>
+  <% unless current_user.has_access_to_private_repos? %>
   <div class="col-md-3">
-    <% unless current_user.has_access_to_private_repos? %>
-    <a href="/auth/login/private" class="btn btn-default btn-lg">
+    <a href="/auth/login/private" class="btn btn-primary">
       <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
       Show Private Repos
     </a>
-    <% end %>
   </div>
+  <% end %>
 </div>
 
 <section id="subscribe">
@@ -32,12 +37,12 @@
 
   <div class="search">
     <% if current_user.last_synchronized_at %>
-    <small id="last-sync">Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
+    <small class="last-sync">Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
     <% end %>
     <input type="search" id="search" placeholder="Find a project..." class="form-control" />
   </div>
 
   <div id="repositories">
-    <p class="empty">Syncing&hellip;</p>
+    <p class="empty">Beep boop&hellip;</p>
   </div>
 </section>

@@ -26,8 +26,22 @@ Secondly you will need to copy .env.example to a file called .env in the project
 docker-compose up
 ```
 
+To work on the javascript make sure to first install all of the dependencies `npm i` and then watch
+for changes to rebuild the JS bundle with:
 
-## Tests
+```
+npm run watch
+```
+
+### Migrations
+
+We're using Sinatra and ActiveRecord, to create a new migration simply run a command like the following and change the NAME parameter at the end:
+
+`docker-compose run --rm platform bundle exec rake db:create_migration NAME=add_column_to_table`
+`docker-compose run --rm platform bundle exec rake db:migrate`
+
+
+### Tests
 
 Tests also run inside the development docker container, use the following command:
 

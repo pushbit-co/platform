@@ -1,0 +1,44 @@
+.sidebar {
+  font-size: 18px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 6px 0;
+    }
+
+    a {
+      color: $light-grey;
+    }
+
+    a:hover {
+      color: $dark-grey;
+    }
+
+    a.active {
+      color: $blue;
+    }
+
+    a.active:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+@media only screen and (max-width : 480px) {
+  .sidebar {
+    text-align: left;
+    border-bottom: 1px solid #F1F1F1;
+    padding-bottom: 20px;
+    margin-top: 0;
+
+    ul {
+      li {
+        padding: 3px 0;
+      }
+    }
+  }
+}
