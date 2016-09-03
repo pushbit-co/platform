@@ -19,8 +19,8 @@ machine:
 dependencies:
   override:
     - bundle
-    - curl -Ls https://install.convox.com/linux.zip > /tmp/convox.zip
-    - unzip /tmp/convox.zip -d /usr/local/bin
+    - curl -Ls https://install.convox.com/linux.zip > convox.zip
+    - unzip convox.zip
 
 database:
   override:
@@ -34,5 +34,5 @@ deployment:
   production:
     branch: package-assets
     commands:
-      - convox login $CONVOX_DOMAIN --password=$CONVOX_PASSWORD
-      - convox deploy
+      - ./convox login $CONVOX_DOMAIN --password=$CONVOX_PASSWORD
+      - ./convox deploy
