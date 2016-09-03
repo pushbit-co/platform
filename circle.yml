@@ -30,9 +30,7 @@ test:
 
 deployment:
   production:
-    branch: production
+    branch: package-assets
     commands:
-      - docker info
-      - docker build -t pushbit/app .
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push pushbit/app
+      - convox login $CONVOX_DOMAIN --password=$CONVOX_PASSWORD
+      - convox deploy
