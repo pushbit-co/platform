@@ -32,7 +32,7 @@ test:
 
 deployment:
   production:
-    branch: package-assets
+    branch: production
     commands:
       - ./convox login $CONVOX_DOMAIN --password=$CONVOX_PASSWORD
       - ./convox deploy
