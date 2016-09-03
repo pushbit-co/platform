@@ -1,0 +1,17 @@
+<div class="titlebar row">
+  <div class="col-md-10 col-xs-9">
+    <h1><span class="organization"><%= @repo.github_owner %> / </span><%= @repo.name %></h1>
+    <p class="subtitle"></p>
+  </div>
+</div>
+
+<div class="settings row">
+  <nav class="col-md-2 sidebar">
+    <%= partial :repo_menu, locals: {repo: @repo} %>
+  </nav>
+  <div class="col-md-10">
+    <form action="/repos/<%= @repo.github_full_name %>/unsubscribe" method="POST">
+      <input type="submit" value="Disconnect" class="btn btn-primary" />
+    </form>
+  </div>
+</div>

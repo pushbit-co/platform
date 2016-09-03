@@ -8,7 +8,7 @@ database:
 redis:
   image: convox/redis
   ports:
-    - 6379:6379
+    - 6379
 
 platform:
   build: .
@@ -37,7 +37,6 @@ platform:
     - APP_URL
     - DOCKER_URL
     - GITHUB_TOKEN
-    - TOAST_URL
     - DOCKER_USERNAME
     - DOCKER_EMAIL
     - DOCKER_PASSWORD
@@ -72,7 +71,6 @@ workers:
     - APP_URL
     - DOCKER_URL
     - GITHUB_TOKEN
-    - TOAST_URL
     - DOCKER_USERNAME
     - DOCKER_EMAIL
     - DOCKER_PASSWORD

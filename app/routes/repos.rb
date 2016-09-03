@@ -59,17 +59,14 @@ module Pushbit
       erb :'repos/show'
     end
 
-    get "/repos/:user/:repo/:behavior" do
+    get "/repos/:user/:repo/settings" do
       repo = repo_from_params
       authorize! :update, repo
 
       @repo = repo
-      @behavior = Behavior.find_by!(kind: params["behavior"])
-      repo_behavior = repo.repo_behaviors.find_by!(behavior: @behavior)
-      @settings = repo_behavior.settings
-      @title = "#{@behavior.name} - #{@repo.github_full_name}"
+      @title = "Settings - #{@repo.github_full_name}"
 
-      erb :'repos/behavior'
+      erb :'repos/settings'
     end
 
     get "/repos/:user/:repo/activity" do
@@ -84,6 +81,20 @@ module Pushbit
 
       erb :'repos/activity'
     end
+
+    get "/repos/:user/:repo/:behavior" do
+      repo = repo_from_params
+      authorize! :update, repo
+
+      @repo = repo
+      @behavior = Behavior.find_by!(kind: params["behavior"])
+      repo_behavior = repo.repo_behaviors.find_by!(behavior: @behavior)
+      @settings = repo_behavior.settings
+      @title = "#{@behavior.name} - #{@repo.github_full_name}"
+
+      erb :'repos/behavior'
+    end
+
 
     post "/repos/:user/:repo/:behavior" do
       authenticate!
