@@ -1,0 +1,6 @@
+<li class="behavior">
+  <a href="/repos/<%= repo.github_full_name %>/<%= behavior.kind %>">
+    <h3><%= behavior.name %></h3>
+    <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
+  </a>
+</li>

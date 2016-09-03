@@ -1,31 +1,32 @@
-<div class="titlebar row">
-  <div class="col-md-10 col-xs-9">
-    <h1><span class="organization"><%= @repo.github_owner %> / </span><%= @repo.name %></h1>
-    <p class="subtitle">A behavior last ran for this project <%= readable @repo.tasks.last ? @repo.tasks.last.created_at : "never" %></p>
-  </div>
-</div>
+<%= partial :repo_header, locals: {repo: @repo} %>
 
 <div class="settings row">
   <nav class="col-md-2 sidebar">
     <%= partial :repo_menu, locals: {repo: @repo} %>
   </nav>
   <div class="col-md-10">
+    <h2>Behaviors</h2>
     <form action="/repos/<%= @repo.github_full_name %>" method="POST">
       <input type="hidden" name="_method" value="PUT">
 
       <div class="search">
         <input type="search" placeholder="search behaviors..." class="search form-control" />
       </div>
+
+      <h3>Active</h3>
       <ul class="behaviors">
         <% behavior_ids = @repo.behaviors.pluck(:id) %>
+        <% @repo.behaviors.each do |behavior| %>
+          <%= partial :behavior, locals: {behavior: behavior, repo: @repo} %>
+        <% end %>
+      </ul>
+
+      <h3>Inactive</h3>
+      <ul class="behaviors">
         <% @behaviors.each do |behavior| %>
-          <li class="behavior">
-            <a href="/repos/<%= @repo.github_full_name %>/<%= behavior.kind %>">
-              <input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %><%= behavior.active ? "" : "disabled" %> />
-              <h3><%= behavior.name %></h3>
-              <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
-            </a>
-          </li>
+          <% unless @repo.behaviors.include?(behavior) %>
+          <%= partial :behavior, locals: {behavior: behavior, repo: @repo} %>
+          <% end %>
         <% end %>
       </ul>
 
