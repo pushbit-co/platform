@@ -19,6 +19,8 @@ machine:
 dependencies:
   override:
     - bundle
+    - curl -Ls https://install.convox.com/linux.zip > /tmp/convox.zip
+    - unzip /tmp/convox.zip -d /usr/local/bin
 
 database:
   override:
