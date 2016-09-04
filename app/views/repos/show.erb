@@ -13,16 +13,16 @@
         <input type="search" placeholder="search behaviors..." class="search form-control" />
       </div>
 
-      <h3>Active</h3>
-      <ul class="behaviors">
+      <h3>Enabled</h3>
+      <ul class="behaviors enabled">
         <% behavior_ids = @repo.behaviors.pluck(:id) %>
         <% @repo.behaviors.each do |behavior| %>
           <%= partial :behavior, locals: {behavior: behavior, repo: @repo} %>
         <% end %>
       </ul>
 
-      <h3>Inactive</h3>
-      <ul class="behaviors">
+      <h3>Disabled</h3>
+      <ul class="behaviors disabled">
         <% @behaviors.each do |behavior| %>
           <% unless @repo.behaviors.include?(behavior) %>
           <%= partial :behavior, locals: {behavior: behavior, repo: @repo} %>

@@ -1,6 +1,7 @@
-<li class="behavior">
+<li class="behavior col-md-4">
   <a href="/repos/<%= repo.github_full_name %>/<%= behavior.kind %>">
     <h3><%= behavior.name %></h3>
+    <p class="description"><%= behavior.description %></p>
     <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
   </a>
 </li>
