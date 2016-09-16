@@ -4,5 +4,6 @@ module Pushbit
 
     belongs_to :repo
     belongs_to :behavior
+    has_many :settings
   end
 end

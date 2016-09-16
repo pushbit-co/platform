@@ -1,7 +1,20 @@
 module Pushbit
   module ViewHelpers
+
+    def nav_link(path, title)
+      puts request.path_info
+      className = request.path_info == path ? 'active' : ''
+      "<a href=\"#{path}\" class=\"#{className}\">#{title}</a>"
+    end
+
     def readable(time)
       "#{distance_of_time_in_words(time.to_i, Time.now.to_i, true)} ago"
+    end
+
+    def signup_button
+      unless current_user
+        "<a href=\"/auth/login\" class=\"btn btn-primary btn-block\">Sign up</a>"
+      end
     end
 
     def greeting

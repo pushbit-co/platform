@@ -2,9 +2,10 @@ module Pushbit
   class RepoSyncronizationWorker < BaseWorker
 
     def work(user_id)
+      puts "YOPP"
       Octokit.auto_paginate = true
 
-      # clear any existing memberships as we may have been removed as well as 
+      # clear any existing memberships as we may have been removed as well as
       # added to repositories since the last sync
       user = User.find(user_id)
       user.repos.clear

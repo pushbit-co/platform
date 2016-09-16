@@ -16,20 +16,23 @@ machine:
     BASIC_AUTH_SECRET: 101050d232ec0ecdbfd5f2a83d6cfb8b1ca37378
     STRIPE_SECRET_KEY: totally_fake_key
 
+dependencies:
+  override:
+    - bundle
+    - curl -Ls https://install.convox.com/linux.zip > convox.zip
+    - unzip convox.zip
+
 database:
   override:
     - RACK_ENV=ci bundle exec rake db:create db:schema:load --trace
 
 test:
   override:
-    - RACK_ENV=ci bundle exec rspec --format progress 
+    - RACK_ENV=ci bundle exec rspec --format progress
 
 deployment:
   production:
     branch: production
     commands:
-      - docker info
-      - docker build -t pushbit/app .
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push pushbit/app
-
+      - ./convox login $CONVOX_DOMAIN --password=$CONVOX_PASSWORD
+      - ./convox deploy

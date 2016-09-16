@@ -1,0 +1,27 @@
+.dashboard {
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .repo {
+    padding: 6px 0;
+    border-bottom: 1px solid $almost-white;
+
+    .name {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    time,
+    .behaviors-count {
+      font-size: 14px;
+      color: $light-grey;
+    }
+
+    .behaviors-count {
+      float: right;
+    }
+  }
+}

@@ -4,3 +4,14 @@ description: Runs once a day to make sure your bundle is kept upto date with the
 discovers: outdated dependency
 tone: negative
 active: true
+settings:
+  filter:
+    label: Filter to a specific team
+    type: string
+  color:
+    label: Choose a color
+    type: string
+    options:
+      - red
+      - green
+      - blue

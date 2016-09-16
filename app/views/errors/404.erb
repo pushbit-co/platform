@@ -1,3 +1,4 @@
-<h1>Not Found</h1>
-
-<p>Damn, we couldn't find that page. Head to the <a href="/">dashboard</a>?</p>
+<div class="vertically-centered">
+  <h1>Not Found</h1>
+  <p class="subtitle">Sorry, we couldn't find that page. Head to the <a href="/"><%= current_user ? 'dashboard' : 'homepage' %></a>?</p>
+</div>

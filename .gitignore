@@ -1,5 +1,10 @@
+.sass-cache
 .env
 .DS_Store
 admin.yml
 up.sh
+public
 docker_cert_path/*
+public/assets
+node_modules
+app/assets/javascripts/bundle.js

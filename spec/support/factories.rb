@@ -3,7 +3,7 @@ FactoryGirl.define do
     login { Faker::Internet.user_name }
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    github_id { 123 }
+    github_id { Faker::Number.number(6) }
   end
 
   factory :trigger, class: Pushbit::Trigger do
@@ -63,8 +63,17 @@ FactoryGirl.define do
   end
 
   factory :behavior, class: Pushbit::Behavior do
+    kind { 'bundle-update' }
     tone { 'negative' }
     active { true }
     discovers { 'style issue' }
+    settings do
+      {
+        filter: {
+          label: "Setting label",
+          type: :string
+        }
+      }
+    end
   end
 end

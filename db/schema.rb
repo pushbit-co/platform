@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121205026) do
+ActiveRecord::Schema.define(version: 20160814065913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20160121205026) do
     t.string  "icon_url"
     t.string  "checkout"
     t.string  "keywords",        default: [], array: true
+    t.json    "settings"
   end
 
   add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", unique: true, using: :btree
@@ -121,7 +122,7 @@ ActiveRecord::Schema.define(version: 20160121205026) do
 
   add_index "owners", ["github_id"], name: "index_owners_on_github_id", unique: true, using: :btree
 
-  create_table "repo_behaviors", id: false, force: :cascade do |t|
+  create_table "repo_behaviors", force: :cascade do |t|
     t.integer "behavior_id"
     t.integer "repo_id"
   end
@@ -157,6 +158,16 @@ ActiveRecord::Schema.define(version: 20160121205026) do
   end
 
   add_index "sequential", ["model", "column", "scope", "scope_value"], name: "index_sequential_on_model_and_column_and_scope_and_scope_value", unique: true, using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "repo_behavior_id"
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "settings", ["repo_behavior_id", "key"], name: "index_settings_on_repo_behavior_id_and_key", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id"

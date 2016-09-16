@@ -1,0 +1,69 @@
+.pricing {
+  h1 {
+    font-size: 60px;
+    line-height: 1;
+    margin-top: 0;
+
+    .currency {
+      vertical-align: top;
+      font-size: 30px;
+      position: relative;
+      top: 5px;
+      left: -5px;
+    }
+
+    .period {
+      color: $light-grey;
+      font-size: 16px;
+      position: relative;
+      left: 0;
+    }
+  }
+
+  h2 {
+    color: $light-grey;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+
+  .pricing-box {
+    margin: 30px 10px;
+    border-radius: 4px;
+    padding: 30px;
+    text-align: center;
+    background: $almost-white;
+
+    hr {
+      margin: 0 -30px;
+      border-top-width: 2px;
+    }
+
+    ul {
+      display: inline-block;
+      margin: 0 auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 0;
+      list-style: none;
+      text-align: left;
+    }
+
+    li {
+      color: $dark-grey;
+      font-size: 16px;
+
+      &:before {
+        display: block;
+        content: $content-empty;
+        position: relative;
+        top: 14px;
+        left: -10px;
+        width: 5px;
+        height: 5px;
+        background: $dark-grey;
+        border-radius: 10px;
+      }
+    }
+  }
+}

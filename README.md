@@ -1,6 +1,8 @@
+[![CircleCI](https://circleci.com/gh/pushbit-co/platform.svg?style=svg)](https://circleci.com/gh/pushbit-co/platform)
+
 # Pushbit Platform
 
-Pushbit is a platform for automated code changes and github bots. Pushbit takes care of hundreds of tedious tasks through pre built behaviors so your team can spend their time on writing great code. Check out more about Pushbit on our [homepage](https://www.pushbit.co).
+Pushbit is a platform for automated workflows built ontop of GitHub. Pushbit takes care of hundreds of tedious tasks through pre built behaviors so your team can spend their time writing great software. Check out more about Pushbit on our [homepage](https://www.pushbit.co).
 
 ## Environment
 
@@ -24,8 +26,22 @@ Secondly you will need to copy .env.example to a file called .env in the project
 docker-compose up
 ```
 
+To work on the javascript make sure to first install all of the dependencies `npm i` and then watch
+for changes to rebuild the JS bundle with:
 
-## Tests
+```
+npm run watch
+```
+
+### Migrations
+
+We're using Sinatra and ActiveRecord, to create a new migration simply run a command like the following and change the NAME parameter at the end:
+
+`docker-compose run --rm platform bundle exec rake db:create_migration NAME=add_column_to_table`
+`docker-compose run --rm platform bundle exec rake db:migrate`
+
+
+### Tests
 
 Tests also run inside the development docker container, use the following command:
 
@@ -44,4 +60,4 @@ docker-compose up
 
 * Open a [GitHub Issue](https://github.com/pushbit-co/platform/new) for bugs and feature requests
 * Initiate a [GitHub Pull Request](https://help.github.com/articles/using-pull-requests/) for patches
-* Don't be shocked if Pushbit comments or improves on your PR 😉
+* Don't be shocked if Pushbit comments on your PR 😉

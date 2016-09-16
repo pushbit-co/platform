@@ -1,0 +1,25 @@
+{
+  "name": "Pushbit",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.0.0",
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-stage-0": "^6.0.15",
+    "eslint": "^3.1.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.10.3",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^5.2.2",
+    "expose-loader": "^0.7.1",
+    "jquery": "^3.1.0",
+    "jstz": "^1.0.7",
+    "webpack": "^1.13.1"
+  }
+}

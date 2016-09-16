@@ -18,10 +18,19 @@ module Pushbit
             # eg: see repository and author fields in config
             config.clone.each do |key, value|
               next unless value.class == Hash
+              separated = false
               value.each do |subkey, subvalue|
-                config["#{key}_#{subkey}"] = subvalue
+                column = "#{key}_#{subkey}"
+                column_exists = Behavior.column_names.include?(column)
+                if column_exists
+                  config[column] = subvalue
+                  separated = true
+                end
               end
-              config.delete key
+
+              if separated
+                config.delete key
+              end
             end
 
             Behavior.find_or_create_with(config)

@@ -9,7 +9,7 @@ require "rack-flash"
 require "secure_headers"
 require "sinatra/base"
 require "sinatra/json"
-require "sinatra/assetpack"
+require "sinatra/asset_pipeline"
 require "sentry-raven"
 require "bcrypt"
 require "warden"
@@ -38,6 +38,7 @@ require_relative "app/presenters/action_presenter"
 require_relative "app/models"
 require_relative "app/routes"
 require_relative "app/workers"
+require_relative "app/policies"
 
 Stripe.api_key = ENV.fetch('STRIPE_SECRET_KEY')
 WillPaginate.per_page = 20
@@ -54,9 +55,13 @@ module Pushbit
       set :method_override, true
       set :views, 'app/views'
 
-      register Sinatra::AssetPack
-      
-      # trigger the app to sync with behaviors stored on github when 
+      # settings for asset pipeline
+      set :assets_precompile, %w(bundle.js app.scss *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2)
+      set :assets_css_compressor, :sass
+      set :assets_js_compressor, :uglifier
+      set :assets_prefix, %w(assets app/assets)
+
+      # trigger the app to sync with behaviors stored on github when
       # the application starts up
       BehaviorSyncronizationWorker.perform_async
     end
@@ -90,22 +95,25 @@ module Pushbit
     helpers AuthHelpers
     helpers ViewHelpers
     helpers DateHelpers
+    register Sinatra::AssetPipeline
 
     use Rack::Session::Cookie, key: 'session',
-                               secret: ENV.fetch("SESSION_SECRET"),
+                               # secret: ENV.fetch("SESSION_SECRET"),
                                path: '/',
                                expire_after: 60 * 60 * 24 * 365,
                                httponly: true,
                                secure: ENV.fetch("RACK_ENV") != 'development'
+
     use Rack::Deflater
     use Rack::PostBodyContentTypeParser
     use Raven::Rack
-    Raven.configure do |config|
-      config.excluded_exceptions = ['Sinatra::NotFound']
-    end
     use Rack::Flash, accessorize: [:notice, :error, :param]
     use SecureHeaders::Middleware
     include WillPaginate::Sinatra::Helpers
+
+    Raven.configure do |config|
+      config.excluded_exceptions = ['Sinatra::NotFound']
+    end
 
     SecureHeaders::Configuration.default do |config|
       config.hsts = "max-age=#{20.years.to_i}"
@@ -141,80 +149,9 @@ module Pushbit
       config.serialize_into_session { |user| Warden::GitHub::Verifier.dump(user) }
     end
 
-    assets do
-      serve '/js',     from: 'app/assets/js'
-      serve '/css',    from: 'app/assets/css'
-      serve '/images', from: 'app/assets/images'
-
-      # Add all the paths that Less should look in for @import'ed files
-      Less.paths << File.join(App.root, 'app/assets/css')
-
-      css :app, 'css/app.css', ['/css/app.css']
-      css_compression :less
-
-      js :app, 'js/app.js', ['/js/libs/jstz.min.js', '/js/app.js']
-      js_compression :jsmin
-    end
-
     before do
       check_csrf
       set_timezone
-    end
-
-    get '/' do
-      if current_user
-        if current_user.has_active_repos?
-          @repos = current_user.repos.active
-          erb :dashboard
-        else
-          @repos = current_user.repos.active
-          @pull_requests_opened = Trigger.where(kind: 'pull_request_opened', repo_id: @repos.pluck(:id))
-          @pull_requests_merged = Action.where(github_status: 'merged', kind: 'pull_request', repo_id: @repos.pluck(:id))
-
-          if !current_user.onboarding_skipped && (@repos.count < 1 || @pull_requests_opened.count < 1 || @pull_requests_merged.count < 1)
-            erb :onboarding
-          else
-            @tasks = Task.paginate(page: params['page']).where(repo_id: current_user.repos.pluck(:id)).includes(:repo)
-            @actions = Action.paginate(page: params['page']).for_user(current_user).includes(:task, :user)
-            erb :dashboard
-          end
-        end
-      else
-        erb :home
-      end
-    end
-
-    get '/pricing' do
-      @title = "Pricing"
-      erb :pricing
-    end
-
-    get '/security' do
-      @title = "Security"
-      erb :security
-    end
-
-    get '/behaviors' do
-      @behaviors = Behavior.all
-      @title = "Behaviors"
-
-      erb :behaviors
-    end
-
-    get '/subscribe' do
-      authenticate!
-
-      current_user.sync_repositories!
-
-      if current_user.has_access_to_private_repos?
-        @organizations = current_user.client.organizations
-      else
-        @organizations = []
-      end
-
-      flash[:notice] = "Note: During the beta Pushbit works best with projects written in Ruby, other languages coming soon!"
-      @title = "Add Project"
-      erb :subscribe
     end
 
     private

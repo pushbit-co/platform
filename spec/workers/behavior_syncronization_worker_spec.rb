@@ -21,6 +21,10 @@ describe "perform" do
       expect(Pushbit::Behavior.find_by(kind: 'bundler-audit').repository_url).to eql('http://example.com')
       expect(Pushbit::Behavior.find_by(kind: 'bundler-audit').author_name).to eql('Alex')
       expect(Pushbit::Behavior.find_by(kind: 'bundler-update').name).to eql('Bundler Update')
+      expect(Pushbit::Behavior.find_by(kind: 'bundler-update').settings).to eql({
+        "filter"=>{"label"=>"Filter to a specific team", "type"=>"string"},
+        "color"=>{"label"=>"Choose a color", "type"=>"string", "options"=>["red", "green", "blue"]}
+      })
     end
   end
 

@@ -1,66 +1,86 @@
-postgres:
-  build: ./build/postgres/
+database:
+  image: convox/postgres
   ports:
-    - "5432:5432"
+    - 5432:5432
   volumes:
-    - /var/lib/docker/data/postgres:/var/lib/postgresql
+    - /var/lib/postgresql/data
 
 redis:
-  image: redis
-  volumes:
-    - /var/lib/docker/pushbit_data/redis:/data
+  image: convox/redis
   ports:
-    - "6379:6379"
-
-box:
-  image: busybox
-  volumes:
-    - /box
+    - 6379
 
 platform:
-  build: ./
+  build: .
   command: ./script/app.sh
   volumes:
-    - ./:/app
-    - ./docker_cert_path:/docker_cert_path
-  volumes_from:
-    - box
+    - /var/run/docker.sock:/var/run/docker.sock
+  labels:
+      - convox.port.443.protocol=tls
+      - convox.port.443.proxy=true
   ports:
-    - "8080:8080"
+      - 5000:5000
+      - 80:4000
+      - 443:4001
   links:
-    - postgres
+    - database
     - redis
   env_file: .env
   environment:
-    RACK_ENV: development
-    DATABASE_NAME: development
-    DATABASE_USERNAME: postgres
-    DATABASE_PASSWORD: postgres
-    DATABASE_HOST: postgres
-    DATABASE_NAME: development
-    BUNDLE_PATH: /box
-    DOCKER_CERT_PATH: /docker_cert_path
-    REDIS_URL: redis://redis:6379
+    - RACK_ENV
+    - STRIPE_SECRET_KEY
+    - STRIPE_PUBLISHABLE_KEY
+    - SMTP_HOST
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
+    - SMTP_DOMAIN
+    - APP_URL
+    - DOCKER_URL
+    - GITHUB_TOKEN
+    - DOCKER_USERNAME
+    - DOCKER_EMAIL
+    - DOCKER_PASSWORD
+    - STRIPE_WEBHOOK_PASSWORD
+    - GITHUB_CLIENT_ID
+    - GITHUB_CLIENT_SECRET
+    - GITHUB_WEBHOOK_TOKEN
+    - GITHUB_BOT_LOGIN
+    - AES_KEY
+    - HMAC_KEY
+    - WARDEN_GITHUB_VERIFIER_SECRET
+    - SESSION_SECRET
+    - BASIC_AUTH_SECRET
 
 workers:
-  build: ./
+  build: .
   command: ./script/workers.sh
   volumes:
-    - ./:/app
-    - ./docker_cert_path:/docker_cert_path
-  volumes_from:
-    - box
+    - /var/run/docker.sock:/var/run/docker.sock
   links:
-    - postgres
+    - database
     - redis
   env_file: .env
   environment:
-    RACK_ENV: development
-    DATABASE_NAME: development
-    DATABASE_USERNAME: postgres
-    DATABASE_PASSWORD: postgres
-    DATABASE_HOST: postgres
-    DATABASE_NAME: development
-    BUNDLE_PATH: /box
-    DOCKER_CERT_PATH: /docker_cert_path
-    REDIS_URL: redis://redis:6379
+    - RACK_ENV
+    - STRIPE_SECRET_KEY
+    - STRIPE_PUBLISHABLE_KEY
+    - SMTP_HOST
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
+    - SMTP_DOMAIN
+    - APP_URL
+    - DOCKER_URL
+    - GITHUB_TOKEN
+    - DOCKER_USERNAME
+    - DOCKER_EMAIL
+    - DOCKER_PASSWORD
+    - STRIPE_WEBHOOK_PASSWORD
+    - GITHUB_CLIENT_ID
+    - GITHUB_CLIENT_SECRET
+    - GITHUB_WEBHOOK_TOKEN
+    - GITHUB_BOT_LOGIN
+    - AES_KEY
+    - HMAC_KEY
+    - WARDEN_GITHUB_VERIFIER_SECRET
+    - SESSION_SECRET
+    - BASIC_AUTH_SECRET

@@ -1,32 +1,18 @@
-<h1>
-  <%= @repo.github_owner %>/<a href="/repos/<%= @repo.github_full_name %>"><%= @repo.name %></a>
-</h1>
+<%= partial :repo_header, locals: {repo: @repo} %>
 
-<ul class="subtext">
-  <li><a href="<%= "/repos/#{@repo.github_full_name}" %>">Actions</a></li>
-  <li><a href="<%= "https://github.com/#{@repo.github_full_name}" %>" target="_blank">Source</a></li>
-  <% if ['awsmsrc', 'tommoor'].include? current_user.login %>
-  <li><a href="<%= "/repos/#{@repo.github_full_name}/trigger" %>">Trigger  Build</a></li>
-  <% end %>
-</ul>
-  
-<div id="settings">
-  <form action="/repos/<%= @repo.github_full_name %>" method="POST">
-    <input type="hidden" name="_method" value="PUT">
-  
-    <div class="row">
-    <% behavior_ids = @repo.behaviors.pluck(:id) %>
-    <% @behaviors.each do |behavior| %>
-      <label class="col-md-4">
-        <section>
-          <h3><input type="checkbox" name="behavior_ids[]" value="<%= behavior.id %>" <%= behavior_ids.include?(behavior.id) ? "checked" : "" %> <%= behavior.active ? "" : "disabled" %> /> <%= behavior.name %></h3>
-          <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
-          <p><%= behavior.description %></p>
-        </section>
-      </label>
-    <% end %>
-    </div>
-
-    <input type="submit" value="Save Settings" class="btn btn-primary" />
-  </form>
+<div class="settings row">
+  <nav class="col-md-2 sidebar">
+    <%= partial :repo_menu, locals: {repo: @repo} %>
+  </nav>
+  <div class="col-md-10">
+    <h2>Disconnect</h2>
+    <p>
+      This will remove the project from pushbit, stopping the bot from running against
+      this project and halting all future billing. You can connect this project again
+      at any time and your current behaviors and settings will be retained!
+    </p>
+    <form action="/repos/<%= @repo.github_full_name %>/unsubscribe" method="POST">
+      <input type="submit" value="Disconnect" class="btn btn-primary" />
+    </form>
+  </div>
 </div>
