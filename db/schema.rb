@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20160814065913) do
 
   add_index "owners", ["github_id"], name: "index_owners_on_github_id", unique: true, using: :btree
 
-  create_table "repo_behaviors", force: :cascade do |t|
+  create_table "repo_behaviors", id: false, force: :cascade do |t|
     t.integer "behavior_id"
     t.integer "repo_id"
   end

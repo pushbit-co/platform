@@ -2,9 +2,12 @@ module Pushbit
   class CloneRepoWorker < BaseWorker
 
     def work(id, params=nil, image="pushbit/base")
+      puts "IDENT 1"
       trigger = Trigger.find(id)
+      puts "IDENT 2"
       volume = Docker::Volume.create(volume_name(trigger))
 
+      puts "IDENT 3"
       head_sha = trigger.payload ? Payload.new(trigger.payload).head_sha : nil
       container = Docker::Container.create({
         "Image" => image,
@@ -28,12 +31,14 @@ module Pushbit
         }
       })
 
+      puts "IDENT 4"
       container.start
       container.attach do |stream, chunk|
         line = "#{stream}: #{chunk}"
         logger.info "Clone for trigger: #{trigger.id}: #{line}"
       end
       exitcode = container.json['State']['ExitCode']
+      puts "IDENT 5"
 
       GithubEventWorker.perform_async(id, params)
     end
