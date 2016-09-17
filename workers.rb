@@ -8,6 +8,7 @@ require "sentry-raven"
 require "octokit"
 require "bcrypt"
 require "pony"
+require "parallel"
 
 require_relative "lib/mailer"
 require_relative "lib/security"

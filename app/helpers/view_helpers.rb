@@ -2,7 +2,8 @@ module Pushbit
   module ViewHelpers
 
     def nav_link(path, title)
-      className = request.path_info.start_with?(path) ? 'active' : ''
+      puts request.path_info
+      className = request.path_info == path ? 'active' : ''
       "<a href=\"#{path}\" class=\"#{className}\">#{title}</a>"
     end
 

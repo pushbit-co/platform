@@ -19,6 +19,8 @@ machine:
 dependencies:
   override:
     - bundle
+    - curl -Ls https://install.convox.com/linux.zip > convox.zip
+    - unzip convox.zip
 
 database:
   override:
@@ -32,7 +34,5 @@ deployment:
   production:
     branch: production
     commands:
-      - docker info
-      - docker build -t pushbit/app .
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push pushbit/app
+      - ./convox login $CONVOX_DOMAIN --password=$CONVOX_PASSWORD
+      - ./convox deploy

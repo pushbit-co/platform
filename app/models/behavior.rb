@@ -12,6 +12,12 @@ module Pushbit
     has_many :tasks
     has_many :discoveries, through: :tasks
 
+    def execute!(trigger, payload)
+      logger.info "execution #{trigger.id} for #{trigger.repo.name}"
+      sleep 1
+      logger.info "execution complete #{trigger.id} for #{trigger.repo.name}"
+    end
+
     def self.active
       where(active: true)
     end
