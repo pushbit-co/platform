@@ -15,6 +15,6 @@ RUN bundle install
 WORKDIR /app
 ADD . /app
 
-ADD ./package.json ./package.json
-RUN npm install
-RUN npm run build
+# ADD ./package.json ./package.json
+# RUN npm install
+# RUN npm run build

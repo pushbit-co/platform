@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20160814065913) do
     t.string  "icon_url"
     t.string  "checkout"
     t.string  "keywords",        default: [], array: true
-    t.json    "settings"
+    t.string  "settings"
   end
 
   add_index "behaviors", ["kind"], name: "index_behaviors_on_kind", unique: true, using: :btree
@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(version: 20160814065913) do
     t.integer  "triggered_by"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.json     "payload"
+    t.string   "payload"
   end
 
   add_index "triggers", ["repo_id"], name: "index_triggers_on_repo_id", using: :btree

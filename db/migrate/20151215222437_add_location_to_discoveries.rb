@@ -7,6 +7,6 @@ class AddLocationToDiscoveries < ActiveRecord::Migration
     
     add_column :repos, :default_branch, :string
     
-    add_column :triggers, :payload, :json
+    add_column :triggers, :payload, :string
   end
 end

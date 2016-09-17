@@ -17,8 +17,12 @@ development:
   connect_retry_timeout: 1
 
 test:
-  <<: *default
-  database: test
+  adapter: sqlite3
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+  database: ":memory:"
+  verbosity: quiet
 
 ci:
   database: circle_ruby_test
