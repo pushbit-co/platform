@@ -13,6 +13,7 @@ require "parallel"
 require_relative "lib/mailer"
 require_relative "lib/security"
 require_relative "lib/mailer_error"
+require_relative "lib/dockertron"
 require_relative "app/models"
 require_relative "app/workers"
 
