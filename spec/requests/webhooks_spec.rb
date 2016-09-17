@@ -14,7 +14,6 @@ describe "github" do
         header "X-Github-Event", "ping"
         post_with_gh_signature '/webhooks/github', { zen: true }.to_json
         expect(last_response.status).to eql(204)
-        expect(Pushbit::CloneRepoWorker.jobs.length).to eql(0)
       end
     end
 
@@ -23,10 +22,12 @@ describe "github" do
       let!(:repo) { create(:repo, github_id: 35_129_377, github_full_name: "baxterthehacker/public-repo") }
 
       it "should respond with successful create" do
+        t = double
         header "X-Github-Event", "pull_request"
+        expect(Pushbit::Trigger).to receive(:create!).and_return(t)
+        expect(t).to receive(:execute!).and_return(true)
         post_with_gh_signature '/webhooks/github', event
         expect(last_response.status).to eql(200)
-        expect(Pushbit::CloneRepoWorker.jobs.length).to eql(1)
       end
     end
 
