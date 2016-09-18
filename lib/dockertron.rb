@@ -25,7 +25,7 @@ module Pushbit
         ],
         "Volumes" => {
           "/pushbit/code" => {}
-        }, 
+        },
         "HostConfig" => {
           "Binds" => [
             "#{trigger.src_volume}:/pushbit/code:ro"
@@ -50,7 +50,6 @@ module Pushbit
         Task.where(id: task.id).update_all(["logs = logs || ?", line])
       end
 
-      puts "CONTAINER JSON: #{container.json}"
       exitcode = container.json['State']['ExitCode']
       task.completed_at = Time.now
       task.status = exitcode == 0 ? :success : :failed
@@ -63,4 +62,3 @@ module Pushbit
     end
   end
 end
-
