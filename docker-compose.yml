@@ -2,6 +2,9 @@ database:
   image: postgres:9.5
   ports:
     - "5432:5432"
+  environment:
+    - "POSTGRES_USER=postgres"
+    - "POSTGRES_PASSWORD=password"
 
 redis:
   image: redis
@@ -19,6 +22,7 @@ platform:
   build: .
   command: ./script/app.sh
   volumes:
+    - ./:/app
     - /var/run/docker.sock:/var/run/docker.sock
   volumes_from:
     - box

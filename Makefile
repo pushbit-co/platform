@@ -3,7 +3,7 @@
 all: start
 
 start:
-	convox start --no-sync
+	docker-compose up
 
 test:
-	./script/test.sh
+	docker-compose run platform bundle exec rspec
