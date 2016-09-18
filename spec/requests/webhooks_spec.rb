@@ -12,6 +12,7 @@ describe "github" do
     context "with ping event" do
       it "should respond with empty success" do
         header "X-Github-Event", "ping"
+        expect(Pushbit::Trigger).to_not receive(:create!)
         post_with_gh_signature '/webhooks/github', { zen: true }.to_json
         expect(last_response.status).to eql(204)
       end
@@ -31,16 +32,16 @@ describe "github" do
       end
     end
 
-    context "with pull_request event from ourselves" do
+    context "with pull_request event created by pushbit" do
       let(:event) { JSON.parse File.read('spec/fixtures/github/pull_request.json') }
 
       it "should respond with empty success" do
         event['sender']['login'] = ENV.fetch('GITHUB_BOT_LOGIN')
 
         header "X-Github-Event", "pull_request"
+        expect(Pushbit::Trigger).to_not receive(:create!)
         post_with_gh_signature '/webhooks/github', event.to_json
         expect(last_response.status).to eql(204)
-        expect(Pushbit::CloneRepoWorker.jobs.length).to eql(0)
       end
     end
   end
@@ -48,8 +49,10 @@ end
 
 describe "cron" do
   it "should add cron event worker job" do
+    t = double
+    expect(Pushbit::Trigger).to receive(:create!).and_return(t)
+    expect(t).to receive(:execute!).and_return(true)
     post '/webhooks/cron'
     expect(last_response.status).to eql(200)
-    expect(Pushbit::CronEventWorker.jobs.length).to eql(1)
   end
 end

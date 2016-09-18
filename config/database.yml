@@ -17,12 +17,14 @@ development:
   connect_retry_timeout: 1
 
 test:
-  adapter: sqlite3
-  encoding: utf8
-  pool: 5
+  adapter:  postgresql
+  database: test 
+  username: postgres 
+  password: password 
+  host: database 
+  pool: 50
   timeout: 5000
-  database: ":memory:"
-  verbosity: quiet
+  connect_retry_timeout: 1
 
 ci:
   database: circle_ruby_test

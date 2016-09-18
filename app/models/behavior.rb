@@ -12,6 +12,16 @@ module Pushbit
     has_many :tasks
     has_many :discoveries, through: :tasks
 
+    def settings
+      return nil unless self[:settings]
+      JSON.parse self[:settings]
+    end
+
+    def settings=(val)
+      return self[:settings] = val unless val
+      self[:settings] = val.to_json
+    end
+
     def execute!(trigger, payload)
       Octokit.auto_paginate = true
 
