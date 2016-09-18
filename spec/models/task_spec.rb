@@ -29,24 +29,6 @@ describe Pushbit::Task do
     end
   end
 
-  describe "has_unactioned_discoveries" do
-    let(:action) { create(:action, kind: 'issue', task_id: task.id, body: "test") }
-
-    it "returns false when there are no discoveries" do
-      expect(task.has_unactioned_discoveries).to eql(false)
-    end
-
-    it "returns false when there are only actioned discoveries" do
-      create(:discovery, kind: 'security update', task_id: task.id, identifier: 'unique-123', action: action)
-      expect(task.has_unactioned_discoveries).to eql(false)
-    end
-
-    it "returns true when there are discoveries without actions" do
-      create(:discovery, kind: 'security update', task_id: task.id, identifier: 'unique-123')
-      expect(task.has_unactioned_discoveries).to eql(true)
-    end
-  end
-
   describe "triggered_by_login" do
     it "returns organization by default" do
       expect(task.triggered_by_login).to eql('pushbit-co')
@@ -64,13 +46,6 @@ describe Pushbit::Task do
         .to_return(status: 200, body: "[{\"name\": \"enhancement\"}]", headers: { "Content-Type" => "application/json" })
 
       expect(task.labels).to eql(['pushbit'])
-    end
-
-    it "returns bug label when available on repo" do
-      stub_request(:get, "https://api.github.com/repos/baxterthehacker/public-repo/labels?per_page=100")
-        .to_return(status: 200, body: "[{\"name\": \"bug\"}]", headers: { "Content-Type" => "application/json" })
-
-      expect(task.labels).to eql(%w(bug pushbit))
     end
   end
 end

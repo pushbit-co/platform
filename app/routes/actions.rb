@@ -25,13 +25,8 @@ module Pushbit
       task = Task.find(params['task_id'])
       repo = task.repo
 
-      begin
-        ac = ActionCreator.new(task, repo)
-        action = ac.send(params[:type], params)
-        action.save!
-      rescue
-        status 400
-      end
+      ac = ActionCreator.new(repo, task)
+      action = ac.send(params['kind'], params)
 
       status 201
       json action: action

@@ -11,15 +11,17 @@ module Pushbit
       new(repo, task).issue(data)
     end
 
-    def self.pull_request(repo, task, data)
-      new(repo, task).pull_request(data)
+    def self.pull_request(repo, task, params)
+      new(repo, task).pull_request(params)
     end
 
-    def issue(repo, task, data)
-
+    def issue(params)
+      # TODO
     end
 
-    def pull_request(repo, task, params)
+    def pull_request(params)
+      repo = @repo
+      task = @task
       title = params[:title]
       body = params[:body]
 
@@ -42,6 +44,7 @@ module Pushbit
         github_id: response.id,
         github_url: response.html_url
       }, without_protection: true)
+      action.save!
       action
     rescue Octokit::UnprocessableEntity => e
       unless e.message.match 'A pull request already exists'
