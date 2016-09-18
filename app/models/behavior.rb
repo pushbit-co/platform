@@ -10,7 +10,6 @@ module Pushbit
 
     has_many :repos, through: :repo_behaviors
     has_many :tasks
-    has_many :discoveries, through: :tasks
 
     def settings
       return nil unless self[:settings]

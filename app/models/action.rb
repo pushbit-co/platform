@@ -8,8 +8,6 @@ module Pushbit
     belongs_to :task
     belongs_to :user
 
-    has_many :discoveries
-
     validates :kind, presence: true, inclusion: %w(signedup subscribe unsubscribe issue pull_request comment line_comment message)
 
     def self.for_user(user)
