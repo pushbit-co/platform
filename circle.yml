@@ -28,7 +28,7 @@ database:
 
 test:
   override:
-    - RACK_ENV=ci bundle exec rspec --format progress
+    - RACK_ENV=ci make test
 
 deployment:
   production:
