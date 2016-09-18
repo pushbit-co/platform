@@ -19,6 +19,7 @@ module Pushbit
       self.volume = Docker::Volume.create(volume_name(trigger))
 
       head_sha = trigger.payload ? Payload.new(trigger.payload).head_sha : nil
+      Docker::Image.create('fromImage' => 'pushbit/base:latest')
       container = Docker::Container.create({
         "Image" => "pushbit/base",
         "Env" => [
