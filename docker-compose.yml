@@ -29,7 +29,6 @@ platform:
   links:
     - database
     - redis
-  env_file: .env
   environment:
     - RACK_ENV
     - STRIPE_SECRET_KEY
@@ -50,6 +49,7 @@ platform:
     - WARDEN_GITHUB_VERIFIER_SECRET
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
+    - REDIS_URL
 
 workers:
   build: .
@@ -59,7 +59,6 @@ workers:
   links:
     - database
     - redis
-  env_file: .env
   environment:
     - RACK_ENV
     - STRIPE_SECRET_KEY
@@ -80,3 +79,4 @@ workers:
     - WARDEN_GITHUB_VERIFIER_SECRET
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
+    - REDIS_URL
