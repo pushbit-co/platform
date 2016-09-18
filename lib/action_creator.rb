@@ -7,8 +7,8 @@ module Pushbit
       @task = task
     end
 
-    def self.issue(repo, task, data)
-      new(repo, task).issue(data)
+    def self.issue(repo, task, params)
+      new(repo, task).issue(params)
     end
 
     def self.pull_request(repo, task, params)
@@ -16,7 +16,28 @@ module Pushbit
     end
 
     def issue(params)
-      # TODO
+      task = @task
+      title = params[:title]
+      body = params[:body]
+
+      response = client.create_issue(
+        task.repo.github_full_name,
+        title,
+        body,
+        labels: task.labels.join(",")
+      )
+
+      action = Action.create!({
+        kind: 'issue',
+        title: title,
+        body: body,
+        repo_id: task.repo_id,
+        task_id: task.id,
+        github_id: response.id,
+        github_url: response.html_url
+      }, without_protection: true)
+
+      action
     end
 
     def pull_request(params)
@@ -24,6 +45,16 @@ module Pushbit
       task = @task
       title = params[:title]
       body = params[:body]
+
+      # check if the branch we're basing off still has an open
+      # pull request - if not, then no more work is needed.
+      if task.trigger.kind == 'pull_request_opened'
+        pr = client.pull_request(task.repo.github_full_name, task.trigger.payload['number'])
+        if pr.state != 'open'
+          logger.info "Pull request #{task.trigger.payload['number']} no longer open"
+          return
+        end
+      end
 
       response = client.create_pull_request(
         repo.github_full_name,
@@ -44,7 +75,7 @@ module Pushbit
         github_id: response.id,
         github_url: response.html_url
       }, without_protection: true)
-      action.save!
+      
       action
     rescue Octokit::UnprocessableEntity => e
       unless e.message.match 'A pull request already exists'
