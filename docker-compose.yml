@@ -1,19 +1,23 @@
 database:
-  image: convox/postgres
+  image: postgres:9.5
   ports:
-    - 5432:5432
-  volumes:
-    - /var/lib/postgresql/data
+    - "5432:5432"
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: password
 
 redis:
-  image: convox/redis
+  image: redis
+  volumes:
+    - /var/lib/docker/data/redis:/data
   ports:
-    - 6379
+    - "6379:6379"
 
 platform:
   build: .
   command: ./script/app.sh
   volumes:
+    - ./:/app
     - /var/run/docker.sock:/var/run/docker.sock
   labels:
       - convox.port.443.protocol=tls
@@ -25,7 +29,6 @@ platform:
   links:
     - database
     - redis
-  env_file: .env
   environment:
     - RACK_ENV
     - STRIPE_SECRET_KEY
@@ -46,6 +49,7 @@ platform:
     - WARDEN_GITHUB_VERIFIER_SECRET
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
+    - REDIS_URL
 
 workers:
   build: .
@@ -55,7 +59,6 @@ workers:
   links:
     - database
     - redis
-  env_file: .env
   environment:
     - RACK_ENV
     - STRIPE_SECRET_KEY
@@ -76,3 +79,4 @@ workers:
     - WARDEN_GITHUB_VERIFIER_SECRET
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
+    - REDIS_URL
