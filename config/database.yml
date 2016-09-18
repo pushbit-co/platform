@@ -1,28 +1,21 @@
 default: &default
-  adapter:  postgresql
-  url: <%= ENV["DATABASE_URL"]  %>
+  adapter: postgresql
+  host: database
+  username: postgres
+  port: 5432
   pool: 50
   timeout: 5000
-
-staging:
-  <<: *default
-  pool: 50
 
 production:
   url: <%= ENV["DATABASE_URL"]  %>
-  pool: 50
 
 development:
-  url: <%= ENV["DATABASE_URL"]  %>
-  connect_retry_timeout: 1
+  <<: *default
+  database: app
 
 test:
-  adapter: sqlite3
-  encoding: utf8
-  pool: 5
-  timeout: 5000
-  database: ":memory:"
-  verbosity: quiet
+  <<: *default
+  database: pushbit-test
 
 ci:
   database: circle_ruby_test
