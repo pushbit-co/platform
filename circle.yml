@@ -28,7 +28,7 @@ database:
 
 test:
   override:
-    - RACK_ENV=ci make test
+    - touch .env && RACK_ENV=ci make test
 
 deployment:
   production:
