@@ -10,17 +10,6 @@ module Pushbit
 
     has_many :repos, through: :repo_behaviors
     has_many :tasks
-    has_many :discoveries, through: :tasks
-
-    def settings
-      return nil unless self[:settings]
-      JSON.parse self[:settings]
-    end
-
-    def settings=(val)
-      return self[:settings] = val unless val
-      self[:settings] = val.to_json
-    end
 
     def execute!(trigger, payload)
       Octokit.auto_paginate = true
@@ -31,22 +20,22 @@ module Pushbit
       changed_files = []
       # we only read changed files for PR's, perhaps push in the future
       if payload.pull_request_number
-	changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
+        changed_files = client.pull_request_files(repo.github_full_name, payload.pull_request_number)
       end
 
       if matches_files?(changed_files) || !changed_files
-	task = Task.create!({
-	  behavior: self,
-	  repo: repo,
-	  trigger: trigger,
-	  commit: payload.head_sha
-	}, without_protection: true)
+        task = Task.create!({
+          behavior: self,
+          repo: repo,
+          trigger: trigger,
+          commit: payload.head_sha
+        }, without_protection: true)
 
-	# TODO: we can store payload against trigger and avoid passing head_sha
-	task.execute!(changed_files, payload.head_sha)
-	logger.info "Starting task #{task.id} (#{name}) for #{repo.github_full_name}"
+      	# TODO: we can store payload against trigger and avoid passing head_sha
+        task.execute!(changed_files, payload.head_sha)
+        logger.info "Starting task #{task.id} (#{name}) for #{repo.github_full_name}"
       else
-	logger.info "#{name} did not match changed files"
+  	     logger.info "#{name} did not match changed files"
       end
 
       logger.info "execution complete #{trigger.id} for #{trigger.repo.name}"
@@ -71,20 +60,12 @@ module Pushbit
       return true if !files || files.length == 0
 
       changed_files.each do |changed|
-	files.each do |pattern|
-	  run = true if changed['filename'].match(pattern)
-	end
+        files.each do |pattern|
+      	  run = true if changed['filename'].match(pattern)
+        end
       end
 
       run
-    end
-
-    def negative?
-      tone == 'negative'
-    end
-
-    def positive?
-      tone == 'positive'
     end
   end
 end

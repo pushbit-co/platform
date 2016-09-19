@@ -29,6 +29,7 @@ require_relative "lib/mailer.rb"
 require_relative "lib/mailer_error"
 require_relative "lib/authorization_error"
 require_relative "lib/authentication_error"
+require_relative "lib/action_creator.rb"
 
 require_relative "app/helpers/auth_helpers"
 require_relative "app/helpers/view_helpers"

@@ -14,7 +14,6 @@ module Pushbit
   autoload :RepoBehavior, "app/models/repo_behavior"
   autoload :Trigger, "app/models/trigger"
   autoload :Action, "app/models/action"
-  autoload :Discovery, "app/models/discovery"
   autoload :Task, "app/models/task"
   autoload :Repo, "app/models/repo"
   autoload :Payload, "app/models/payload"
