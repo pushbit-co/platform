@@ -1,14 +1,16 @@
 module Pushbit
-  class DockerContainerWorker < BaseWorker
-    def work(task, changed_files, head_sha)
-      logger.info "Running Task: #{id}"
+  class Dockertron
+    def self.run_task!(task, changed_files, head_sha)
+      changed_files = changed_files.map { |f| f['filename'] }
+      puts "Running Task: #{task.id}"
       task.logs = ""
       repo = task.repo
       image = task.image
       trigger = task.trigger
 
-      logger.info "Using image: #{image.id})"
+      puts "Using image: #{image.id})"
 
+      Docker::Image.create('fromImage' => image)
       container = Docker::Container.create({
         "Image" => image.id,
         "Env" => [
@@ -18,13 +20,13 @@ module Pushbit
           "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
           "BASE_BRANCH=#{head_sha || repo.default_branch || 'master'}",
           "CHANGED_FILES=#{changed_files.join(' ')}",
-          "TASK_ID=#{id}",
+          "TASK_ID=#{task.id}",
           "ACCESS_TOKEN=#{task.access_token}",
           "APP_URL=#{ENV.fetch('APP_URL')}"
         ],
         "Volumes" => {
           "/pushbit/code" => {}
-        }, 
+        },
         "HostConfig" => {
           "Binds" => [
             "#{trigger.src_volume}:/pushbit/code:ro"
@@ -45,16 +47,15 @@ module Pushbit
 
       container.attach do |stream, chunk|
         line = "#{stream}: #{chunk}"
-        logger.info "Task: #{task.id}: #{line}"
+        puts "Task: #{task.id}: #{line}"
         Task.where(id: task.id).update_all(["logs = logs || ?", line])
       end
 
-      logger.info "CONTAINER JSON: #{container.json}"
       exitcode = container.json['State']['ExitCode']
       task.completed_at = Time.now
       task.status = exitcode == 0 ? :success : :failed
-      task.complete!
-
+      task.save!
+      container.remove
     rescue Docker::Error::NotFoundError => e
       task.update!(status: :failed,
                    reason: e.message)

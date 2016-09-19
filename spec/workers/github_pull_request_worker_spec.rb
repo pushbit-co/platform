@@ -1,9 +1,11 @@
 require 'spec_helper.rb'
 
 describe "perform" do
-  let!(:worker) { Pushbit::GithubPullRequestWorker.new }
+  #let!(:worker) { Pushbit::GithubPullRequestWorker.new }
   let!(:repo) { create(:repo) }
   let(:behavior) { create(:behavior, kind: 'rubocop', tone: 'negative', discovers: 'style issue') }
+
+  before { skip("Disabled whilst converting") }
 
   context "with manual trigger" do
     let(:trigger) { create(:trigger, repo: repo) }

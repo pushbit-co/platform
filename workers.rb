@@ -8,10 +8,12 @@ require "sentry-raven"
 require "octokit"
 require "bcrypt"
 require "pony"
+require "parallel"
 
 require_relative "lib/mailer"
 require_relative "lib/security"
 require_relative "lib/mailer_error"
+require_relative "lib/dockertron"
 require_relative "app/models"
 require_relative "app/workers"
 
@@ -30,14 +32,6 @@ Pony.options = {
     enable_starttls_auto: true
   }
 }
-
-#Docker.authenticate!({
-#                       'username' => ENV.fetch("DOCKER_USERNAME"),
-#                       'password' => ENV.fetch("DOCKER_PASSWORD"),
-#                       'email' => ENV.fetch("DOCKER_EMAIL")
-#                     })
-#
-#Docker.options[:read_timeout] = 3600
 
 unless %w(test ci).include? ENV["RACK_ENV"]
   $redis = Redis.new(url: ENV.fetch('REDIS_URL'))

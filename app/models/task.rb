@@ -54,14 +54,8 @@ module Pushbit
       output << "pushbit"
     end
 
-    def complete!
-      save!
-      TaskCompletedWorker.perform_async(id)
-    end
-
     def execute!(changed_files = [], head_sha = nil)
-      changed_files = changed_files.map { |f| f['filename'] }
-      DockerContainerWorker.perform_async(id, changed_files, head_sha)
+      Dockertron.run_task!(self, changed_files, head_sha)
     end
 
     def src_volume

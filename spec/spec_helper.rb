@@ -1,6 +1,3 @@
-# for autoload paths
-$LOAD_PATH << File.expand_path('../../', __FILE__)
-
 require 'rack/test'
 require 'rspec'
 require 'ostruct'
@@ -13,6 +10,9 @@ require 'factory_girl'
 require 'faker'
 require 'sidekiq/testing'
 require 'pony'
+require "sinatra/activerecord"
+require "protected_attributes"
+require "sequential"
 
 require_relative 'support/database_cleaner'
 require_relative 'support/route_helpers'
@@ -21,7 +21,8 @@ require_relative '../app'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each { |f| require f }
 
-ENV['RACK_ENV'] = 'test'
+#set after db connection so ci can connect
+ENV["RACK_ENV"] = "test"
 
 module RSpecMixin
   include Rack::Test::Methods

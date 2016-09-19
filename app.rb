@@ -24,6 +24,7 @@ require "will_paginate/active_record"
 require_relative "lib/security.rb"
 require_relative "lib/cashier.rb"
 require_relative "lib/activator.rb"
+require_relative "lib/dockertron.rb"
 require_relative "lib/mailer.rb"
 require_relative "lib/mailer_error"
 require_relative "lib/authorization_error"
@@ -63,7 +64,7 @@ module Pushbit
 
       # trigger the app to sync with behaviors stored on github when
       # the application starts up
-      BehaviorSyncronizationWorker.perform_async
+      # BehaviorSyncronizationWorker.perform_async
     end
 
     Warden::Strategies.add(:basic) do

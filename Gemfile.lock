@@ -35,13 +35,13 @@ GEM
     dante (0.2.0)
     database_cleaner (1.5.1)
     diff-lcs (1.2.5)
-    docker-api (1.26.0)
+    docker-api (1.31.0)
       excon (>= 0.38.0)
       json
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.0.9.1)
-    excon (0.45.4)
+    excon (0.52.0)
     execjs (2.7.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -74,6 +74,7 @@ GEM
     netrc (0.11.0)
     octokit (4.2.0)
       sawyer (~> 0.6.0, >= 0.5.3)
+    parallel (1.9.0)
     pg (0.18.4)
     pony (1.11)
       mail (>= 2.0)
@@ -202,6 +203,7 @@ DEPENDENCIES
   faker
   less
   mock_redis
+  parallel
   pg
   pony
   protected_attributes
@@ -230,4 +232,4 @@ DEPENDENCIES
   will_paginate (~> 3.0.6)
 
 BUNDLED WITH
-   1.11.2
+   1.12.5
