@@ -10,7 +10,7 @@ module Pushbit
 
       puts "Using image: #{image.id})"
 
-      Docker::Image.create('fromImage' => image)
+      Docker::Image.create('fromImage' => image.id)
       container = Docker::Container.create({
         "Image" => image.id,
         "Env" => [
