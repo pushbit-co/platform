@@ -89,6 +89,13 @@ module Pushbit
     def line_comment(params)
       task = @task
 
+      action = Action.find_by({
+        identifier: params["identifier"], 
+        trigger_id: task.trigger_id
+      })
+
+      return action if action.present?
+
       response = client.create_pull_request_comment(
         task.repo.github_full_name,
         task.trigger.payload["number"],
@@ -98,19 +105,16 @@ module Pushbit
         params["line"]
       )
 
-      action = Action.find_or_create_by!(identifier: params["identifier"], trigger_id: task.trigger_id) do |a|
-        a.assign_attributes({
-          kind: 'line_comment',
-          body: params[:body],
-          repo_id: task.repo_id,
-          task_id: task.id,
-          trigger_id: task.trigger_id,
-          github_id: response.id,
-          github_url: response.html_url
-        })
-      end
-
-      action
+      Action.create!({
+        identifier: params["identifier"], 
+        trigger_id: task.trigger_id,
+        kind: 'line_comment',
+        body: params[:body],
+        repo_id: task.repo_id,
+        task_id: task.id,
+        github_id: response.id,
+        github_url: response.html_url
+      })
     end
 
     def client

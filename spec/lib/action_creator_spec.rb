@@ -62,5 +62,36 @@ describe Pushbit::ActionCreator do
       expect(action.body).to eql(comment)
       expect(Pushbit::Action.count).to eql(1)
     end
+
+    context "when an action has already been created" do
+      let(:identifier) { "unique" }
+
+      before do
+        Pushbit::Action.create!({
+          trigger_id: trigger.id,
+          identifier: identifier,
+          kind: "line_comment",
+        })
+      end
+
+      it "does not create a second action" do
+        body = JSON.parse File.read('spec/fixtures/github/webmock/pull_request_changed_files_ruby.json')
+        body.first['patch'] = File.read('spec/fixtures/patch.diff')
+
+        assert_not_requested :get, "https://api.github.com/repos/#{repo.github_full_name}/pulls/#{trigger.payload['number']}/files?per_page=100" 
+        assert_not_requested :post, "https://api.github.com/repos/#{repo.github_full_name}/pulls/#{trigger.payload['number']}/comments"
+
+        params = {
+          "identifier" => identifier, 
+          "trigger_id" => trigger.id, 
+          "task_id" => task.id, 
+          "body" => comment, 
+          "kind" => 'line_comment'
+        }
+
+        Pushbit::ActionCreator.line_comment(repo, task, params)
+        expect(Pushbit::Action.count).to eql(1)
+      end
+    end
   end
 end
