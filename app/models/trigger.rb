@@ -18,7 +18,7 @@ module Pushbit
     end
 
     def execute!(params = nil)
-      TriggerWorker.perform_async(id, params:params)
+      TriggerWorker.perform_async(id, params)
     end
   end
 end

@@ -50,7 +50,6 @@ platform:
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
     - REDIS_URL
-    - ECR_REPO
 
 workers:
   build: .
@@ -82,4 +81,3 @@ workers:
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
     - REDIS_URL
-    - ECR_REPO

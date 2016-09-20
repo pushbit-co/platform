@@ -92,10 +92,10 @@ module Pushbit
       response = client.create_pull_request_comment(
         task.repo.github_full_name,
         task.trigger.payload["number"],
-        params[:body],
+        params["body"],
         task.trigger.payload["pull_request"]["head"]["sha"],
-        params[:filename],
-        params[:patch_position]
+        params["path"],
+        params["line"]
       )
 
       action = Action.create!({
