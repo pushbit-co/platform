@@ -1,7 +1,6 @@
 #!/bin/bash -e
 if [ $RACK_ENV = "development" ]
 then
-  sleep 5
   bundle check || bundle install
   bundle exec rake db:migrate
 fi

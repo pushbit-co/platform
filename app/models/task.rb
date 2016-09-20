@@ -11,7 +11,6 @@ module Pushbit
     before_update :set_duration
 
     has_many :actions
-    has_many :discoveries
 
     validates :repo, presence: true
     validates :trigger, presence: true
@@ -19,16 +18,8 @@ module Pushbit
     validates :status, inclusion: %w(pending created running failed success)
     validates :container_status, allow_blank: true, inclusion: %w(pull create attach start stop restart pause paused unpause resize die destroy)
 
-    def has_unactioned_discoveries
-      discoveries.unactioned.length > 0
-    end
-
     def branch
-      if discoveries.first && discoveries.first.branch
-        discoveries.first.branch
-      else
-        "pushbit/#{behavior.kind}"
-      end
+      "pushbit/#{behavior.kind}"
     end
 
     def triggered_by_login
@@ -41,27 +32,11 @@ module Pushbit
     end
 
     def labels
-      labels_desired = discoveries.unactioned.pluck(:kind)
-      labels_available = repo.labels.map(&:name)
-
-      if behavior.negative?
-        labels_desired += %w(bug problem)
-      else
-        labels_desired += ['enhancement']
-      end
-
-      output = labels_available & labels_desired
-      output << "pushbit"
-    end
-
-    def complete!
-      save!
-      TaskCompletedWorker.perform_async(id)
+      ["pushbit"]
     end
 
     def execute!(changed_files = [], head_sha = nil)
-      changed_files = changed_files.map { |f| f['filename'] }
-      DockerContainerWorker.perform_async(id, changed_files, head_sha)
+      Dockertron.run_task!(self, changed_files, head_sha)
     end
 
     def src_volume

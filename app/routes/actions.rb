@@ -2,7 +2,7 @@ module Pushbit
   class App < Sinatra::Base
     get "/actions" do
       authenticate!
-      
+
       @actions = Action.paginate(page: params['page']).for_user(current_user).includes(:task, :user)
       @repo_ids = current_user.repos.pluck(:id)
       erb :'actions/index', layout: !request.xhr?
@@ -11,11 +11,11 @@ module Pushbit
     get "/repos/:id/actions" do
       repo = Repo.find(params['id'])
       authorize! :read, repo
-      
+
       @repo = repo
       @actions = Action.paginate(page: params['page']).where(repo: @repo).includes(:task, :user)
       @repo_ids = @repo.id
-      
+
       erb :'actions/index', layout: !request.xhr?
     end
 
@@ -23,9 +23,10 @@ module Pushbit
       authenticate!
 
       task = Task.find(params['task_id'])
-      action = Action.new(params)
-      action.repo = task.repo
-      action.save!
+      repo = task.repo
+
+      ac = ActionCreator.new(repo, task)
+      action = ac.send(params['kind'], params)
 
       status 201
       json action: action

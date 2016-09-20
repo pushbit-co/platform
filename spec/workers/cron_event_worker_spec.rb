@@ -7,11 +7,15 @@ describe "perform" do
     let!(:behavior) { create(:behavior, kind: 'bundler-audit', tags:['Ruby'], triggers: ['cron']) }
     let(:image) { double(:image, id:"pushbit/tests") }
     let(:container) { double(:container, id:12345678, status:'start') }
+    let(:containerJson) { {'State' => {'ExitCode' => 0}} }
 
     before do
       Docker::Image.stub(:create).and_return(image)
       Docker::Container.stub(:create).and_return(container)
       container.stub(:start)
+      container.stub(:attach)
+      container.stub(:remove)
+      container.stub(:json).and_return(containerJson)
     end
 
     context "with inactive repo" do
