@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160920192517) do
     t.text     "body"
     t.string   "github_status"
     t.string   "identifier"
+    t.integer  "trigger_id"
   end
 
   add_index "actions", ["repo_id"], name: "index_actions_on_repo_id", using: :btree
