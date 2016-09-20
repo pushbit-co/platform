@@ -56,6 +56,7 @@ workers:
   build: .
   command: ./script/workers.sh
   volumes:
+    - ./:/app
     - /var/run/docker.sock:/var/run/docker.sock
   links:
     - database
