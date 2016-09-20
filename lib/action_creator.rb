@@ -21,8 +21,8 @@ module Pushbit
 
     def issue(params)
       task = @task
-      title = params[:title]
-      body = params[:body]
+      title = params["title"]
+      body = params["body"]
 
       response = client.create_issue(
         task.repo.github_full_name,
@@ -47,8 +47,8 @@ module Pushbit
     def pull_request(params)
       repo = @repo
       task = @task
-      title = params[:title]
-      body = params[:body]
+      title = params["title"]
+      body = params["body"]
 
       # check if the branch we're basing off still has an open
       # pull request - if not, then no more work is needed.
@@ -62,7 +62,7 @@ module Pushbit
 
       response = client.create_pull_request(
         repo.github_full_name,
-        params[:base_branch],
+        params["base_branch"],
         task.branch,
         title,
         body,

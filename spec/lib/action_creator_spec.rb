@@ -13,7 +13,7 @@ describe Pushbit::ActionCreator do
       stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/pulls")
         .to_return(status: 200, body: "{\"id\": 123, \"html_url\": \"http://www.example.com\"}", headers: { "Content-Type" => "application/json" })
 
-      params = {task_id: task.id, title: title, body: body, kind: 'pull_request'}
+      params = {"task_id" => task.id, "title" => title, "body" => body, "kind" => 'pull_request'}
       action = Pushbit::ActionCreator.pull_request(repo, task, params)
       expect(action.kind).to eql('pull_request')
       expect(action.github_id).to eql(123)
@@ -31,7 +31,7 @@ describe Pushbit::ActionCreator do
       stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/issues")
         .to_return(:status => 200, :body => "{\"id\": 123, \"html_url\": \"http://www.example.com\"}", :headers => {"Content-Type" => "application/json"})
 
-      params = {task_id: task.id, title: title, body: body, kind: 'issue'}
+      params = {"task_id" => task.id, "title" => title, "body" => body, "kind" => 'issue'}
       action = Pushbit::ActionCreator.issue(repo, task, params)
       expect(action.kind).to eql('issue')
       expect(action.github_id).to eql(123)
