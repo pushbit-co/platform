@@ -15,6 +15,10 @@ module Pushbit
       new(repo, task).pull_request(params)
     end
 
+    def self.line_comment(repo, task, params)
+      new(repo, task).line_comment(params)
+    end
+
     def issue(params)
       task = @task
       title = params[:title]
@@ -65,7 +69,6 @@ module Pushbit
         labels: task.labels.join(",")
       )
 
-      # TODO: some checks n stuff
       action = Action.create!({
         kind: 'pull_request',
         title: title,
@@ -75,12 +78,36 @@ module Pushbit
         github_id: response.id,
         github_url: response.html_url
       }, without_protection: true)
-      
+
       action
     rescue Octokit::UnprocessableEntity => e
       unless e.message.match 'A pull request already exists'
         raise e # capture in sentry
       end
+    end
+
+    def line_comment(params)
+      task = @task
+
+      response = client.create_pull_request_comment(
+        task.repo.github_full_name,
+        task.trigger.payload["number"],
+        params[:body],
+        task.trigger.payload["pull_request"]["head"]["sha"],
+        params[:filename],
+        params[:patch_position]
+      )
+
+      action = Action.create!({
+        kind: 'line_comment',
+        body: params[:body],
+        repo_id: task.repo_id,
+        task_id: task.id,
+        github_id: response.id,
+        github_url: response.html_url
+      }, without_protection: true)
+
+      action
     end
 
     def client

@@ -40,4 +40,27 @@ describe Pushbit::ActionCreator do
       expect(Pushbit::Action.count).to eql(1)
     end
   end
+
+  describe "line_comment" do
+    let(:comment) { 'Line comment' }
+    let(:patch_position) { 22 }
+
+    it "creates a line_comment and action" do
+      body = JSON.parse File.read('spec/fixtures/github/webmock/pull_request_changed_files_ruby.json')
+      body.first['patch'] = File.read('spec/fixtures/patch.diff')
+
+      stub_request(:get, "https://api.github.com/repos/#{repo.github_full_name}/pulls/#{trigger.payload['number']}/files?per_page=100")
+        .to_return(status: 200, body: body.to_json, headers: { "Content-Type" => "application/json" })
+
+      stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/pulls/#{trigger.payload['number']}/comments")
+        .to_return(status: 200, body: "{\"id\": 123}", headers: { "Content-Type" => "application/json" })
+
+      params = {task_id: task.id, body: comment, kind: 'line_comment'}
+      action = Pushbit::ActionCreator.line_comment(repo, task, params)
+      expect(action.kind).to eql('line_comment')
+      expect(action.github_id).to eql(123)
+      expect(action.body).to eql(comment)
+      expect(Pushbit::Action.count).to eql(1)
+    end
+  end
 end
