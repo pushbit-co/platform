@@ -9,6 +9,10 @@ module Pushbit
 
     validates :kind, presence: true
 
+    def behaviors
+      repo.behaviors.trigger(kind)
+    end
+
     def user
       @user ||= User.find_by(github_id: triggered_by)
     end

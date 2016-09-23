@@ -6,7 +6,6 @@ describe "perform" do
 
   context "with a valid email type" do
     it "sends an email" do
-      Pony.stub(:deliver)
       expect(Pony).to receive(:mail)
       worker.perform(:signedup, user.id)
     end
