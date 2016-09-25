@@ -6,31 +6,26 @@
   </nav>
   <div class="col-md-10">
     <h2>Behaviors</h2>
-    <form action="/repos/<%= @repo.github_full_name %>" method="POST">
-      <input type="hidden" name="_method" value="PUT">
 
-      <div class="search">
-        <input type="search" placeholder="search behaviors..." class="search form-control" />
-      </div>
+    <div class="search">
+      <input type="search" placeholder="search behaviors..." class="search form-control" />
+    </div>
 
-      <h3>Enabled</h3>
-      <ul class="behaviors enabled">
-        <% behavior_ids = @repo.behaviors.pluck(:id) %>
-        <% @repo.behaviors.each do |behavior| %>
-          <%= partial :behavior, locals: {behavior: behavior, repo: @repo} %>
+    <h3>Enabled</h3>
+    <ul class="behaviors enabled">
+      <% behavior_ids = @repo.behaviors.pluck(:id) %>
+      <% @repo.behaviors.each do |behavior| %>
+        <%= partial :behavior, locals: {behavior: behavior, repo: @repo, enabled: true} %>
+      <% end %>
+    </ul>
+
+    <h3>Disabled</h3>
+    <ul class="behaviors disabled">
+      <% @behaviors.each do |behavior| %>
+        <% unless @repo.behaviors.include?(behavior) %>
+        <%= partial :behavior, locals: {behavior: behavior, repo: @repo, enabled: false} %>
         <% end %>
-      </ul>
-
-      <h3>Disabled</h3>
-      <ul class="behaviors disabled">
-        <% @behaviors.each do |behavior| %>
-          <% unless @repo.behaviors.include?(behavior) %>
-          <%= partial :behavior, locals: {behavior: behavior, repo: @repo} %>
-          <% end %>
-        <% end %>
-      </ul>
-
-      <input type="submit" value="Save Settings" class="btn btn-primary" />
-    </form>
+      <% end %>
+    </ul>
   </div>
 </div>

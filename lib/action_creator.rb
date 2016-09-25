@@ -21,8 +21,8 @@ module Pushbit
 
     def issue(params)
       task = @task
-      title = params[:title]
-      body = params[:body]
+      title = params["title"]
+      body = params["body"]
 
       response = client.create_issue(
         task.repo.github_full_name,
@@ -47,8 +47,8 @@ module Pushbit
     def pull_request(params)
       repo = @repo
       task = @task
-      title = params[:title]
-      body = params[:body]
+      title = params["title"]
+      body = params["body"]
 
       # check if the branch we're basing off still has an open
       # pull request - if not, then no more work is needed.
@@ -62,7 +62,7 @@ module Pushbit
 
       response = client.create_pull_request(
         repo.github_full_name,
-        params[:base_branch],
+        params["base_branch"],
         task.branch,
         title,
         body,
@@ -89,6 +89,13 @@ module Pushbit
     def line_comment(params)
       task = @task
 
+      action = Action.find_by({
+        identifier: params["identifier"], 
+        trigger_id: task.trigger_id
+      })
+
+      return action if action.present?
+
       response = client.create_pull_request_comment(
         task.repo.github_full_name,
         task.trigger.payload["number"],
@@ -98,16 +105,16 @@ module Pushbit
         params["line"]
       )
 
-      action = Action.create!({
+      Action.create!({
+        identifier: params["identifier"], 
+        trigger_id: task.trigger_id,
         kind: 'line_comment',
         body: params[:body],
         repo_id: task.repo_id,
         task_id: task.id,
         github_id: response.id,
         github_url: response.html_url
-      }, without_protection: true)
-
-      action
+      })
     end
 
     def client

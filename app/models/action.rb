@@ -7,6 +7,7 @@ module Pushbit
     belongs_to :repo
     belongs_to :task
     belongs_to :user
+    belongs_to :trigger
 
     validates :kind, presence: true, inclusion: %w(signedup subscribe unsubscribe issue pull_request comment line_comment message)
 

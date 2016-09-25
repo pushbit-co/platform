@@ -57,9 +57,7 @@ FactoryGirl.define do
 
   factory :behavior, class: Pushbit::Behavior do
     kind { 'bundle-update' }
-    tone { 'negative' }
     active { true }
-    discovers { 'style issue' }
     settings do
       {
         filter: {

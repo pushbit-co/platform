@@ -9,15 +9,6 @@ describe "perform" do
     let(:container) { double(:container, id:12345678, status:'start') }
     let(:containerJson) { {'State' => {'ExitCode' => 0}} }
 
-    before do
-      Docker::Image.stub(:create).and_return(image)
-      Docker::Container.stub(:create).and_return(container)
-      container.stub(:start)
-      container.stub(:attach)
-      container.stub(:remove)
-      container.stub(:json).and_return(containerJson)
-    end
-
     context "with inactive repo" do
       let!(:repo) { create(:repo, active: false, tags:['Ruby'], behaviors:[behavior]) }
       let!(:trigger) { create(:cron_trigger) }
@@ -32,6 +23,15 @@ describe "perform" do
       let!(:repo) { create(:repo, tags:['Ruby'], behaviors:[behavior]) }
       let!(:repo2) { create(:repo, tags:['Ruby'], behaviors:[behavior]) }
       let!(:trigger) { create(:cron_trigger) }
+
+      before do
+        expect(container).to receive(:start).twice
+        expect(container).to receive(:attach).twice
+        expect(container).to receive(:remove).twice
+        expect(container).to receive(:json).and_return(containerJson).twice
+        expect(Docker::Image).to receive(:create).and_return(image).twice
+        expect(Docker::Container).to receive(:create).and_return(container).twice
+      end
 
       it "creates a new task per repo" do
         worker.perform(trigger.id)

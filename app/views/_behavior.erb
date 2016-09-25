@@ -3,5 +3,14 @@
     <h3><%= behavior.name %></h3>
     <p class="description"><%= behavior.description %></p>
     <p class="tags"><%= behavior.tags.length>0 ? behavior.tags.join(',') : 'All' %></p>
+    <% if enabled %>
+    <form action="/repos/<%= repo.github_full_name %>/<%= behavior.kind %>/unsubscribe" method="POST">
+      <button type="submit" class="btn btn-sm btn-default">Disable</button>
+    </form>
+    <% else %>
+    <form action="/repos/<%= repo.github_full_name %>/<%= behavior.kind %>/subscribe" method="POST">
+      <button type="submit" class="btn btn-sm btn-primary">Enable</button>
+    </form>
+    <% end %>
   </a>
 </li>

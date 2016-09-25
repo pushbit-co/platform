@@ -104,12 +104,37 @@ module Pushbit
       behavior = Behavior.find_by!(kind: params["behavior"])
       repo_behavior = repo.repo_behaviors.find_by!(behavior: behavior)
 
-      behavior.settings.each do |(key, value)|
+      behavior.settings.each do |(key)|
         setting = Setting.find_or_create_by(key: key, repo_behavior: repo_behavior)
         setting.update_attribute(:value, params["setting_#{key}"])
       end
 
       flash[:notice] = "Updated successfully"
+      redirect "/repos/#{repo.github_full_name}"
+    end
+
+    post "/repos/:user/:repo/:behavior/unsubscribe" do
+      authenticate!
+      repo = repo_from_params
+      authorize! :update, repo
+
+      behavior = Behavior.find_by!(kind: params["behavior"])
+      RepoBehavior.where(repo: repo, behavior: behavior).delete_all
+
+      flash[:notice] = "#{behavior.name} no longer enabled for this project"
+      redirect "/repos/#{repo.github_full_name}"
+    end
+
+    post "/repos/:user/:repo/:behavior/subscribe" do
+      authenticate!
+      repo = repo_from_params
+      authorize! :update, repo
+
+      behavior = Behavior.find_by!(kind: params["behavior"])
+      repo.behaviors << behavior
+      repo.save!
+
+      flash[:notice] = "#{behavior.name} enabled for this project"
       redirect "/repos/#{repo.github_full_name}"
     end
 
@@ -125,7 +150,7 @@ module Pushbit
       if params['task_id']
         200
       else
-        flash[:notice] = "Updated successfully"
+        flash[:notice] = "Settings updated"
         redirect "/repos/#{repo.github_full_name}"
       end
     end

@@ -6,13 +6,19 @@ module Pushbit
 
     def work(id, data)
       self.trigger = Trigger.find(id)
-      payload = Payload.new data
-      clone!
-      Parallel.each(trigger.repo.behaviors, in_threads:trigger.repo.behaviors.length) do |b|
-        b.execute!(trigger, payload)
+      payload = Payload.new(data)
+
+      if trigger.behaviors.length > 0
+        clone!
+        Parallel.each(trigger.behaviors, in_threads: trigger.behaviors.length) do |b|
+          b.execute!(trigger, payload)
+        end
+
+        logger.info "Removing volume"
+        volume.remove
+      else
+        logger.info "No behaviors"
       end
-      logger.info "Removing volume"
-      volume.remove
     end
 
     def clone!
@@ -31,7 +37,7 @@ module Pushbit
         ],
         "Volumes" => {
           "/pushbit/code" => {}
-        }, 
+        },
         "Entrypoint" => "/bin/bash",
         "Cmd" => "./clone.sh",
         "HostConfig" => {

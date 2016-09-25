@@ -13,7 +13,7 @@ describe Pushbit::ActionCreator do
       stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/pulls")
         .to_return(status: 200, body: "{\"id\": 123, \"html_url\": \"http://www.example.com\"}", headers: { "Content-Type" => "application/json" })
 
-      params = {task_id: task.id, title: title, body: body, kind: 'pull_request'}
+      params = {"task_id" => task.id, "title" => title, "body" => body, "kind" => 'pull_request'}
       action = Pushbit::ActionCreator.pull_request(repo, task, params)
       expect(action.kind).to eql('pull_request')
       expect(action.github_id).to eql(123)
@@ -31,7 +31,7 @@ describe Pushbit::ActionCreator do
       stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/issues")
         .to_return(:status => 200, :body => "{\"id\": 123, \"html_url\": \"http://www.example.com\"}", :headers => {"Content-Type" => "application/json"})
 
-      params = {task_id: task.id, title: title, body: body, kind: 'issue'}
+      params = {"task_id" => task.id, "title" => title, "body" => body, "kind" => 'issue'}
       action = Pushbit::ActionCreator.issue(repo, task, params)
       expect(action.kind).to eql('issue')
       expect(action.github_id).to eql(123)
@@ -61,6 +61,37 @@ describe Pushbit::ActionCreator do
       expect(action.github_id).to eql(123)
       expect(action.body).to eql(comment)
       expect(Pushbit::Action.count).to eql(1)
+    end
+
+    context "when an action has already been created" do
+      let(:identifier) { "unique" }
+
+      before do
+        Pushbit::Action.create!({
+          trigger_id: trigger.id,
+          identifier: identifier,
+          kind: "line_comment",
+        })
+      end
+
+      it "does not create a second action" do
+        body = JSON.parse File.read('spec/fixtures/github/webmock/pull_request_changed_files_ruby.json')
+        body.first['patch'] = File.read('spec/fixtures/patch.diff')
+
+        assert_not_requested :get, "https://api.github.com/repos/#{repo.github_full_name}/pulls/#{trigger.payload['number']}/files?per_page=100" 
+        assert_not_requested :post, "https://api.github.com/repos/#{repo.github_full_name}/pulls/#{trigger.payload['number']}/comments"
+
+        params = {
+          "identifier" => identifier, 
+          "trigger_id" => trigger.id, 
+          "task_id" => task.id, 
+          "body" => comment, 
+          "kind" => 'line_comment'
+        }
+
+        Pushbit::ActionCreator.line_comment(repo, task, params)
+        expect(Pushbit::Action.count).to eql(1)
+      end
     end
   end
 end
