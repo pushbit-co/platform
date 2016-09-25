@@ -1,6 +1,6 @@
 module Pushbit
   class Dockertron
-    def self.run_task!(task, changed_files, head_sha)
+    def self.run_task!(task, changed_files, head_sha, head_ref)
       changed_files = changed_files.map { |f| f['filename'] }
       puts "Running Task: #{task.id}"
       task.logs = ""
@@ -17,7 +17,8 @@ module Pushbit
           "GITHUB_REPO=#{repo.name}",
           "GITHUB_TOKEN=#{ENV.fetch('GITHUB_TOKEN')}",
           "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
-          "BASE_BRANCH=#{head_sha || repo.default_branch || 'master'}",
+          "BASE_COMMIT=#{head_sha}",
+          "BASE_BRANCH=#{head_ref || repo.default_branch || 'master'}",
           "CHANGED_FILES=#{changed_files.join(' ')}",
           "TASK_ID=#{task.id}",
           "ACCESS_TOKEN=#{task.access_token}",

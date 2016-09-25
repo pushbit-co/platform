@@ -35,8 +35,8 @@ module Pushbit
       ["pushbit"]
     end
 
-    def execute!(changed_files = [], head_sha = nil)
-      Dockertron.run_task!(self, changed_files, head_sha)
+    def execute!(changed_files=[], head_sha=nil, head_ref= nil)
+      Dockertron.run_task!(self, changed_files, head_sha, head_ref)
     end
 
     def src_volume

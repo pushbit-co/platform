@@ -32,10 +32,10 @@ module Pushbit
         }, without_protection: true)
 
       	# TODO: we can store payload against trigger and avoid passing head_sha
-        task.execute!(changed_files, payload.head_sha)
+        task.execute!(changed_files, payload.head_sha, payload.head_ref)
         logger.info "Starting task #{task.id} (#{name}) for #{repo.github_full_name}"
       else
-  	     logger.info "#{name} did not match changed files"
+        logger.info "#{name} did not match changed files"
       end
 
       logger.info "execution complete #{trigger.id} for #{trigger.repo.name}"

@@ -63,7 +63,7 @@ module Pushbit
       response = client.create_pull_request(
         repo.github_full_name,
         params["base_branch"],
-        task.branch,
+        params["branch"],
         title,
         body,
         labels: task.labels.join(",")

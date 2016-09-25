@@ -34,6 +34,7 @@ module Pushbit
           "GITHUB_TOKEN=#{ENV.fetch('GITHUB_TOKEN')}",
           "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
           "BASE_BRANCH=#{head_sha || trigger.repo.default_branch || 'master'}",
+          "CLONE_URL=https://#{ENV.fetch("GITHUB_TOKEN")}@github.com/#{trigger.repo.github_owner}/#{trigger.repo.name}.git"
         ],
         "Volumes" => {
           "/pushbit/code" => {}
