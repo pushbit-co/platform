@@ -34,22 +34,17 @@
     }
   }
 
-  input {
-    position: absolute;
-    top: 18px;
-    left: 6px;
-  }
-
   h3 {
     color: $almost-black;
     margin: 0 0 5px;
     font-size: 18px;
     flex-grow: 0;
+  }
 
-    input {
-      margin-left: 10px;
-      margin-top: 6px;
-    }
+  button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
   }
 
   .description {
