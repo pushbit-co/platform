@@ -36,14 +36,18 @@ module Pushbit
     end
 
     def execute!(changed_files = [], head_sha = nil)
-      Dockertron.run_task!(self, changed_files, head_sha)
+      exitcode = Dockertron.run_task!(self, changed_files, head_sha)
+
+      self.update_attributes(
+        completed_at: Time.now,
+        status: exitcode == 0 ? :success : :failed,
+      )
     end
 
     def src_volume
       return nil unless trigger
       trigger.src_volume
     end
-
 
     def image
       @image ||= load_image

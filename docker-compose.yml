@@ -50,6 +50,7 @@ platform:
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
     - REDIS_URL
+    - DEPLOY_KEYS_PASSWORD
 
 workers:
   build: .

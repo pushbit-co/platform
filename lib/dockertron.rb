@@ -1,21 +1,63 @@
 module Pushbit
   class Dockertron
+    def clone!(trigger)
+      volume_name = "trigger_volume_#{trigger.id}"
+      volume = Docker::Volume.create(volume_name)
+
+      head_sha = trigger.payload ? Payload.new(trigger.payload).head_sha : nil
+      base_branch = head_sha || trigger.repo.default_branch || 'master'
+
+      Docker::Image.create('fromImage' => 'pushbit/base:latest')
+      container = Docker::Container.create({
+        "Image" => "pushbit/base",
+        "Env" => [
+          "SSH_KEY=#{repo.deploy_key}",
+          "GITHUB_USER=#{trigger.repo.github_owner}",
+          "GITHUB_REPO=#{trigger.repo.name}",
+          "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
+          "BASE_BRANCH=#{base_branch}",
+        ],
+        "Volumes" => {
+          "/pushbit/code" => {}
+        },
+        "Entrypoint" => "/bin/bash",
+        "Cmd" => "./clone.sh",
+        "HostConfig" => {
+          "Binds" => [
+            "#{volume_name}:/pushbit/code"
+          ]
+        }
+      })
+
+      container.start
+      container.attach do |stream, chunk|
+        line = "#{stream}: #{chunk}"
+        logger.info "Clone for trigger: #{trigger.id}: #{line}"
+      end
+
+      exitcode = container.json['State']['ExitCode']
+      logger.info "Exitcode #{exitcode}"
+      logger.info "Removing clone container"
+      container.remove
+      volume
+    end
+
     def self.run_task!(task, changed_files, head_sha)
       changed_files = changed_files.map { |f| f['filename'] }
-      puts "Running Task: #{task.id}"
+      logger.info "Running Task: #{task.id}"
       task.logs = ""
       repo = task.repo
       image = task.image
       trigger = task.trigger
 
-      puts "Using image: #{image.id})"
+      logger.info "Using image: #{image.id})"
 
       container = Docker::Container.create({
         "Image" => image.id,
         "Env" => [
+          "SSH_KEY=#{repo.deploy_key}",
           "GITHUB_USER=#{repo.github_owner}",
           "GITHUB_REPO=#{repo.name}",
-          "GITHUB_TOKEN=#{ENV.fetch('GITHUB_TOKEN')}",
           "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
           "BASE_BRANCH=#{head_sha || repo.default_branch || 'master'}",
           "CHANGED_FILES=#{changed_files.join(' ')}",
@@ -33,28 +75,16 @@ module Pushbit
         }
       })
 
-      # TODO: what happens to container if this fails
-      task.update!(
-        container_id: container.id,
-        status: :created
-      )
-
       container.start
-      task.update!(
-        status: :running
-      )
-
       container.attach do |stream, chunk|
         line = "#{stream}: #{chunk}"
-        puts "Task: #{task.id}: #{line}"
+        logger.info "Task: #{task.id}: #{line}"
         Task.where(id: task.id).update_all(["logs = logs || ?", line])
       end
 
       exitcode = container.json['State']['ExitCode']
-      task.completed_at = Time.now
-      task.status = exitcode == 0 ? :success : :failed
-      task.save!
       container.remove
+      exitcode
     rescue Docker::Error::NotFoundError => e
       task.update!(status: :failed,
                    reason: e.message)

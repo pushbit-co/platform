@@ -48,8 +48,8 @@ module Pushbit
     def self.find_or_create_with(attributes)
       behave = find_by(kind: attributes["kind"]) || Behavior.new
       attributes = attributes.select do |k, _v|
-	columns = Behavior.columns.map { |c| c.name.to_sym }
-	columns.include? k.to_sym
+        columns = Behavior.columns.map { |c| c.name.to_sym }
+        columns.include? k.to_sym
       end
       behave.update_attributes(attributes, without_protection: true)
       behave

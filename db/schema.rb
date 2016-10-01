@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920192517) do
+ActiveRecord::Schema.define(version: 20161001221350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,14 +136,17 @@ ActiveRecord::Schema.define(version: 20160920192517) do
     t.string   "name"
     t.string   "owner"
     t.string   "github_full_name"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "owner_id"
     t.string   "webhook_id"
-    t.boolean  "active",           default: false
-    t.boolean  "private",          default: false
-    t.string   "tags",             default: [],                 array: true
+    t.boolean  "active",             default: false
+    t.boolean  "private",            default: false
+    t.string   "tags",               default: [],                 array: true
     t.string   "default_branch"
+    t.text     "salt"
+    t.text     "deploy_private_key"
+    t.text     "webhook_key"
   end
 
   add_index "repos", ["github_full_name"], name: "index_repos_on_github_full_name", unique: true, using: :btree
