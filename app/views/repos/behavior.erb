@@ -11,10 +11,14 @@
   </nav>
   <div class="col-md-10 settings">
     <p>
+      <a href="<%= @behavior.repository_url %>" target="_blank">Source Code</a>
+    </p>
+    <p>
       <%= @behavior.description %>
     </p>
     <form action="/repos/<%= @repo.github_full_name %>/<%= @behavior.kind %>" method="POST">
       <% if @behavior.settings.present? %>
+        <h2>Settings</h2>
         <% @behavior.settings.each do |key, setting| %>
           <% existing = @settings.detect {|s| s['key'] == key} %>
           <div class="form-group">
