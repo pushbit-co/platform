@@ -15,6 +15,9 @@ describe Pushbit::Activator do
       stub_request(:put, "https://api.github.com/repos/#{repo.github_full_name}/collaborators/dev-pushbit-bot")
         .to_return(status: 201, body: "{\"id\": 123}", headers: { 'Content-Type' => 'application/json' })
 
+      stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/keys")
+        .to_return(:status => 200, :body => "", :headers => {})
+
       Pushbit::Activator.activate(repo, user)
       expect(repo.webhook_id).to eql('123')
       expect(repo.active).to eql(true)
@@ -29,6 +32,9 @@ describe Pushbit::Activator do
 
       stub_request(:put, "https://api.github.com/repos/#{repo.github_full_name}/collaborators/dev-pushbit-bot")
         .to_return(status: 201, body: "{\"id\": 123}", headers: { 'Content-Type' => 'application/json' })
+
+      stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/keys")
+        .to_return(:status => 200, :body => "", :headers => {})
 
       expect(user.client).to receive(:add_collaborator)
       Pushbit::Activator.activate(repo, user)

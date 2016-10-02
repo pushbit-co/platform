@@ -7,10 +7,12 @@ module Pushbit
       payload = Payload.new(data)
 
       if trigger.behaviors.length > 0
-        volume = Dockertron.clone!
+        logger.info "Cloning codebase"
+        volume = Dockertron.clone!(trigger)
+        threads = trigger.behaviors.length
 
-        Parallel.each(trigger.behaviors, in_threads: trigger.behaviors.length) do |b|
-          b.execute!(trigger, payload)
+        Parallel.each(trigger.behaviors, in_threads: threads) do |behavior|
+          behavior.execute!(trigger, payload)
         end
 
         logger.info "Removing volume"

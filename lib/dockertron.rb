@@ -1,6 +1,6 @@
 module Pushbit
   class Dockertron
-    def clone!(trigger)
+    def self.clone!(trigger)
       volume_name = "trigger_volume_#{trigger.id}"
       volume = Docker::Volume.create(volume_name)
 
@@ -32,25 +32,25 @@ module Pushbit
       container.start
       container.attach do |stream, chunk|
         line = "#{stream}: #{chunk}"
-        logger.info "Clone for trigger: #{trigger.id}: #{line}"
+        puts "Clone for trigger: #{trigger.id}: #{line}"
       end
 
       exitcode = container.json['State']['ExitCode']
-      logger.info "Exitcode #{exitcode}"
-      logger.info "Removing clone container"
+      puts "Exitcode #{exitcode}"
+      puts "Removing clone container"
       container.remove
       volume
     end
 
     def self.run_task!(task, changed_files, head_sha)
       changed_files = changed_files.map { |f| f['filename'] }
-      logger.info "Running Task: #{task.id}"
+      puts "Running Task: #{task.id}"
       task.logs = ""
       repo = task.repo
       image = task.image
       trigger = task.trigger
 
-      logger.info "Using image: #{image.id})"
+      puts "Using image: #{image.id})"
 
       container = Docker::Container.create({
         "Image" => image.id,
@@ -78,7 +78,7 @@ module Pushbit
       container.start
       container.attach do |stream, chunk|
         line = "#{stream}: #{chunk}"
-        logger.info "Task: #{task.id}: #{line}"
+        puts "Task: #{task.id}: #{line}"
         Task.where(id: task.id).update_all(["logs = logs || ?", line])
       end
 
