@@ -27,6 +27,14 @@ class Security
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), ENV.fetch('HMAC_KEY'), data)
   end
 
+  def self.generate_ssh_key(passphrase)
+    SSHKey.generate(
+      type:       'DSA',
+      bits:       ENV.fetch('SSH_KEY_BITS', 4096),
+      passphrase: passphrase
+    )
+  end
+
   def self.hash_matches?(data, hash)
     self.hash(data) == hash
   end

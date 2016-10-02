@@ -35,8 +35,8 @@ module Pushbit
       ["pushbit"]
     end
 
-    def execute!(changed_files = [], head_sha = nil)
-      exitcode = Dockertron.run_task!(self, changed_files, head_sha)
+    def execute!(changed_files = [])
+      exitcode = Dockertron.run_task!(self, changed_files)
 
       self.update_attributes(
         completed_at: Time.now,

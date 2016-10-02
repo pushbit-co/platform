@@ -5,7 +5,7 @@ module Pushbit
         Docker::Image.create('fromImage' => 'pushbit/base:latest')
 
         volume = Docker::Volume.create(trigger.src_volume)
-        environment = env(trigger)
+        environment = base_env(trigger)
         container = Docker::Container.create({
           "Image" => "pushbit/base",
           "Env" => environment,
@@ -35,19 +35,13 @@ module Pushbit
       end
 
 
-      def run_task!(task, changed_files, head_sha)
-        changed_files = changed_files.map { |f| f['filename'] }
+      def run_task!(task, changed_files)
         task.logs = ""
 
         puts "Running task: #{task.id}"
         puts "Using image: #{task.image.id})"
 
-        environment = env(task.trigger).concat([
-          "CHANGED_FILES=#{changed_files.join(' ')}",
-          "TASK_ID=#{task.id}",
-          "ACCESS_TOKEN=#{task.access_token}"
-        ])
-
+        environment = base_env(task.trigger).concat task_env(task, changed_files)
         container = Docker::Container.create({
           "Image" => task.image.id,
           "Env" => environment,
@@ -79,19 +73,39 @@ module Pushbit
 
       private
 
-      def env(trigger)
-        head_sha = trigger.payload ? Payload.new(trigger.payload).head_sha : nil
-        pull_request_number = trigger.payload ? Payload.new(trigger.payload).pull_request_number : nil
-        base_branch = head_sha || trigger.repo.default_branch || 'master'
-
+      def base_env(trigger)
         [
-          "SSH_KEY=#{trigger.repo.unencrypted_ssh_key}",
-          "GITHUB_USER=#{trigger.repo.github_owner}",
-          "GITHUB_REPO=#{trigger.repo.name}",
-          "GITHUB_NUMBER=#{pull_request_number}",
-          "BASE_BRANCH=#{base_branch}",
-          "APP_URL=#{ENV.fetch('APP_URL')}"
+          "PUSHBIT_SSH_KEY=#{trigger.repo.unencrypted_ssh_key}",
+          "PUSHBIT_USERNAME=#{trigger.repo.github_owner}",
+          "PUSHBIT_REPONAME=#{trigger.repo.name}",
+          "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}"
         ]
+      end
+
+      def task_env(task, changed_files)
+        trigger = task.trigger
+        output = [
+          "PUSHBIT_CHANGED_FILES=#{changed_files.join(' ')}",
+          "PUSHBIT_TASK_ID=#{task.id}",
+          "PUSHBIT_API_TOKEN=#{task.access_token}"
+        ]
+
+        if trigger.payload
+          payload = Payload.new(trigger.payload)
+          base_branch = payload.head_ref || trigger.repo.default_branch || 'master'
+
+          output.concat([
+            "PUSHBIT_PR_NUMBER=#{payload.pull_request_number}",
+            "PUSHBIT_BASE_COMMIT=#{payload.head_sha}",
+            "PUSHBIT_BASE_BRANCH=#{base_branch}"
+          ])
+        else
+          base_branch = trigger.repo.default_branch || 'master'
+
+          output.concat([
+            "PUSHBIT_BASE_BRANCH=#{base_branch}"
+          ])
+        end
       end
     end
   end

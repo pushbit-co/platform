@@ -15,6 +15,7 @@ machine:
     BASIC_AUTH_SECRET: 101050d232ec0ecdbfd5f2a83d6cfb8b1ca37378
     STRIPE_SECRET_KEY: totally_fake_key
     DEPLOY_KEYS_PASSWORD: thisisnotarealpassword
+    SSH_KEY_BITS: 1024
 
 dependencies:
   override:

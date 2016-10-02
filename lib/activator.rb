@@ -50,12 +50,7 @@ module Pushbit
       repo.ensure_salt
 
       # generate ssh-keypair
-      key = SSHKey.generate(
-        type:       'DSA',
-        bits:       4096,
-        comment:    'bot@pushbit.co',
-        passphrase: repo.deploy_key_passphrase
-      )
+      key = Security.generate_ssh_key(repo.deploy_key_passphrase)
 
       # save public_key to github API
       deploy_key = client.add_deploy_key(repo.github_full_name, 'Pushbit', key.ssh_public_key)
