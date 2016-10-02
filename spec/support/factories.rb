@@ -41,7 +41,7 @@ FactoryGirl.define do
     github_id { Faker::Number.number(5) }
     github_full_name { "#{Faker::Lorem.word}/#{Faker::Lorem.word}" }
     salt { "thisisasalt" }
-    deploy_private_key {
+    ssh_key {
      "-----BEGIN DSA PRIVATE KEY-----
 MIIGVQIBAAKCAgEAhRR8bSTdFKOSJ3MKy4Bv5ER7SoMMwNqIJe9QW5PH1Ggd5xl8
 CQIIaPrURTA/6JuImmtLbRM0258axcMCoLBANV19MHO1+682ecsfIG4B0KgtHyru

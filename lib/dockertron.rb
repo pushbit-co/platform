@@ -11,7 +11,7 @@ module Pushbit
       container = Docker::Container.create({
         "Image" => "pushbit/base",
         "Env" => [
-          "SSH_KEY=#{repo.deploy_key}",
+          "SSH_KEY=#{repo.unencrypted_ssh_key}",
           "GITHUB_USER=#{trigger.repo.github_owner}",
           "GITHUB_REPO=#{trigger.repo.name}",
           "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
@@ -55,7 +55,7 @@ module Pushbit
       container = Docker::Container.create({
         "Image" => image.id,
         "Env" => [
-          "SSH_KEY=#{repo.deploy_key}",
+          "SSH_KEY=#{repo.unencrypted_ssh_key}",
           "GITHUB_USER=#{repo.github_owner}",
           "GITHUB_REPO=#{repo.name}",
           "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",

@@ -72,8 +72,8 @@ module Pushbit
       Digest::SHA256.hexdigest("#{ENV.fetch('DEPLOY_KEYS_PASSWORD')}#{salt}")
     end
 
-    def deploy_key
-      key = SSHKey.new(deploy_private_key)
+    def unencrypted_ssh_key
+      key = SSHKey.new(ssh_key)
       key.passphrase = deploy_key_passphrase
       key.private_key
     end

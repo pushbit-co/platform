@@ -57,11 +57,14 @@ module Pushbit
         passphrase: repo.deploy_key_passphrase
       )
 
-      # save private_key to database
-      repo.update_attribute(:deploy_private_key, key.private_key)
-
       # save public_key to github API
-      client.add_deploy_key(repo.github_full_name, 'Pushbit', key.ssh_public_key)
+      deploy_key = client.add_deploy_key(repo.github_full_name, 'Pushbit', key.ssh_public_key)
+
+      # save private_key to database
+      repo.update_attributes(
+        ssh_key: key.private_key,
+        deploy_key_id: deploy_key.id
+      )
     end
 
     def add_webhook
@@ -91,8 +94,13 @@ module Pushbit
     end
 
     def remove_deploy_key
-      # delete public_key from github API
-      # delete private_key from database
+      if repo.deploy_key_id
+        client.remove_deploy_key(repo.github_full_name, repo.deploy_key_id)
+        repo.update_attributes(
+          deploy_key_id: nil,
+          ssh_key: nil
+        )
+      end
     end
 
     def remove_webhook
