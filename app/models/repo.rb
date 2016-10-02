@@ -42,6 +42,10 @@ module Pushbit
       !active?
     end
 
+    def url
+      "https://github.com/#{github_full_name}"
+    end
+
     def name
       github_full_name.split('/').last if github_full_name
     end

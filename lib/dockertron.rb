@@ -78,7 +78,8 @@ module Pushbit
           "PUSHBIT_SSH_KEY=#{trigger.repo.unencrypted_ssh_key}",
           "PUSHBIT_USERNAME=#{trigger.repo.github_owner}",
           "PUSHBIT_REPONAME=#{trigger.repo.name}",
-          "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}"
+          "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}",
+          "PUSHBIT_REPOSITORY_URL=#{trigger.repo.url}"
         ]
       end
 
