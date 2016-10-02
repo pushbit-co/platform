@@ -40,6 +40,7 @@ FactoryGirl.define do
     active { true }
     github_id { Faker::Number.number(5) }
     github_full_name { "#{Faker::Lorem.word}/#{Faker::Lorem.word}" }
+    webhook_token { "thisisatoken" }
     salt { "thisisasalt" }
     ssh_key {
      "-----BEGIN DSA PRIVATE KEY-----

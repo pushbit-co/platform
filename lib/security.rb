@@ -30,9 +30,9 @@ class Security
   def self.hash_matches?(data, hash)
     self.hash(data) == hash
   end
-  
-  def self.verify_github_signature(payload_body, sig)
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV.fetch('GITHUB_WEBHOOK_TOKEN'), payload_body)
+
+  def self.verify_github_signature(payload, sig, token)
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload)
     Rack::Utils.secure_compare(signature, sig)
   end
 end

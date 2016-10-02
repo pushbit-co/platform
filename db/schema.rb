@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(version: 20161001221350) do
     t.text     "salt"
     t.text     "ssh_key"
     t.integer  "deploy_key_id"
-    t.text     "webhook_key"
+    t.text     "webhook_token"
   end
 
   add_index "repos", ["github_full_name"], name: "index_repos_on_github_full_name", unique: true, using: :btree

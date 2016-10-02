@@ -68,7 +68,7 @@ module Pushbit
     end
 
     def add_webhook
-      repo.ensure_webhook_key
+      repo.ensure_webhook_token
 
       hook = client.create_hook(
         repo.github_full_name,
@@ -76,7 +76,7 @@ module Pushbit
         {
           url: "#{ENV.fetch('APP_URL')}/webhooks/github",
           content_type: 'json',
-          secret: repo.webhook_key
+          secret: repo.webhook_token
         },
         events: %w(push pull_request issues issue_comment commit_comment),
         active: true
@@ -108,7 +108,7 @@ module Pushbit
         client.remove_hook(repo.github_full_name, repo.webhook_id)
         repo.update_attributes(
           webhook_id: nil,
-          webhook_key: nil
+          webhook_token: nil
         )
       end
     end

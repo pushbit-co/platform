@@ -6,7 +6,6 @@ machine:
   environment:
     GITHUB_CLIENT_ID:
     GITHUB_CLIENT_SECRET:
-    GITHUB_WEBHOOK_TOKEN: 060ffa03a3dc77ec3d477dd1d0761a49
     GITHUB_BOT_LOGIN: dev-pushbit-bot
     GITHUB_TOKEN: thisisnotarealtoken
     APP_URL: http://example.com

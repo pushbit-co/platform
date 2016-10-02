@@ -64,8 +64,8 @@ module Pushbit
       self.update_attributes!(salt: SecureRandom.hex) unless salt
     end
 
-    def ensure_webhook_key
-      self.update_attributes!(webhook_key: SecureRandom.hex) unless webhook_key
+    def ensure_webhook_token
+      self.update_attributes!(webhook_token: SecureRandom.hex) unless webhook_token
     end
 
     def deploy_key_passphrase

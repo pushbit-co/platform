@@ -1,11 +1,11 @@
 module Pushbit
   class App < Sinatra::Base
     post "/webhooks/github" do
-      verify_signature!
-
       if processable?
         payload = Payload.new(params)
         repo = Repo.find_by!(github_id: payload.github_repo_id)
+
+        verify_signature!(repo.webhook_token)
 
         trigger = Trigger.create!(
           kind: github_event,
@@ -56,10 +56,10 @@ module Pushbit
       env['HTTP_X_GITHUB_DELIVERY']
     end
 
-    def verify_signature!
+    def verify_signature!(token)
       request.body.rewind
       payload_body = request.body.read
-      allowed = env['HTTP_X_HUB_SIGNATURE'] && Security.verify_github_signature(payload_body, env['HTTP_X_HUB_SIGNATURE'])
+      allowed = env['HTTP_X_HUB_SIGNATURE'] && Security.verify_github_signature(payload_body, env['HTTP_X_HUB_SIGNATURE'], token)
 
       return halt 403, "Signatures didn't match!" unless allowed
     end
