@@ -61,7 +61,7 @@ module Pushbit
 
       changed_files.each do |changed|
         files.each do |pattern|
-      	  run = true if changed['filename'].match(pattern)
+      	  run = true if changed.match(pattern)
         end
       end
 

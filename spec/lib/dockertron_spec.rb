@@ -44,6 +44,7 @@ describe Pushbit::Dockertron do
             "PUSHBIT_USERNAME=#{repo.github_owner}",
             "PUSHBIT_REPONAME=#{repo.name}",
             "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}",
+            "PUSHBIT_API_URL=#{ENV.fetch('APP_URL')}",
             "PUSHBIT_REPOSITORY_URL=https://github.com/#{repo.github_full_name}",
             "PUSHBIT_CHANGED_FILES=",
             "PUSHBIT_TASK_ID=#{task.id}",

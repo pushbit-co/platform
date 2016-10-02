@@ -7,7 +7,7 @@ module Pushbit
         volume = Docker::Volume.create(trigger.src_volume)
         environment = base_env(trigger)
         container = Docker::Container.create({
-          "Image" => "pushbit/base",
+          "Image" => "pushbit-development/base",
           "Env" => environment,
           "Volumes" => {
             "/pushbit/code" => {}
@@ -50,7 +50,7 @@ module Pushbit
           },
           "HostConfig" => {
             "Binds" => [
-              "#{task.trigger.src_volume}:/pushbit/code:ro"
+              "#{task.trigger.src_volume}:/pushbit/code:ro" # note: ro=read-only here
             ]
           }
         })
@@ -79,6 +79,7 @@ module Pushbit
           "PUSHBIT_USERNAME=#{trigger.repo.github_owner}",
           "PUSHBIT_REPONAME=#{trigger.repo.name}",
           "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}",
+          "PUSHBIT_API_URL=#{ENV.fetch('APP_URL')}",
           "PUSHBIT_REPOSITORY_URL=#{trigger.repo.url}"
         ]
       end
