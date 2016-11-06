@@ -2,14 +2,14 @@
 <div class="row">
   <div class="<%= current_user.has_access_to_private_repos? ? 'col-md-12' : 'col-md-9' %>">
     <% if @onboarding %>
-    <p class="subtitle">Choose a project to get started with Pushbit.</p>
+    <p class="subtitle">Choose a repository to get started with Pushbit.</p>
     <% else %>
-    <p class="subtitle">Choose another project to connect to Pushbit.</p>
+    <p class="subtitle">Choose another repository to connect to Pushbit.</p>
     <% end %>
   </div>
   <% unless current_user.has_access_to_private_repos? %>
   <div class="col-md-3">
-    <a href="/auth/login/private" class="btn btn-primary">
+    <a href="/auth/login/private" class="btn btn-primary pull-right">
       <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
       Show Private Repos
     </a>
@@ -37,7 +37,7 @@
 
   <div class="search">
     <% if current_user.last_synchronized_at %>
-    <small class="last-sync">Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
+    <small class="last-sync"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
     <% end %>
     <input type="search" id="search" placeholder="Find a project..." class="form-control" />
   </div>

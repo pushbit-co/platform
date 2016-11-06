@@ -46,6 +46,10 @@ module Pushbit
       "ssh://git@github.com/#{github_full_name}.git"
     end
 
+    def http_url
+      "https://github.com/#{github_full_name}"
+    end
+
     def name
       github_full_name.split('/').last if github_full_name
     end

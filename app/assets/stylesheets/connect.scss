@@ -29,10 +29,23 @@
         line-height: 36px;
         text-align: left;
         position: relative;
+
+        a {
+          color: $dark-grey;
+        }
+      }
+
+      .glyphicon,
+      .organization {
+        opacity: 0.8;
       }
 
       button {
         float: right;
+
+        .price {
+          background: rgba(0,0,0,.2);
+        }
       }
 
       small {

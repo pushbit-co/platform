@@ -15,11 +15,23 @@
             <input type="hidden" name="has_customer" value="<%= current_user.has_customer? ? "true" : "" %>" />
             <input type="hidden" name="name" value="<%= repo.github_full_name %>" />
             <input type="hidden" name="private" value="<%= repo.private %>" />
-            <button type="submit" class="btn btn-primary">Connect</button>
+            <% if repo.private %>
+              <button type="submit" class="btn btn-primary segmented">
+                <span>Connect</span>
+                <span class="price">$10 / mo</span>
+              </button>
+            <% else %>
+              <button type="submit" class="btn btn-primary">Connect</button>
+            <% end %>
           </form>
           <% end %>
 
-          <span class="organization"><%= repo.github_owner %>/</span><%= repo.name %>
+          <a href="<%= repo.http_url %>" target="_blank">
+            <span class="organization"><%= repo.github_owner %> / </span><%= repo.name %>
+          </a>
+          <% if repo.private %>
+            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+          <% end %>
           <small class="tags"><%= repo.tags.join(',') %></small>
         </div>
       </form>
