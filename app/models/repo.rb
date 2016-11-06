@@ -43,7 +43,7 @@ module Pushbit
     end
 
     def url
-      "https://github.com/#{github_full_name}"
+      "ssh://git@github.com/#{github_full_name}.git"
     end
 
     def name
@@ -77,8 +77,7 @@ module Pushbit
     end
 
     def unencrypted_ssh_key
-      key = SSHKey.new(ssh_key)
-      key.passphrase = deploy_key_passphrase
+      key = SSHKey.new(ssh_key, passphrase: deploy_key_passphrase)
       key.private_key
     end
 

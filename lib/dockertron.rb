@@ -1,3 +1,5 @@
+require "base64"
+
 module Pushbit
   class Dockertron
     class << self
@@ -75,7 +77,7 @@ module Pushbit
 
       def base_env(trigger)
         [
-          "PUSHBIT_SSH_KEY=#{trigger.repo.unencrypted_ssh_key}",
+          "PUSHBIT_BASE64_SSH_KEY=#{Base64.encode64(trigger.repo.unencrypted_ssh_key)}",
           "PUSHBIT_USERNAME=#{trigger.repo.github_owner}",
           "PUSHBIT_REPONAME=#{trigger.repo.name}",
           "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}",

@@ -57,7 +57,7 @@ module Pushbit
 
       # save private_key to database
       repo.update_attributes(
-        ssh_key: key.private_key,
+        ssh_key: key.encrypted_private_key,
         deploy_key_id: deploy_key.id
       )
     end

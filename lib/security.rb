@@ -29,7 +29,7 @@ class Security
 
   def self.generate_ssh_key(passphrase)
     SSHKey.generate(
-      type:       'DSA',
+      type:       'RSA',
       bits:       ENV.fetch('SSH_KEY_BITS', '4096').to_i,
       passphrase: passphrase
     )
