@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'base64'
 
 describe Pushbit::Dockertron do
   let(:repo) { create(:repo, github_id: 123) }
@@ -40,12 +41,12 @@ describe Pushbit::Dockertron do
         hash_including(
           "Image" => "pushbit/tests",
           "Env" => [
-            "PUSHBIT_SSH_KEY=#{repo.unencrypted_ssh_key}",
+            "PUSHBIT_BASE64_SSH_KEY=#{Base64.encode64(repo.unencrypted_ssh_key)}",
             "PUSHBIT_USERNAME=#{repo.github_owner}",
             "PUSHBIT_REPONAME=#{repo.name}",
             "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}",
             "PUSHBIT_API_URL=#{ENV.fetch('APP_URL')}",
-            "PUSHBIT_REPOSITORY_URL=https://github.com/#{repo.github_full_name}",
+            "PUSHBIT_REPOSITORY_URL=#{repo.url}",
             "PUSHBIT_CHANGED_FILES=",
             "PUSHBIT_TASK_ID=#{task.id}",
             "PUSHBIT_API_TOKEN=#{task.access_token}",
