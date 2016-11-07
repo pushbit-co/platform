@@ -35,9 +35,14 @@
         }
       }
 
-      .glyphicon,
+      .glyphicon {
+        position: relative;
+        top: 2px;
+        opacity: .8;
+      }
+
       .organization {
-        opacity: 0.8;
+        opacity: .8;
       }
 
       button {
