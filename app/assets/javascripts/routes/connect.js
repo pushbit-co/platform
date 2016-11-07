@@ -28,8 +28,8 @@ const connect = {
   },
 
   requestPaymentDetails: (ev) => {
-    const $form = $(ev.target).parents('form');
-    const data = serializeObject(this);
+    const $form = $(ev.target);
+    const data = serializeObject(ev.target);
     const privateRepo = (data.private === 'true');
 
     if (privateRepo && !data.has_customer && !data.token) {
@@ -37,7 +37,7 @@ const connect = {
         name: 'Pushbit',
         description: data.name,
         panelLabel: 'Subscribe',
-        amount: 1500,
+        amount: 1000,
         token: (token) => {
           // add the payment token and resubmit as we now have the neccessaries
           $form.find('input[name=token]').val(token.id);
@@ -47,8 +47,7 @@ const connect = {
       ev.preventDefault();
     } else {
       $form.find('button')
-        .text('Subscribing...')
-        .attr('disabled', true);
+      .attr('disabled', true);
     }
   },
 

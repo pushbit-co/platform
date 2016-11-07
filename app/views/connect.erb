@@ -4,7 +4,7 @@
     <% if @onboarding %>
     <p class="subtitle">Choose a repository to get started with Pushbit.</p>
     <% else %>
-    <p class="subtitle">Choose another repository to connect to Pushbit.</p>
+    <p class="subtitle">Choose another repository to subscribe to Pushbit.</p>
     <% end %>
   </div>
   <% unless current_user.has_access_to_private_repos? %>
@@ -39,7 +39,7 @@
     <% if current_user.last_synchronized_at %>
     <small class="last-sync"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Last synchronized <span id="sync-time"><%= readable(current_user.last_synchronized_at) %></span></small>
     <% end %>
-    <input type="search" id="search" placeholder="Find a project..." class="form-control" />
+    <input type="search" id="search" placeholder="Find a repository..." class="form-control" />
   </div>
 
   <div id="repositories">
