@@ -3,6 +3,8 @@
   border-color: $blue;
   box-shadow: 0 2px 0 $black-10;
   position: relative;
+  border: 0;
+  overflow: hidden;
 
   &:hover,
   &:active,
@@ -20,5 +22,14 @@
   &:disabled {
     background-color: lighten($blue, 20%);
     border-color: lighten($blue, 20%);
+  }
+
+  &.segmented {
+    padding: 0;
+
+    > span {
+      display: inline-block;
+      padding: 6px 12px;
+    }
   }
 }

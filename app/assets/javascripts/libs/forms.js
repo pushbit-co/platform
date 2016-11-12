@@ -15,14 +15,15 @@ export function serializeObject(obj) {
   const $obj = $(obj);
   const o = {};
   const a = $obj.serializeArray();
-  $.each(a, () => {
-    if (o[$obj.name] !== undefined) {
-      if (!o[$obj.name].push) {
-        o[$obj.name] = [o[$obj.name]];
+
+  $.each(a, (index, item) => {
+    if (o[item.name] !== undefined) {
+      if (!o[item.name].push) {
+        o[item.name] = [o[item.name]];
       }
-      o[$obj.name].push($obj.value || '');
+      o[item.name].push(item.value || '');
     } else {
-      o[$obj.name] = $obj.value || '';
+      o[item.name] = item.value || '';
     }
   });
   return o;

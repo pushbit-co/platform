@@ -10,6 +10,7 @@
 @import 'pricing';
 @import 'connect';
 @import 'onboarding';
+@import 'billing';
 @import 'behaviors';
 @import 'repo';
 
@@ -85,7 +86,7 @@ ol.actions {
 .titlebar {
   a {
     float: right;
-    margin-top: 50px;
+    margin-top: 40px;
   }
 }
 
@@ -98,17 +99,6 @@ ol.actions {
 #content {
   min-height: 300px;
   padding-bottom: 300px;
-
-  .empty {
-    min-height: 150px;
-    text-align: center;
-    padding-top: 100px;
-    background: url('/assets/grid.svg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 30px 30px;
-    opacity: .5;
-  }
 
   table {
     margin-top: 20px;

@@ -1,26 +1,21 @@
-<h1>Billing</h1>
+<h1>Account</h1>
 <p class="subtitle">
   Manage your subscription and payment method.
 </p>
 
-<div class="row">
-  <nav class="col-md-2 sidebar">
-    <%= partial :'account/menu' %>
-  </nav>
-  <div class="col-md-10">
+<div class="row billing">
+  <div class="col-md-12">
+    <% if current_user.has_customer? %>
     <section>
       <h2>Summary</h2>
-      <% if current_user.has_customer? %>
       <p>Stripe customer id: <%= current_user.customer.id %></p>
       <p>Stripe subscription id: <%= current_user.customer.subscriptions.first.id %></p>
       <p>Repos paid for on Stripe: <%= current_user.customer.subscriptions.first.quantity %></p>
       <p>Private repos active: <%= current_user.repos.active.private.count %></p>
       <p>Subscription models: <%= current_user.subscriptions.count %></p>
-      <p>Monthly cost: $<%= current_user.subscriptions.count * 15 %></p>
-      <% else %>
-      <p>No subscription yet.</p>
-      <% end %>
+      <p>Monthly cost: $<%= current_user.subscriptions.count * 10 %></p>
     </section>
+    <% end %>
     <section>
       <h2>Payment Method</h2>
       <% if current_user.has_customer? %>
@@ -30,7 +25,7 @@
       <p>Expires <%= card.exp_month %>/<%= card.exp_year %></p>
 
       <% else %>
-      <p>No payment methods yet.</p>
+      <p class="empty">We have no payment methods on file.</p>
       <% end %>
     </section>
     <section>
@@ -52,7 +47,7 @@
       </table>
       </ol>
       <% else %>
-      <p>No billing history yet.</p>
+      <p class="empty">No billing history, yet…</p>
       <% end %>
     </section>
   </div>
