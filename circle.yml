@@ -6,7 +6,6 @@ machine:
   environment:
     GITHUB_CLIENT_ID:
     GITHUB_CLIENT_SECRET:
-    GITHUB_WEBHOOK_TOKEN: 060ffa03a3dc77ec3d477dd1d0761a49
     GITHUB_BOT_LOGIN: dev-pushbit-bot
     GITHUB_TOKEN: thisisnotarealtoken
     APP_URL: http://example.com
@@ -15,6 +14,8 @@ machine:
     SESSION_SECRET: 419eec0ecdb3b0373fd5f2a83d6832eb
     BASIC_AUTH_SECRET: 101050d232ec0ecdbfd5f2a83d6cfb8b1ca37378
     STRIPE_SECRET_KEY: totally_fake_key
+    DEPLOY_KEYS_PASSWORD: thisisnotarealpassword
+    SSH_KEY_BITS: 1024
 
 dependencies:
   override:

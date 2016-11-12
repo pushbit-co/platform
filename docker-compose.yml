@@ -8,8 +8,6 @@ database:
 
 redis:
   image: redis
-  volumes:
-    - /var/lib/docker/data/redis:/data
   ports:
     - "6379:6379"
 
@@ -42,7 +40,6 @@ platform:
     - STRIPE_WEBHOOK_PASSWORD
     - GITHUB_CLIENT_ID
     - GITHUB_CLIENT_SECRET
-    - GITHUB_WEBHOOK_TOKEN
     - GITHUB_BOT_LOGIN
     - AES_KEY
     - HMAC_KEY
@@ -50,6 +47,7 @@ platform:
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
     - REDIS_URL
+    - DEPLOY_KEYS_PASSWORD
 
 workers:
   build: .
@@ -73,7 +71,6 @@ workers:
     - STRIPE_WEBHOOK_PASSWORD
     - GITHUB_CLIENT_ID
     - GITHUB_CLIENT_SECRET
-    - GITHUB_WEBHOOK_TOKEN
     - GITHUB_BOT_LOGIN
     - AES_KEY
     - HMAC_KEY
@@ -81,3 +78,4 @@ workers:
     - SESSION_SECRET
     - BASIC_AUTH_SECRET
     - REDIS_URL
+    - DEPLOY_KEYS_PASSWORD

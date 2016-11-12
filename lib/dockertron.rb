@@ -1,64 +1,116 @@
+require "base64"
+
 module Pushbit
   class Dockertron
-    def self.run_task!(task, changed_files, head_sha)
-      changed_files = changed_files.map { |f| f['filename'] }
-      puts "Running Task: #{task.id}"
-      task.logs = ""
-      repo = task.repo
-      image = task.image
-      trigger = task.trigger
+    class << self
+      def clone!(trigger)
+        Docker::Image.create('fromImage' => 'pushbit/base:latest')
 
-      puts "Using image: #{image.id})"
+        volume = Docker::Volume.create(trigger.src_volume)
+        environment = base_env(trigger)
+        container = Docker::Container.create({
+          "Image" => "pushbit-development/base",
+          "Env" => environment,
+          "Volumes" => {
+            "/pushbit/code" => {}
+          },
+          "Entrypoint" => "/bin/bash",
+          "Cmd" => "./clone.sh",
+          "HostConfig" => {
+            "Binds" => [
+              "#{trigger.src_volume}:/pushbit/code"
+            ]
+          }
+        })
 
-      container = Docker::Container.create({
-        "Image" => image.id,
-        "Env" => [
-          "GITHUB_USER=#{repo.github_owner}",
-          "GITHUB_REPO=#{repo.name}",
-          "GITHUB_TOKEN=#{ENV.fetch('GITHUB_TOKEN')}",
-          "GITHUB_NUMBER=#{trigger.payload ? trigger.payload['number'] : nil}",
-          "BASE_BRANCH=#{head_sha || repo.default_branch || 'master'}",
-          "CHANGED_FILES=#{changed_files.join(' ')}",
-          "TASK_ID=#{task.id}",
-          "ACCESS_TOKEN=#{task.access_token}",
-          "APP_URL=#{ENV.fetch('APP_URL')}"
-        ],
-        "Volumes" => {
-          "/pushbit/code" => {}
-        },
-        "HostConfig" => {
-          "Binds" => [
-            "#{trigger.src_volume}:/pushbit/code:ro"
-          ]
-        }
-      })
+        container.start
+        container.attach do |stream, chunk|
+          line = "#{stream}: #{chunk}"
+          puts "Clone for trigger: #{trigger.id}: #{line}"
+        end
 
-      # TODO: what happens to container if this fails
-      task.update!(
-        container_id: container.id,
-        status: :created
-      )
-
-      container.start
-      task.update!(
-        status: :running
-      )
-
-      container.attach do |stream, chunk|
-        line = "#{stream}: #{chunk}"
-        puts "Task: #{task.id}: #{line}"
-        Task.where(id: task.id).update_all(["logs = logs || ?", line])
+        exitcode = container.json['State']['ExitCode']
+        puts "Exitcode #{exitcode}"
+        puts "Removing clone container"
+        container.remove
+        volume
       end
 
-      exitcode = container.json['State']['ExitCode']
-      task.completed_at = Time.now
-      task.status = exitcode == 0 ? :success : :failed
-      task.save!
-      container.remove
-    rescue Docker::Error::NotFoundError => e
-      task.update!(status: :failed,
-                   reason: e.message)
-      raise e # capture in sentry
+
+      def run_task!(task, changed_files)
+        task.logs = ""
+
+        puts "Running task: #{task.id}"
+        puts "Using image: #{task.image.id})"
+
+        environment = base_env(task.trigger).concat task_env(task, changed_files)
+        container = Docker::Container.create({
+          "Image" => task.image.id,
+          "Env" => environment,
+          "Volumes" => {
+            "/pushbit/code" => {}
+          },
+          "HostConfig" => {
+            "Binds" => [
+              "#{task.trigger.src_volume}:/pushbit/code:ro" # note: ro=read-only here
+            ]
+          }
+        })
+
+        container.start
+        container.attach do |stream, chunk|
+          line = "#{stream}: #{chunk}"
+          puts "Task: #{task.id}: #{line}"
+          Task.where(id: task.id).update_all(["logs = logs || ?", line])
+        end
+
+        exitcode = container.json['State']['ExitCode']
+        container.remove
+        exitcode
+      rescue Docker::Error::NotFoundError => e
+        task.update!(status: :failed,
+                     reason: e.message)
+        raise e # capture in sentry
+      end
+
+      private
+
+      def base_env(trigger)
+        [
+          "PUSHBIT_BASE64_SSH_KEY=#{Base64.encode64(trigger.repo.unencrypted_ssh_key)}",
+          "PUSHBIT_USERNAME=#{trigger.repo.github_owner}",
+          "PUSHBIT_REPONAME=#{trigger.repo.name}",
+          "PUSHBIT_APP_URL=#{ENV.fetch('APP_URL')}",
+          "PUSHBIT_API_URL=#{ENV.fetch('APP_URL')}",
+          "PUSHBIT_REPOSITORY_URL=#{trigger.repo.url}"
+        ]
+      end
+
+      def task_env(task, changed_files)
+        trigger = task.trigger
+        output = [
+          "PUSHBIT_CHANGED_FILES=#{changed_files.join(' ')}",
+          "PUSHBIT_TASK_ID=#{task.id}",
+          "PUSHBIT_API_TOKEN=#{task.access_token}"
+        ]
+
+        if trigger.payload
+          payload = Payload.new(trigger.payload)
+          base_branch = payload.head_ref || trigger.repo.default_branch || 'master'
+
+          output.concat([
+            "PUSHBIT_PR_NUMBER=#{payload.pull_request_number}",
+            "PUSHBIT_BASE_COMMIT=#{payload.head_sha}",
+            "PUSHBIT_BASE_BRANCH=#{base_branch}"
+          ])
+        else
+          base_branch = trigger.repo.default_branch || 'master'
+
+          output.concat([
+            "PUSHBIT_BASE_BRANCH=#{base_branch}"
+          ])
+        end
+      end
     end
   end
 end

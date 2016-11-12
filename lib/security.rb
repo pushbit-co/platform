@@ -27,12 +27,20 @@ class Security
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), ENV.fetch('HMAC_KEY'), data)
   end
 
+  def self.generate_ssh_key(passphrase)
+    SSHKey.generate(
+      type:       'RSA',
+      bits:       ENV.fetch('SSH_KEY_BITS', '4096').to_i,
+      passphrase: passphrase
+    )
+  end
+
   def self.hash_matches?(data, hash)
     self.hash(data) == hash
   end
-  
-  def self.verify_github_signature(payload_body, sig)
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV.fetch('GITHUB_WEBHOOK_TOKEN'), payload_body)
+
+  def self.verify_github_signature(payload, sig, token)
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload)
     Rack::Utils.secure_compare(signature, sig)
   end
 end

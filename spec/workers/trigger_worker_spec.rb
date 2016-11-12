@@ -25,8 +25,7 @@ describe "perform" do
     it "clones the code" do
       allow_any_instance_of(Pushbit::Behavior).to receive(:execute!)
       expect(volume).to receive(:remove)
-      expect(worker).to receive(:volume).and_return(volume)
-      expect(worker).to receive(:clone!)
+      expect(Pushbit::Dockertron).to receive(:clone!).and_return(volume)
       worker.work(trigger.id, {})
     end
   end
