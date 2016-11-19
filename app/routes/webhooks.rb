@@ -1,19 +1,26 @@
 module Pushbit
   class App < Sinatra::Base
     post "/webhooks/github" do
+      logger.info "here"
       verify_signature!
+      payload = params
+      logger.info github_event
+      logger.info payload.inspect
+      logger.info payload['sender']['id']
+      repo_id = payload["repository"]["id"]
+      logger.info repo_id
 
       if processable?
-        payload = Payload.new(params)
-        repo = Repo.find_by!(github_id: payload.github_repo_id)
+        repo = Repo.find_by!(github_id: repo_id)
+        logger.info repo.inspect
 
         trigger = Trigger.create!(
           kind: github_event,
-          payload: payload.build_data,
+          payload: payload,
           repo: repo,
-          triggered_by: payload.sender_id
+          triggered_by: payload['sender']['id']
         )
-        trigger.execute!(params)
+        trigger.execute!
 
         status 200
       else
@@ -21,22 +28,10 @@ module Pushbit
       end
     end
 
-    [:get, :post].each do |method|
-      send method, '/webhooks/cron' do
-        # TODO: authenticate somehow
-
-        trigger = Trigger.create!(kind: 'cron')
-        trigger.execute!
-
-        status 200
-      end
-    end
-
     private
 
     def processable?
-      return false unless %w(push pull_request_opened pull_request_closed issue_closed).include? github_event
-      return false if params['sender']['login'] == ENV.fetch('GITHUB_BOT_LOGIN')
+      return false unless %w(pull_request_opened issue_opened).include? github_event
       true
     end
 

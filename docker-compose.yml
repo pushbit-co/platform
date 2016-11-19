@@ -9,7 +9,7 @@ database:
 redis:
   image: redis
   volumes:
-    - /var/lib/docker/data/redis:/data
+    - /data
   ports:
     - "6379:6379"
 

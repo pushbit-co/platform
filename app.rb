@@ -62,10 +62,6 @@ module Pushbit
       set :assets_css_compressor, :sass
       set :assets_js_compressor, :uglifier
       set :assets_prefix, %w(assets app/assets)
-
-      # trigger the app to sync with behaviors stored on github when
-      # the application starts up
-      BehaviorSyncronizationWorker.perform_async
     end
 
     Warden::Strategies.add(:basic) do

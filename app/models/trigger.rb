@@ -17,12 +17,12 @@ module Pushbit
       @user ||= User.find_by(github_id: triggered_by)
     end
 
-    def src_volume
-      "trigger_volume_#{id}"
-    end
+    # def src_volume
+    #   "trigger_volume_#{id}"
+    # end
 
-    def execute!(params = nil)
-      TriggerWorker.perform_async(id, params)
+    def execute!
+      TriggerWorker.perform_async(id)
     end
   end
 end
