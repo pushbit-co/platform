@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920192517) do
+ActiveRecord::Schema.define(version: 20161120232157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,27 +184,15 @@ ActiveRecord::Schema.define(version: 20160920192517) do
   add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.integer  "number",           default: 0
+    t.string   "behavior"
+    t.integer  "github_id"
     t.integer  "repo_id"
-    t.string   "container_id"
-    t.integer  "duration",         default: 0
-    t.string   "commit"
-    t.string   "authors"
-    t.string   "status",           default: "pending"
-    t.string   "kind"
-    t.datetime "completed_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.text     "logs"
-    t.string   "container_status"
     t.integer  "trigger_id"
-    t.string   "reason"
-    t.integer  "behavior_id"
-    t.integer  "sequential_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "tasks", ["container_id"], name: "index_tasks_on_container_id", using: :btree
-  add_index "tasks", ["repo_id"], name: "index_tasks_on_repo_id", using: :btree
+  add_index "tasks", ["behavior"], name: "index_tasks_on_behavior", using: :btree
 
   create_table "triggers", force: :cascade do |t|
     t.string   "kind"

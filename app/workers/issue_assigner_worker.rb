@@ -15,6 +15,15 @@ module Pushbit
 
       # Assign Issue
       client.update_issue(repo_full_name, payload['issue']['number'], :assignee => assignee)
+
+      Task.create!({
+        behavior: "issue_assigner",
+        github_id: payload['issue']['number'],
+        trigger_id: trigger_id,
+        repo_id: Repo.find_by!({
+          github_full_name: repo_full_name
+        }).id
+      })
     end
   end
 end
