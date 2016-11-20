@@ -46,13 +46,3 @@ describe "github" do
     end
   end
 end
-
-describe "cron" do
-  it "should add cron event worker job" do
-    t = double
-    expect(Pushbit::Trigger).to receive(:create!).and_return(t)
-    expect(t).to receive(:execute!).and_return(true)
-    post '/webhooks/cron'
-    expect(last_response.status).to eql(200)
-  end
-end

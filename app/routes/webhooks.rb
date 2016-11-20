@@ -1,17 +1,11 @@
 module Pushbit
   class App < Sinatra::Base
     post "/webhooks/github" do
-      logger.info "here"
       verify_signature!
-      payload = params
-      logger.info github_event
-      logger.info payload.inspect
-      logger.info payload['sender']['id']
-      repo_id = payload["repository"]["id"]
-      logger.info repo_id
 
       if processable?
-        repo = Repo.find_by!(github_id: repo_id)
+        payload = params
+        repo = Repo.find_by!(github_id: payload["repository"]["id"])
         logger.info repo.inspect
 
         trigger = Trigger.create!(
@@ -32,6 +26,7 @@ module Pushbit
 
     def processable?
       return false unless %w(pull_request_opened issue_opened).include? github_event
+      return false if params['sender']['login'] == ENV.fetch('GITHUB_BOT_LOGIN')
       true
     end
 
