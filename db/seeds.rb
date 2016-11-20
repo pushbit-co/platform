@@ -6,3 +6,10 @@ Pushbit::Behavior.create!({
   description: "Assigns issues to a collaborator",
   triggers: ["issue_opened"],
 })
+
+Pushbit::Behavior.create!({
+  kind: "pull_request_assigner",
+  name: "Pull Request Assigner",
+  description: "Assigns Pull Requests to a collaborator",
+  triggers: ["pull_request_opened"],
+})
