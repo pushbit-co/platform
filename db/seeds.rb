@@ -4,5 +4,5 @@ Pushbit::Behavior.create!({
   kind: "issue_assigner",
   name: "Issue Assigner",
   description: "Assigns issues to a collaborator",
-  actions: ["issue"],
+  triggers: ["issue_opened"],
 })
