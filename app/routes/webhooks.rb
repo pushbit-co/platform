@@ -25,7 +25,7 @@ module Pushbit
     private
 
     def processable?
-      return false unless %w(pull_request_opened issue_opened).include? github_event
+      return false unless %w(pull_request_opened issue_opened issue_edited).include? github_event
       return false if params['sender']['login'] == ENV.fetch('GITHUB_BOT_LOGIN')
       true
     end

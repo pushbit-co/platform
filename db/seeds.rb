@@ -11,5 +11,5 @@ Pushbit::Behavior.create!({
   kind: "issue_labeller",
   name: "Issue Labeller",
   description: "Automatically adds common labels to issues",
-  triggers: ["issue_opened"],
+  triggers: ["issue_opened", "issue_edited"],
 })

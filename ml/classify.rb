@@ -16,7 +16,8 @@ tests = [
   "Error: Cannot locate local branch '<UUID>'",
   "Add markdown helper to comment form",
   "Feature: Logger",
-  "XSS exploit on login form"
+  "XSS exploit on login form",
+  "Document new API endpoints"
 ]
 
 tests.each do |title|
