@@ -13,3 +13,10 @@ Pushbit::Behavior.create!({
   description: "Assigns Pull Requests to a collaborator",
   triggers: ["pull_request_opened"],
 })
+
+Pushbit::Behavior.create!({
+  kind: "issue_reminder",
+  name: "Issue Reminder",
+  description: "Reminds assignee that an issue is becoming stale",
+  triggers: ["cron"],
+})

@@ -2,6 +2,8 @@ require 'sinatra/activerecord/rake'
 require 'sinatra/asset_pipeline/task'
 require './app'
 
+Dir.glob('lib/tasks/*.rake').each { |r| load r}
+
 Sinatra::AssetPipeline::Task.define! Pushbit::App
 
 namespace :db do
