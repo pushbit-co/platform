@@ -6,3 +6,10 @@ Pushbit::Behavior.create!({
   description: "Assigns issues to a collaborator",
   triggers: ["issue_opened"],
 })
+
+Pushbit::Behavior.create!({
+  kind: "issue_labeller",
+  name: "Issue Labeller",
+  description: "Automatically adds common labels to issues",
+  triggers: ["issue_opened"],
+})

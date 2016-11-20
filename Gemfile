@@ -37,4 +37,6 @@ group :development, :test do
   gem "database_cleaner"
   gem "factory_girl"
   gem "faker"
+  gem "yajl-ruby"
+  gem "ankusa"
 end
