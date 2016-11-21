@@ -7,7 +7,7 @@ require 'ankusa/file_system_storage'
 # we need to whitelist labels that the bot is willing to add - after all, we
 # don't want it to start labelling things invalid or wontfix!
 allowable = ['bug', 'enhancement', 'feature', 'question', 'discussion', 'help wanted', 'security']
-file = './ml/training.txt'
+file = './ml/issue-label-training.txt'
 
 File.delete(file) if File.exists?(file)
 

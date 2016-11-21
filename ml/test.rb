@@ -2,7 +2,7 @@ require 'set'
 require 'ankusa'
 require 'ankusa/file_system_storage'
 
-file  = './ml/training.txt'
+file  = './ml/issue-label-training.txt'
 storage = Ankusa::FileSystemStorage.new(file)
 classifier = Ankusa::NaiveBayesClassifier.new(storage)
 

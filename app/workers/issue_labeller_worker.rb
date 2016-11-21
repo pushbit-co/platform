@@ -11,16 +11,20 @@ module Pushbit
       issue_number = payload['issue']['number']
       issue_title = payload['issue']['title']
 
+      # Collect labels available on repo
       labels = client.labels(repo_full_name).map { |l| l.name }
+
+      # Use trained classifier to suggest label fro title
       suggested = suggested_label(issue_title)
 
+      # Add label to issue if within repo labels
       if labels.include?(suggested)
         client.add_labels_to_an_issue(repo_full_name, issue_number, [suggested])
       end
     end
 
     def suggested_label(text)
-      file  = './ml/training.txt'
+      file  = './ml/issue-label-training.txt'
       storage = Ankusa::FileSystemStorage.new(file)
       classifier = Ankusa::NaiveBayesClassifier.new(storage)
       classifier.classify(text)
