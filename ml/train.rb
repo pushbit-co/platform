@@ -19,6 +19,7 @@ Dir.foreach('./ml/corpus') do |item|
   next if item == '.' or item == '..'
   # do work on real items
 
+  puts item
   gz = File.open("./ml/corpus/#{item}")
   js = Zlib::GzipReader.new(gz).read
   parser = Yajl::Parser.new
@@ -29,6 +30,7 @@ Dir.foreach('./ml/corpus') do |item|
         if event['payload']['issue']['labels'].size > 0
           labels = event['payload']['issue']['labels'].map { |label| label['name'].downcase.gsub(/[^a-z ]/i, '').strip }
           title = event['payload']['issue']['title']
+          body = event['payload']['issue']['body']
 
           labels.each do |label|
             unless label.empty?
@@ -36,10 +38,7 @@ Dir.foreach('./ml/corpus') do |item|
                 counts[label] += 1
 
                 puts "Adding to training set (#{label}) #{title}"
-                classifier.train(label, title)
-              else
-                puts "Adding to training set (none) #{title}"
-                classifier.train('none', title)
+                classifier.train(label, "#{title} \n #{body}")
               end
             end
           end
