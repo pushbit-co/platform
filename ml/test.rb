@@ -1,3 +1,5 @@
+require 'zlib'
+require 'yajl'
 require 'set'
 require 'ankusa'
 require 'ankusa/file_system_storage'
@@ -5,23 +7,39 @@ require 'ankusa/file_system_storage'
 file  = './ml/issue-label-training.txt'
 storage = Ankusa::FileSystemStorage.new(file)
 classifier = Ankusa::NaiveBayesClassifier.new(storage)
+allowable = ['bug', 'enhancement', 'feature', 'question', 'discussion', 'help wanted', 'security']
 
-tests = [
-  "Show spinner on commit form",
-  "Error: Attempting to call a function in a renderer window that has been closed or released",
-  "Errors an unexpected behavior when viewing a project whilst it is deleted",
-  "Persistent Plugin Problem",
-  "Make invite people button more prominent",
-  "Update organization invitation screen VD",
-  "Error: Cannot locate local branch '<UUID>'",
-  "Add markdown helper to comment form",
-  "Feature: Logger",
-  "XSS exploit on login form",
-  "Document new API endpoints"
-]
+match_count = 0
+unmatch_count = 0
 
-tests.each do |title|
-  puts "title: #{title}"
-  puts "label: #{classifier.classify(title)}"
-  puts "---"
+Dir.foreach('./ml/testing') do |item|
+  next if item == '.' or item == '..'
+  # do work on real items
+
+  gz = File.open("./ml/testing/#{item}")
+  js = Zlib::GzipReader.new(gz).read
+  parser = Yajl::Parser.new
+
+  parser.parse(js) do |event|
+    if event['type'] == 'IssuesEvent'
+      if event['payload']['action'] == 'opened'
+        labels = event['payload']['issue']['labels'].map { |label| label['name'].downcase.gsub(/[^a-z ]/i, '').strip }
+        title = event['payload']['issue']['title']
+
+        if (allowable & labels).size > 0
+          chosen_label = classifier.classify(title)
+
+          if labels.include?(chosen_label)
+            match_count += 1
+            puts "MATCH #{chosen_label}: #{title}"
+          else
+            unmatch_count += 1
+            puts "NO MATCH #{chosen_label}: #{title}"
+          end
+        end
+      end
+    end
+  end
 end
+
+puts "#{match_count} / #{unmatch_count} matched"

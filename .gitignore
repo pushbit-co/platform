@@ -10,3 +10,4 @@ public/assets
 node_modules
 app/assets/javascripts/bundle.js
 ml/corpus
+ml/testing
