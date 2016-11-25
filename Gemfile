@@ -30,6 +30,7 @@ gem "will_paginate", "~> 3.0.6"
 gem "pony"
 gem "parallel"
 gem "ankusa"
+gem "sshkey"
 
 group :development, :test do
   gem "rspec"

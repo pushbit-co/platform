@@ -7,13 +7,7 @@ module Pushbit
     get "/account/billing" do
       authenticate!
       @title = "Billing - Account"
-      erb :'account/billing'
-    end
-
-    get "/account/profile" do
-      authenticate!
-      @title = "Profile - Account"
-      erb :'account/profile'
+      erb :account
     end
   end
 end

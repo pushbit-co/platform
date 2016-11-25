@@ -1,3 +1,5 @@
+require 'sshkey'
+
 module Pushbit
   class Repo < ActiveRecord::Base
     include ActiveModel::MassAssignmentSecurity
@@ -40,6 +42,14 @@ module Pushbit
       !active?
     end
 
+    def url
+      "ssh://git@github.com/#{github_full_name}.git"
+    end
+
+    def http_url
+      "https://github.com/#{github_full_name}"
+    end
+
     def name
       github_full_name.split('/').last if github_full_name
     end
@@ -58,10 +68,28 @@ module Pushbit
       client.labels(github_full_name)
     end
 
+    def ensure_salt
+      self.update_attributes!(salt: SecureRandom.hex) unless salt
+    end
+
+    def ensure_webhook_token
+      self.update_attributes!(webhook_token: SecureRandom.hex) unless webhook_token
+    end
+
+    def deploy_key_passphrase
+      Security.hash("#{ENV.fetch('DEPLOY_KEYS_PASSWORD')}#{salt}")
+    end
+
+    def unencrypted_ssh_key
+      key = SSHKey.new(ssh_key, passphrase: deploy_key_passphrase)
+      key.private_key
+    end
+
     def activate!(user)
-      self.active = true
-      self.behaviors = Behavior.all
-      self.save!
+      self.update_attributes!(
+        active: true,
+        behaviors: Behavior.all
+      )
 
       trigger = Trigger.create!(
         kind: 'setup',
@@ -71,11 +99,11 @@ module Pushbit
       trigger.execute!
 
       Action.create!({
-                       kind: 'subscribe',
-                       repo: self,
-                       user: user,
-                       github_id: github_id
-                     }, without_protection: true)
+         kind: 'subscribe',
+         repo: self,
+         user: user,
+         github_id: github_id
+       }, without_protection: true)
     end
 
     def deactivate!(user)
