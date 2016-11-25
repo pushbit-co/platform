@@ -12,7 +12,7 @@ module Pushbit
       issue_title = payload['issue']['title']
 
       # If the issue has already been labelled then lets not edit them
-      return if payload['issue']['labels'].size === 0
+      return if payload['issue']['labels'].size > 0
 
       # Collect labels available on repo
       labels = client.labels(repo_full_name).map { |l| l.name }

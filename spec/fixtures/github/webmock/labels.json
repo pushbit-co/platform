@@ -1,0 +1,51 @@
+[
+  {
+    "id": 208045946,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/bug",
+    "name": "bug",
+    "color": "fc2929",
+    "default": true
+  },
+  {
+    "id": 208045947,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/duplicate",
+    "name": "duplicate",
+    "color": "cccccc",
+    "default": true
+  },
+  {
+    "id": 208045948,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/enhancement",
+    "name": "enhancement",
+    "color": "84b6eb",
+    "default": true
+  },
+  {
+    "id": 208045949,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/help%20wanted",
+    "name": "help wanted",
+    "color": "159818",
+    "default": true
+  },
+  {
+    "id": 208045950,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/invalid",
+    "name": "invalid",
+    "color": "e6e6e6",
+    "default": true
+  },
+  {
+    "id": 208045951,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/question",
+    "name": "question",
+    "color": "cc317c",
+    "default": true
+  },
+  {
+    "id": 208045952,
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/wontfix",
+    "name": "wontfix",
+    "color": "ffffff",
+    "default": true
+  }
+]
