@@ -6,7 +6,7 @@ module Pushbit
       repo_full_name = payload['repository']['full_name']
 
       # If the issue has already been assigned then lets not reassign
-      return if payload['issue']['assignee'].empty?
+      return if payload['issue']['assignee'].present?
 
       # Find possible assignees, filter our bot
       collaborators = client.collaborators(repo_full_name).select { |c| c.login != ENV.fetch('GITHUB_BOT_LOGIN') }

@@ -30,7 +30,6 @@ describe "perform" do
     it "applys a label" do
       stub_request(:get, "https://api.github.com/repos/baxterthehacker/public-repo/labels")
           .to_return(status: 200, body: File.read('spec/fixtures/github/webmock/labels.json'), headers: { 'Content-Type' => 'application/json' })
-
       stub = stub_request(:post, "https://api.github.com/repos/baxterthehacker/public-repo/issues/2/labels")
           .with(:body => "[\"enhancement\"]")
 
