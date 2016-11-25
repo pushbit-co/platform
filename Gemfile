@@ -29,6 +29,7 @@ gem "stripe-ruby-mock", "~> 2.2.1", require: "stripe_mock"
 gem "will_paginate", "~> 3.0.6"
 gem "pony"
 gem "parallel"
+gem "ankusa"
 gem "sshkey"
 
 group :development, :test do
@@ -38,4 +39,5 @@ group :development, :test do
   gem "database_cleaner"
   gem "factory_girl"
   gem "faker"
+  gem "yajl-ruby"
 end

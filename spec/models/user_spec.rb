@@ -2,20 +2,29 @@ require 'spec_helper'
 
 describe Pushbit::User do
   describe "save" do
-    it "is invalid without github_id" do
-      user = Pushbit::User.new(login: 'yahyahyah')
-      expect { user.save! }.to raise_error(ActiveRecord::RecordInvalid)
+    context "without github_id" do
+      let(:user) { create(:user, github_id: nil) }
+
+      it "is invalid" do
+        expect { user.save! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
 
-    it "is invalid without login" do
-      user = Pushbit::User.new(github_id: 123)
-      expect { user.save! }.to raise_error(ActiveRecord::RecordInvalid)
+    context "without login" do
+      let(:user) { create(:user, login: nil) }
+
+      it "is invalid" do
+        expect { user.save! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
 
-    it "sends a welcome email" do
-      user = Pushbit::User.new({ github_id: 123, login: 'yahyahyah', email: 'yah@yah.com' }, without_protection: true)
-      user.save!
-      expect(Pushbit::EmailWorker.jobs.length).to eql(1)
+    context "with all attributes" do
+      let(:user) { create(:user, github_id: 123, login: 'yahyahyah', email: 'yah@yah.com') }
+
+      it "sends a welcome email" do
+        user.save!
+        expect(Pushbit::EmailWorker.jobs.length).to eql(1)
+      end
     end
   end
 

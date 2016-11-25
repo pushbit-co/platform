@@ -55,6 +55,16 @@ If you get gem errors you'll need to make sure they are installed first, you can
 docker-compose up
 ```
 
+### ML
+
+Issues are labelled through a trained classifier, the current classifier is at `ml/issue-label-training.txt` and was trained using a month of github issues from
+February 2016. To recreate:
+
+- Adjust the amount of data to download in `download.rb`
+- `docker-compose run --rm platform ruby ./ml/download.rb`
+- `docker-compose run --rm platform ruby ./ml/train.rb` (may take minutes or hours)
+- `docker-compose run --rm platform ruby ./ml/test.rb` (test it out)
+
 
 ## Contributing
 
