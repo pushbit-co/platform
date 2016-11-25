@@ -2,7 +2,6 @@ module Pushbit
   class TriggerWorker < BaseWorker
     sidekiq_options retry: false
 
-<<<<<<< HEAD
     attr_accessor :trigger, :volume
 
     def work(id)
@@ -10,25 +9,11 @@ module Pushbit
       if trigger.behaviors.length > 0
         Parallel.each(trigger.behaviors, in_threads: trigger.behaviors.length) do |b|
           b.execute!(id)
-=======
-    def work(id, data)
-      trigger = Trigger.find(id)
-      payload = Payload.new(data)
-
-      if trigger.behaviors.length > 0
-        logger.info "Cloning codebase"
-        volume = Dockertron.clone!(trigger)
-        threads = trigger.behaviors.length
-
-        Parallel.each(trigger.behaviors, in_threads: threads) do |behavior|
-          behavior.execute!(trigger, payload)
->>>>>>> master
         end
       else
         logger.info "No behaviors"
       end
     end
-<<<<<<< HEAD
 
     # def clone!
     #   self.volume = Docker::Volume.create(volume_name(trigger))
@@ -71,7 +56,5 @@ module Pushbit
     # def volume_name(trigger)
     #   "trigger_volume_#{trigger.id}"
     # end
-=======
->>>>>>> master
   end
 end
