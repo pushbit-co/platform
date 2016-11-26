@@ -1,10 +1,5 @@
 module Pushbit
   class App < Sinatra::Base
-    get '/pricing' do
-      @title = "Pricing"
-      erb :pricing
-    end
-
     get '/security' do
       @title = "Security"
       erb :security

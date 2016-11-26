@@ -7,7 +7,6 @@
 @import 'sidebar';
 @import 'home';
 @import 'dashboard';
-@import 'pricing';
 @import 'connect';
 @import 'onboarding';
 @import 'billing';
@@ -98,9 +97,5 @@ ol.actions {
 
 #content {
   min-height: 300px;
-  padding-bottom: 300px;
-
-  table {
-    margin-top: 20px;
-  }
+  padding-bottom: 150px;
 }

@@ -27,6 +27,21 @@ class Security
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), ENV.fetch('HMAC_KEY'), data)
   end
 
+  def self.get_integration_jwt
+    # Private key contents
+    private_pem = Base64.decode64(ENV.fetch('GITHUB_INTEGRATION_ENCODED_PRIVATE_PEM'))
+    private_key = OpenSSL::PKey::RSA.new(private_pem)
+
+    # Generate the JWT
+    payload = {
+      iat: Time.now.to_i,           # Issued at time
+      exp: 1.minute.from_now.to_i,  # JWT expiration time
+      iss: ENV.fetch('GITHUB_INTEGRATION_ID')
+    }
+
+    JWT.encode(payload, private_key, "RS256")
+  end
+
   def self.generate_ssh_key(passphrase)
     SSHKey.generate(
       type:       'RSA',
