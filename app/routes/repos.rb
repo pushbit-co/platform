@@ -59,14 +59,38 @@ module Pushbit
       erb :'repos/show'
     end
 
-    get "/repos/:user/:repo/settings" do
+    get "/repos/:user/:repo/collaborators" do
       repo = repo_from_params
-      authorize! :update, repo
+      authorize! :read, repo
+      users = []
 
-      @repo = repo
-      @title = "Settings - #{@repo.github_full_name}"
+      repo.collaborators.each do |user|
+        users << {
+          id: user.id,
+          login: user.login
+        }
+      end
 
-      erb :'repos/settings'
+      json ok: true, collaborators: users
+    end
+
+    get "/repos/:user/:repo/teams" do
+      repo = repo_from_params
+      authorize! :read, repo
+      teams = []
+
+      begin
+        repo.teams.each do |team|
+          teams << {
+            id: team.id,
+            name: team.name,
+            slug: team.slug
+          }
+        end
+      rescue Octokit::NotFound
+      end
+
+      json ok: true, teams: teams
     end
 
     get "/repos/:user/:repo/activity" do
@@ -103,14 +127,20 @@ module Pushbit
 
       behavior = Behavior.find_by!(kind: params["behavior"])
       repo_behavior = repo.repo_behaviors.find_by!(behavior: behavior)
+      new_settings = repo_behavior.settings || Hash.new
 
-      behavior.settings.each do |(key)|
-        setting = Setting.find_or_create_by(key: key, repo_behavior: repo_behavior)
-        setting.update_attribute(:value, params["setting_#{key}"])
+      behavior.settings.each do |(key, options)|
+        if params["setting_#{key}"]
+          if options["type"] === "boolean"
+            new_settings[key] = (params["setting_#{key}"] === "on")
+          else
+            new_settings[key] = params["setting_#{key}"]
+          end
+        end
       end
 
-      flash[:notice] = "Updated successfully"
-      redirect "/repos/#{repo.github_full_name}"
+      repo_behavior.update_attribute(:settings, new_settings)
+      json success: true
     end
 
     post "/repos/:user/:repo/:behavior/unsubscribe" do

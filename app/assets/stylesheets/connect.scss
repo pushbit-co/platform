@@ -1,12 +1,23 @@
-#subscribe {
-  margin-top: 20px;
+.permissions-note,
+.last-sync {
+  display: block;
+  margin-bottom: 5px;
+  color: $light-grey;
+  font-size: 14px;
+}
 
-  .last-sync {
-    display: block;
-    margin-bottom: 5px;
-    color: $light-grey;
-    font-size: 14px;
-  }
+.permissions-note {
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.private-repos-enable {
+  margin-top: -40px;
+}
+
+#subscribe {
+  @include panel;
+  margin-top: 40px;
 
   .search,
   .organizations {

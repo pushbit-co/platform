@@ -20,3 +20,11 @@ $black-75: rgba(0, 0, 0, .75);
 
 // content
 $content-empty: '';
+
+@mixin panel {
+  background: $white;
+  border: 1px solid $black-10;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 40px;
+}

@@ -1,6 +1,7 @@
 body,
 html {
   height: 100%;
+  background: #F9F9F9;
 }
 
 body {
@@ -38,9 +39,5 @@ h5 {
     a {
       color: $dark-grey;
     }
-  }
-
-  &:first-child {
-    margin-top: 5px;
   }
 }

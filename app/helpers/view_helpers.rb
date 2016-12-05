@@ -1,8 +1,34 @@
 module Pushbit
   module ViewHelpers
 
+    def setting_input(key, value, opts)
+      name = "setting_#{key}#{opts['multiple'] ? '[]' : ''}"
+
+      # multiple choice
+      if opts['options'].is_a?(Array)
+        options = ""
+        multiple = opts['multiple'] ? 'multiple' : ''
+
+        opts['options'].each do |option|
+          selected = value.nil? ? opts['default'] : value
+          selected_html = selected.include?(option) ? 'selected' : ''
+          options += "<option opts=\"#{option}\" #{selected_html}>#{option}</option>"
+        end
+
+        return "<label>#{opts['label']} <input type=\"hidden\" value=\"#{value}\" name=\"#{name}\" /><select class=\"form-control\" name=\"#{name}\" #{multiple}>#{options}</select></label>"
+      end
+
+      # single choice
+      case opts['type']
+        when "boolean"
+          checked = value.nil? ? opts['default'] : value
+          return "<label><input type=\"hidden\" value=\"0\" name=\"#{name}\" /><input type=\"checkbox\" name=\"#{name}\" #{checked ? "checked" : ""} /> #{opts['label']}</label>"
+        when "string"
+          return "<label>#{opts['label']} <input class=\"form-control\" type=\"text\" value=\"#{value}\" name=\"#{name}\" /></label>"
+      end
+    end
+
     def nav_link(path, title)
-      puts request.path_info
       className = request.path_info == path ? 'active' : ''
       "<a href=\"#{path}\" class=\"#{className}\">#{title}</a>"
     end
@@ -15,25 +41,6 @@ module Pushbit
       unless current_user
         "<a href=\"/auth/login\" class=\"btn btn-primary btn-block\">Sign up</a>"
       end
-    end
-
-    def greeting
-      [
-        "Hey there",
-        "Howdy",
-        "Howdy :wave:",
-        "Hello again",
-        "Hey :wave:",
-        "Hey team"
-      ].sample
-    end
-
-    def signoff
-      [
-        "Hope this helps",
-        "Merge away if useful :shipit:",
-        "I hope this is useful :smile:"
-      ].sample
     end
 
     def tasks_duration_in_minutes(tasks)

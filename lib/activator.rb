@@ -21,14 +21,14 @@ module Pushbit
 
     def activate
       add_collaborator
-      add_deploy_key
+      #add_deploy_key
       add_webhook
       repo.activate!(user)
     end
 
     def deactivate
       remove_collaborator
-      remove_deploy_key
+      #remove_deploy_key
       remove_webhook
       repo.deactivate!(user)
     end

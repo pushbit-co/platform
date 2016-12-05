@@ -15,6 +15,19 @@ describe "perform" do
       worker.perform(trigger.id)
       expect(stub).to have_been_requested
     end
+
+    it "assigns a random team member when team chosen" do
+      stub_team = stub_request(:get, "https://api.github.com/teams/123/members")
+          .to_return(status: 200, body: File.read('spec/fixtures/github/webmock/collaborators.json'), headers: { 'Content-Type' => 'application/json' })
+      stub_assign = stub_request(:patch, "https://api.github.com/repos/baxterthehacker/public-repo/issues/2")
+          .to_return(:status => 200, :body => "", :headers => {})
+
+      worker.perform(trigger.id, {
+        'team' => 123
+      })
+      expect(stub_team).to have_been_requested
+      expect(stub_assign).to have_been_requested
+    end
   end
 
   context "with existing assignee" do

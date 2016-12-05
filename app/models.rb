@@ -6,7 +6,6 @@ ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 module Pushbit
   autoload :Behavior, "app/models/behavior"
-  autoload :Setting, "app/models/setting"
   autoload :Owner, "app/models/owner"
   autoload :User, "app/models/user"
   autoload :Subscription, "app/models/subscription"

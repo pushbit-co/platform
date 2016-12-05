@@ -7,7 +7,7 @@ const Common = {
     const timezoneName = jstz.determine().name();
     document.cookie = `timezone=${timezoneName}`;
 
-    $(document).on('submit', 'form', ev => addCSRFField(ev));
+    $(document).on('submit', 'form', ev => addCSRFField($(ev.target)));
     $(document).on('click', '.alert .close', Common.hideBanner);
   },
 

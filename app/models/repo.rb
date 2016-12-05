@@ -63,9 +63,15 @@ module Pushbit
     end
 
     def labels
-      Octokit.auto_paginate = true
-      client = Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
       client.labels(github_full_name)
+    end
+
+    def collaborators
+      client.collaborators(github_full_name)
+    end
+
+    def teams
+      client.organization_teams(github_owner)
     end
 
     def ensure_salt
@@ -115,6 +121,13 @@ module Pushbit
         user: user,
         github_id: github_id
       )
+    end
+
+    private
+
+    def client
+      Octokit.auto_paginate = true
+      Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
     end
   end
 end

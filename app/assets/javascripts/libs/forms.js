@@ -1,7 +1,6 @@
 import $ from 'jquery';
 
-export function addCSRFField(ev) {
-  const $form = $(ev.target);
+export function addCSRFField($form) {
   const method = $form.attr('method').toUpperCase();
   const token = $('meta[name=csrf-token]').attr('content');
 

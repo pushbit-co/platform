@@ -20,6 +20,9 @@ FactoryGirl.define do
     factory :github_pull_request_closed_trigger do
       kind { :pull_request_closed }
     end
+    factory :github_issue_opened_trigger do
+      kind { :issue_opened }
+    end
     factory :github_issue_closed_trigger do
       kind { :issue_closed }
     end
@@ -98,14 +101,7 @@ ZgWgARwmDgIgD+uKt5Teb1uDaC59WLZRCsTyzzhxCuQATo1HyJ6G6nw=
 
   factory :behavior, class: Pushbit::Behavior do
     kind { 'bundle-update' }
+    triggers { ['issue_opened'] }
     active { true }
-    settings do
-      {
-        filter: {
-          label: "Setting label",
-          type: :string
-        }
-      }
-    end
   end
 end

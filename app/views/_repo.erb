@@ -1,6 +1,8 @@
 <li class="repo <%= active ? 'active' : '' %>">
   <a href="/repos/<%= repo.github_full_name %>">
-    <div class="name"><span class="organization"><%= repo.github_owner %> / </span><%= repo.name %></div>
+    <div class="name">
+      <span class="organization"><%= repo.github_owner %> / </span><%= repo.name %>
+    </div>
     <time>
       <% if repo.tasks.last %>
         Last behavior ran <%= readable repo.tasks.last.created_at %>.
@@ -9,7 +11,7 @@
       <% end %>
     </time>
     <span class="behaviors-count">
-      <%= repo.behaviors.size %> behaviors active
+      <%= repo.behaviors.size %> behaviors currently active
     </span>
   </a>
 </li>

@@ -20,6 +20,7 @@ require "sidekiq"
 require "stripe"
 require "will_paginate"
 require "will_paginate/active_record"
+require "parallel"
 
 require_relative "lib/security.rb"
 require_relative "lib/cashier.rb"

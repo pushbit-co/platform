@@ -1,61 +1,55 @@
-.behaviors {
-  margin: -5px;
-  margin-bottom: 10px;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
+.search {
+  margin-bottom: 20px;
+}
+
+.titlebar {
+  .arrow {
+    font-size: .8em;
+    opacity: .2;
+  }
 }
 
 .behavior {
-  display: block;
-  font-weight: normal;
-  text-decoration: none;
-  position: relative;
-  padding: 0;
+  @include panel;
 
-  a {
+  .behavior-inner {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid $very-light-grey;
-    border-radius: 5px;
-    min-height: 200px;
-  }
-
-  &:hover {
-    a {
-      text-decoration: none;
-      box-shadow: 0 1px 8px 0 rgba(0,0,0,.15);
-      text-decoration: none;
-      transition: box-shadow .15s ease-out;
-    }
+    align-items: center;
   }
 
   h3 {
-    color: $almost-black;
     margin: 0 0 5px;
-    font-size: 18px;
-    flex-grow: 0;
+    color: $almost-black;
+
+    .octicon {
+      font-size: 1em;
+      background: $blue;
+      color: $white;
+      padding: 6px;
+      border-radius: 5px;
+      margin-right: 5px;
+    }
   }
 
-  button {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
+  label {
+    font-weight: 600;
   }
 
   .description {
     font-size: 14px;
     color: $medium-grey;
-    flex-grow: 1;
   }
 
-  .tags {
-    margin: 0;
-    color: $light-grey;
-    font-size: 14px;
+  .actions {
+    flex-shrink: 0;
+    padding-left: 20px;
+  }
+
+  .content {
+    display: none;
+    margin-top: 20px;
+    border-top: 1px solid $very-light-grey;
+    padding-top: 20px;
   }
 }

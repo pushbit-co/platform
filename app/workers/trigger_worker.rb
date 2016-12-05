@@ -8,7 +8,7 @@ module Pushbit
       self.trigger = Trigger.find(id)
       if trigger.behaviors.length > 0
         Parallel.each(trigger.behaviors, in_threads: trigger.behaviors.length) do |b|
-          b.execute!(id)
+          b.execute!(trigger)
         end
       else
         logger.info "No behaviors"

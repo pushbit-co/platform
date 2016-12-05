@@ -11,8 +11,10 @@ module Pushbit
     has_many :repos, through: :repo_behaviors
     has_many :tasks
 
-    def execute!(trigger_id)
-      worker_class.perform_async trigger_id
+    def execute!(trigger)
+      settings = trigger.repo.repo_behaviors.find_by(behavior_id: id).settings || Hash.new
+
+      worker_class.perform_async(trigger.id, settings)
     end
 
     def worker_class

@@ -1,9 +1,6 @@
 .billing {
   section {
-    border: 2px solid $almost-white;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 6px;
+    @include panel;
   }
 
   .empty {
