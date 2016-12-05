@@ -31,6 +31,7 @@ gem "pony"
 gem "parallel"
 gem "ankusa"
 gem "sshkey"
+gem "octokit", "~> 4.6.0"
 
 group :development, :test do
   gem "rspec"
