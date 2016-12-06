@@ -14,7 +14,7 @@ module Pushbit
       # If the issue is edited and we dont allow labelling on edits
       return if payload['action']['edited'] && !settings['edit']
 
-      # If the issue has already been labelled then lets not edit them
+      # If the issue has already been labeled then lets not edit them
       return if payload['issue']['labels'].size > 0
 
       # Collect labels available on repo

@@ -57,7 +57,7 @@ docker-compose up
 
 ### ML
 
-Issues are labelled through a trained classifier, the current classifier is at `ml/issue-label-training.txt` and was trained using a month of github issues from
+Issues are labeled through a trained classifier, the current classifier is at `ml/issue-label-training.txt` and was trained using a month of github issues from
 February 2016. To recreate:
 
 - Adjust the amount of data to download in `download.rb`

@@ -5,7 +5,7 @@ Pushbit::Behavior.create!({
   name: "Label to Project",
   image: "link",
   description: "Links an issue label with a project - label an issue and it will automatically be added to the linked project.",
-  triggers: ["issue_opened", "issue_labelled"],
+  triggers: ["issue_opened", "issue_labeled"],
   tags: ["label", "issue", "project"],
   settings: {}
 })
