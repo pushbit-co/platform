@@ -24,6 +24,7 @@
       <% end %>
     </div>
   </div>
+  <% if enabled %>
   <form class="content configuration" action="/repos/<%= repo.github_full_name %>/<%= behavior.kind %>" method="POST">
     <% behavior.settings.each do |key, options| %>
       <% repo_behavior = repo.repo_behaviors.detect { |b| b.behavior_id == behavior.id } %>
@@ -33,4 +34,5 @@
       </div>
     <% end %>
   </form>
+  <% end %>
 </li>

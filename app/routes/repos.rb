@@ -93,6 +93,24 @@ module Pushbit
       json ok: true, teams: teams
     end
 
+    get "/repos/:user/:repo/labels" do
+      repo = repo_from_params
+      authorize! :read, repo
+      labels = []
+
+      begin
+        repo.labels.each do |label|
+          labels << {
+            id: label.id,
+            name: label.name
+          }
+        end
+      rescue Octokit::NotFound
+      end
+
+      json ok: true, labels: labels
+    end
+
     get "/repos/:user/:repo/activity" do
       authenticate!
       repo = repo_from_params

@@ -7,7 +7,21 @@ Pushbit::Behavior.create!({
   description: "Links an issue label with a project - label an issue and it will automatically be added to the linked project.",
   triggers: ["issue_opened", "issue_labeled"],
   tags: ["label", "issue", "project"],
-  settings: {}
+  settings: {
+    id: {
+      type: "integer",
+      source: "projects",
+      label: "Choose a project",
+      options: []
+    },
+    labels: {
+      type: "string",
+      multiple: true,
+      source: "labels",
+      label: "Link these labels",
+      options: []
+    }
+  }
 })
 
 Pushbit::Behavior.create!({
@@ -20,6 +34,7 @@ Pushbit::Behavior.create!({
   settings: {
     team: {
       type: "integer",
+      source: "teams",
       label: "Restrict assignees to collaborators on a team",
       options: ["All"],
       default: ["All"]

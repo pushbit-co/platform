@@ -3,9 +3,10 @@ module Pushbit
 
     def setting_input(key, value, opts)
       name = "setting_#{key}#{opts['multiple'] ? '[]' : ''}"
+      source_html = opts['source'] ? "data-source=\"#{opts['source']}\"" : ""
 
       # multiple choice
-      if opts['options'].is_a?(Array)
+      if opts['multiple'] || opts['options'].is_a?(Array)
         options = ""
         multiple = opts['multiple'] ? 'multiple' : ''
 
@@ -15,16 +16,16 @@ module Pushbit
           options += "<option opts=\"#{option}\" #{selected_html}>#{option}</option>"
         end
 
-        return "<label>#{opts['label']} <input type=\"hidden\" value=\"#{value}\" name=\"#{name}\" /><select class=\"form-control\" name=\"#{name}\" #{multiple}>#{options}</select></label>"
+        return "<label>#{opts['label']} <input type=\"hidden\" value=\"#{value}\" name=\"#{name}\" /><select #{source_html} class=\"form-control\" name=\"#{name}\" #{multiple}>#{options}</select></label>"
       end
 
       # single choice
       case opts['type']
         when "boolean"
           checked = value.nil? ? opts['default'] : value
-          return "<label><input type=\"hidden\" value=\"0\" name=\"#{name}\" /><input type=\"checkbox\" name=\"#{name}\" #{checked ? "checked" : ""} /> #{opts['label']}</label>"
+          return "<label><input #{source_html} type=\"hidden\" value=\"0\" name=\"#{name}\" /><input type=\"checkbox\" name=\"#{name}\" #{checked ? "checked" : ""} /> #{opts['label']}</label>"
         when "string"
-          return "<label>#{opts['label']} <input class=\"form-control\" type=\"text\" value=\"#{value}\" name=\"#{name}\" /></label>"
+          return "<label>#{opts['label']} <input #{source_html} class=\"form-control\" type=\"text\" value=\"#{value}\" name=\"#{name}\" /></label>"
       end
     end
 

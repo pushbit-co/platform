@@ -70,6 +70,10 @@ module Pushbit
       client.collaborators(github_full_name)
     end
 
+    def labels
+      client.labels(github_full_name)
+    end
+
     def teams
       client.organization_teams(github_owner)
     end

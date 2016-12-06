@@ -9,7 +9,7 @@ $.extend($.expr[':'], {
 
 const behaviors = {
   init: () => {
-    behaviors.injectTeams();
+    behaviors.loadData();
     $(document).on('click', 'button.expand', behaviors.expandBehavior);
     $(document).on('input', 'input.search', behaviors.filterBehaviors);
     $(document).on('change', '.content input', behaviors.saveSettings);
@@ -22,16 +22,55 @@ const behaviors = {
     $(`li.behavior:containsi(${term})`).show();
   },
 
-  injectTeams: () => {
+  loadData: () => {
+    // find inputs with sources
+    $('input, select').each((index, element) => {
+      const source = $(element).attr('data-source');
+      if (!source) return null;
+
+      switch (source) {
+        case 'labels':
+          return behaviors.loadLabels(element);
+        case 'teams':
+          return behaviors.loadTeams(element);
+        default:
+          console.warn(`Data source (${source}) does not exist`);
+          return null;
+      }
+    });
+  },
+
+  loadLabels: (element) => {
+    $.ajax({
+      type: 'GET',
+      url: `${window.location.href}/labels`,
+      success: (data) => {
+        // initial value is stored in a hidden field
+        const name = $(element).attr('name').replace(/\[\]/, '');
+        const value = $(`input[name=${name}]`).val();
+
+        $.each(data.labels, (key, label) => {
+          $(element)
+          .append($('<option></option>')
+          .attr('value', label.id)
+          .attr('selected', value === label.id.toString() ? true : undefined)
+          .text(label.name));
+        });
+      }
+    });
+  },
+
+  loadTeams: (element) => {
     $.ajax({
       type: 'GET',
       url: `${window.location.href}/teams`,
       success: (data) => {
         // initial value is stored in a hidden field
-        const value = $('input[name=setting_team]').val();
+        const name = $(element).attr('name').replace(/\[\]/, '');
+        const value = $(`input[name=${name}]`).val();
 
         $.each(data.teams, (key, team) => {
-          $('select[name=setting_team]')
+          $(element)
           .append($('<option></option>')
           .attr('value', team.id)
           .attr('selected', value === team.id.toString() ? true : undefined)
