@@ -1,0 +1,9 @@
+.billing {
+  section {
+    @include panel;
+  }
+
+  .empty {
+    color: $dark-grey;
+  }
+}

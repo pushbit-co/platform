@@ -1,13 +1,25 @@
+.connect-repository {
+  margin-top: 20px;
+}
+
 .dashboard {
   ol {
+    @include panel;
     margin: 0;
-    padding: 0;
     list-style: none;
   }
 
   .repo {
     padding: 6px 0;
     border-bottom: 1px solid $almost-white;
+
+    a {
+      display: block;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
 
     .name {
       font-size: 20px;

@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 20161228140448) do
   create_table "repo_behaviors", force: :cascade do |t|
     t.integer "behavior_id"
     t.integer "repo_id"
+    t.json    "settings"
   end
 
   add_index "repo_behaviors", ["repo_id", "behavior_id"], name: "index_repo_behaviors_on_repo_id_and_behavior_id", unique: true, using: :btree
@@ -144,6 +145,10 @@ ActiveRecord::Schema.define(version: 20161228140448) do
     t.boolean  "private",          default: false
     t.string   "tags",             default: [],                 array: true
     t.string   "default_branch"
+    t.text     "salt"
+    t.text     "ssh_key"
+    t.integer  "deploy_key_id"
+    t.text     "webhook_token"
   end
 
   add_index "repos", ["github_full_name"], name: "index_repos_on_github_full_name", unique: true, using: :btree
@@ -160,16 +165,6 @@ ActiveRecord::Schema.define(version: 20161228140448) do
   end
 
   add_index "sequential", ["model", "column", "scope", "scope_value"], name: "index_sequential_on_model_and_column_and_scope_and_scope_value", unique: true, using: :btree
-
-  create_table "settings", force: :cascade do |t|
-    t.integer  "repo_behavior_id"
-    t.string   "key"
-    t.string   "value"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "settings", ["repo_behavior_id", "key"], name: "index_settings_on_repo_behavior_id_and_key", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id"

@@ -1,3 +1,7 @@
+unless ENV['RACK_ENV'] == 'ci'
+  ENV['RACK_ENV'] = 'test'
+end
+
 require 'rack/test'
 require 'rspec'
 require 'ostruct'
@@ -10,19 +14,18 @@ require 'factory_girl'
 require 'faker'
 require 'sidekiq/testing'
 require 'pony'
-require "sinatra/activerecord"
-require "protected_attributes"
-require "sequential"
+require 'sinatra/activerecord'
+require 'protected_attributes'
+require 'sequential'
 
 require_relative 'support/database_cleaner'
 require_relative 'support/route_helpers'
-
 require_relative '../app'
 
-Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each { |f| require f }
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 
-#set after db connection so ci can connect
-ENV["RACK_ENV"] = "test"
+# once database has connected we can set env to 'test' for CI.
+ENV['RACK_ENV'] = 'test'
 
 module RSpecMixin
   include Rack::Test::Methods
@@ -36,7 +39,7 @@ end
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.before(:all) do
-    Docker.url = "https://10.0.0.1:8090"
+    Docker.url = 'https://10.0.0.1:8090'
   end
   config.before(:each) do
     Sidekiq::Worker.clear_all

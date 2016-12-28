@@ -27,12 +27,35 @@ class Security
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), ENV.fetch('HMAC_KEY'), data)
   end
 
+  def self.get_integration_jwt
+    # Private key contents
+    private_pem = Base64.decode64(ENV.fetch('GITHUB_INTEGRATION_ENCODED_PRIVATE_PEM'))
+    private_key = OpenSSL::PKey::RSA.new(private_pem)
+
+    # Generate the JWT
+    payload = {
+      iat: Time.now.to_i,           # Issued at time
+      exp: 1.minute.from_now.to_i,  # JWT expiration time
+      iss: ENV.fetch('GITHUB_INTEGRATION_ID')
+    }
+
+    JWT.encode(payload, private_key, "RS256")
+  end
+
+  def self.generate_ssh_key(passphrase)
+    SSHKey.generate(
+      type:       'RSA',
+      bits:       ENV.fetch('SSH_KEY_BITS', '4096').to_i,
+      passphrase: passphrase
+    )
+  end
+
   def self.hash_matches?(data, hash)
     self.hash(data) == hash
   end
-  
-  def self.verify_github_signature(payload_body, sig)
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV.fetch('GITHUB_WEBHOOK_TOKEN'), payload_body)
+
+  def self.verify_github_signature(payload, sig, token)
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload)
     Rack::Utils.secure_compare(signature, sig)
   end
 end

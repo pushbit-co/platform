@@ -1,16 +1,38 @@
-#subscribe {
-  margin-top: 20px;
+.permissions-note,
+.last-sync {
+  display: block;
+  margin-bottom: 5px;
+  color: $light-grey;
+  font-size: 14px;
+}
 
-  .last-sync {
-    display: block;
-    margin-bottom: 5px;
-    color: $light-grey;
-    font-size: 14px;
-  }
+.permissions-note {
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.private-repos-enable {
+  margin-top: -40px;
+}
+
+#subscribe {
+  @include panel;
+  margin-top: 40px;
 
   .search,
   .organizations {
     display: none;
+  }
+
+  .empty {
+    min-height: 150px;
+    text-align: center;
+    padding-top: 100px;
+    background: url('/assets/grid.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 30px 30px;
+    opacity: .5;
   }
 
   ul {
@@ -29,10 +51,28 @@
         line-height: 36px;
         text-align: left;
         position: relative;
+
+        a {
+          color: $dark-grey;
+        }
+      }
+
+      .glyphicon {
+        position: relative;
+        top: 2px;
+        opacity: .8;
+      }
+
+      .organization {
+        opacity: .8;
       }
 
       button {
         float: right;
+
+        .price {
+          background: rgba(0,0,0,.2);
+        }
       }
 
       small {

@@ -1,3 +1,5 @@
+require 'sshkey'
+
 module Pushbit
   class Repo < ActiveRecord::Base
     include ActiveModel::MassAssignmentSecurity
@@ -40,6 +42,14 @@ module Pushbit
       !active?
     end
 
+    def url
+      "ssh://git@github.com/#{github_full_name}.git"
+    end
+
+    def http_url
+      "https://github.com/#{github_full_name}"
+    end
+
     def name
       github_full_name.split('/').last if github_full_name
     end
@@ -53,15 +63,39 @@ module Pushbit
     end
 
     def labels
-      Octokit.auto_paginate = true
-      client = Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
       client.labels(github_full_name)
     end
 
+    def collaborators
+      client.collaborators(github_full_name)
+    end
+
+    def teams
+      client.organization_teams(github_owner)
+    end
+
+    def ensure_salt
+      self.update_attributes!(salt: SecureRandom.hex) unless salt
+    end
+
+    def ensure_webhook_token
+      self.update_attributes!(webhook_token: SecureRandom.hex) unless webhook_token
+    end
+
+    def deploy_key_passphrase
+      Security.hash("#{ENV.fetch('DEPLOY_KEYS_PASSWORD')}#{salt}")
+    end
+
+    def unencrypted_ssh_key
+      key = SSHKey.new(ssh_key, passphrase: deploy_key_passphrase)
+      key.private_key
+    end
+
     def activate!(user)
-      self.active = true
-      self.behaviors = Behavior.all
-      self.save!
+      self.update_attributes!(
+        active: true,
+        behaviors: Behavior.all
+      )
 
       trigger = Trigger.create!(
         kind: 'setup',
@@ -71,11 +105,11 @@ module Pushbit
       trigger.execute!
 
       Action.create!({
-                       kind: 'subscribe',
-                       repo: self,
-                       user: user,
-                       github_id: github_id
-                     }, without_protection: true)
+         kind: 'subscribe',
+         repo: self,
+         user: user,
+         github_id: github_id
+       }, without_protection: true)
     end
 
     def deactivate!(user)
@@ -87,6 +121,13 @@ module Pushbit
         user: user,
         github_id: github_id
       )
+    end
+
+    private
+
+    def client
+      Octokit.auto_paginate = true
+      Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
     end
   end
 end

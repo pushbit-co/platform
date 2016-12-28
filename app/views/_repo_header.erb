@@ -1,6 +1,15 @@
 <div class="titlebar row">
-  <div class="col-md-10 col-xs-9">
-    <h1><span class="organization"><%= repo.github_owner %> / </span><%= repo.name %></h1>
-    <p class="subtitle">A behavior last ran for this project <%= readable repo.tasks.last ? repo.tasks.last.created_at : "never" %></p>
+  <div class="col-md-12">
+    <h1><a href="/">Dashboard</a> <span class="arrow glyphicon glyphicon-chevron-right"></span> <span class="organization"><%= repo.github_owner %></span> <span class="arrow glyphicon glyphicon-chevron-right"></span> <%= repo.name %></h1>
+    <p class="subtitle">
+      There are <%= repo.behaviors.count %> active <%= pluralize(repo.behaviors.count, 'behavior') %>.
+      <% if repo.tasks.last %>
+        A behavior was last triggered <%= readable(repo.tasks.last.created_at) %>
+      <% elsif repo.active %>
+        Pushbit will start helping out on this repository soon…
+      <% else %>
+        This repository is not connected to Pushbit.
+      <% end %>
+    </p>
   </div>
 </div>

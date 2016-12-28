@@ -12,8 +12,10 @@ module Pushbit
     has_many :repo_behaviors
     has_many :tasks
 
-    def execute!(trigger_id)
-      worker_class.perform_async trigger_id
+    def execute!(trigger)
+      settings = trigger.repo.repo_behaviors.find_by(behavior_id: id).settings || Hash.new
+
+      worker_class.perform_async(trigger.id, settings)
     end
 
     def worker_class
@@ -27,8 +29,8 @@ module Pushbit
     def self.find_or_create_with(attributes)
       behave = find_by(kind: attributes["kind"]) || Behavior.new
       attributes = attributes.select do |k, _v|
-	columns = Behavior.columns.map { |c| c.name.to_sym }
-	columns.include? k.to_sym
+        columns = Behavior.columns.map { |c| c.name.to_sym }
+        columns.include? k.to_sym
       end
       behave.update_attributes(attributes, without_protection: true)
       behave
@@ -40,7 +42,7 @@ module Pushbit
 
       changed_files.each do |changed|
         files.each do |pattern|
-      	  run = true if changed['filename'].match(pattern)
+      	  run = true if changed.match(pattern)
         end
       end
 

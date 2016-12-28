@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "rack", "1.5.4"
 gem "thin"
-gem "rake"
+gem "rake", "11.3.0"
 gem "sinatra"
 gem "sinatra-contrib"
 gem "sinatra-asset-pipeline"
@@ -29,6 +29,8 @@ gem "stripe-ruby-mock", "~> 2.2.1", require: "stripe_mock"
 gem "will_paginate", "~> 3.0.6"
 gem "pony"
 gem "parallel"
+gem "ankusa"
+gem "sshkey"
 
 group :development, :test do
   gem "rspec"
@@ -37,4 +39,5 @@ group :development, :test do
   gem "database_cleaner"
   gem "factory_girl"
   gem "faker"
+  gem "yajl-ruby"
 end
