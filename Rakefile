@@ -1,6 +1,7 @@
 require 'sinatra/activerecord/rake'
 require 'sinatra/asset_pipeline/task'
 require './app'
+require './workers'
 
 Dir.glob('lib/tasks/*.rake').each { |r| load r}
 

@@ -9,6 +9,7 @@ module Pushbit
     scope :trigger, -> (trigger) { where('triggers @> ARRAY[?]::varchar[]', trigger) }
 
     has_many :repos, through: :repo_behaviors
+    has_many :repo_behaviors
     has_many :tasks
 
     def execute!(trigger_id)
