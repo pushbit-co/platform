@@ -24,7 +24,11 @@ module Pushbit
           checked = value.nil? ? opts['default'] : value
           return "<label><input type=\"hidden\" value=\"0\" name=\"#{name}\" /><input type=\"checkbox\" name=\"#{name}\" #{checked ? "checked" : ""} /> #{opts['label']}</label>"
         when "string"
-          return "<label>#{opts['label']} <input class=\"form-control\" type=\"text\" value=\"#{value}\" name=\"#{name}\" /></label>"
+          if opts['multiline']
+            return "<label>#{opts['label']} <textarea class=\"form-control\" name=\"#{name}\">#{value}</textarea></label>"
+          else
+            return "<label>#{opts['label']} <input class=\"form-control\" type=\"text\" value=\"#{value}\" name=\"#{name}\" /></label>"
+          end
       end
     end
 

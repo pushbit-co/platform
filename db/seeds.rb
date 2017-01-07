@@ -21,7 +21,7 @@ Pushbit::Behavior.create!({
   kind: "issue_labeller",
   name: "Issue Labeller",
   image: "tag",
-  description: "Automatically adds common labels to issues where possible based on the title and body of the issue.",
+  description: "Automatically labels issues that are missing labels based on the title and body.",
   triggers: ["issue_opened", "issue_edited"],
   tags: ["label", "issue"],
   settings: {
@@ -36,6 +36,22 @@ Pushbit::Behavior.create!({
       label: "Allow these labels to be automatically added",
       options: ["bug", "enhancement", "feature", "question", "discussion", "help wanted"],
       default: ["bug", "enhancement", "feature", "question", "discussion", "help wanted"],
+    }
+  }
+})
+
+Pushbit::Behavior.create!({
+  kind: "issue_welcomer",
+  name: "Guest Contributor Welcome",
+  image: "comment",
+  description: "Replies to issues created by non-collaborators with a custom welcome message.",
+  triggers: ["issue_opened"],
+  tags: ["comment", "issue", "collaborator"],
+  settings: {
+    comment: {
+      type: "string",
+      multiline: true,
+      label: "What should the message say"
     }
   }
 })
