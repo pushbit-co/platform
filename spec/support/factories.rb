@@ -90,13 +90,6 @@ ZgWgARwmDgIgD+uKt5Teb1uDaC59WLZRCsTyzzhxCuQATo1HyJ6G6nw=
     repo
     trigger
     behavior
-    number { Faker::Number.number(3) }
-  end
-
-  factory :action, class: Pushbit::Action do
-    repo
-    task
-    kind { :pull_request }
   end
 
   factory :behavior, class: Pushbit::Behavior do

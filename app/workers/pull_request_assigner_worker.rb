@@ -23,9 +23,7 @@ module Pushbit
       Task.create!({
         behavior: "pull_request_assigner",
         github_id: payload['pull_request']['number'],
-        repo_id: Repo.find_by!({
-          github_full_name: repo_full_name
-        })
+        repo_id: trigger.repo.id
       })
     end
   end

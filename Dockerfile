@@ -8,6 +8,10 @@ RUN npm config set registry http://registry.npmjs.org/
 
 ADD ./Gemfile ./Gemfile
 ADD ./Gemfile.lock ./Gemfile.lock
+
+RUN gem install rubygems-bundler
+RUN gem regenerate_binstubs
+
 RUN bundle install
 
 WORKDIR /app

@@ -8,7 +8,7 @@ describe Pushbit::Activator do
   describe "activate" do
     it "adds a webhook to repo" do
       stub_request(:post, "https://api.github.com/repos/#{repo.github_full_name}/hooks")
-        .to_return(status: 201, body: "{\"id\": 123}", headers: { 'Content-Type' => 'application/json' })
+        .to_return(status: 201, body: "{\"id\": \"123\"}", headers: { 'Content-Type' => 'application/json' })
 
       stub_request(:get, "https://api.github.com/repos/#{repo.github_full_name}/collaborators/dev-pushbit-bot")
         .to_return(status: 204, headers: { 'Content-Type' => 'application/json' })

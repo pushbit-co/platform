@@ -6,11 +6,6 @@ module Pushbit
       repo_full_name = payload['repository']['full_name']
       collaborators = []
 
-<<<<<<< HEAD
-      #TODO we need to use teams first
-      # Find possible assignees, filter our bot
-      collaborators = client.collaborators(repo_full_name).select { |c| c.login != ENV.fetch('GITHUB_BOT_LOGIN') }
-=======
       # If the issue has already been assigned then lets not reassign
       return if payload['issue']['assignee'].present?
 
@@ -23,7 +18,6 @@ module Pushbit
 
       # Filter our bot
       collaborators = collaborators.select { |c| c.login != ENV.fetch('GITHUB_BOT_LOGIN') }
->>>>>>> master
 
       # Choose one randomly
       collaborator = collaborators.sample
@@ -36,9 +30,7 @@ module Pushbit
         behavior: "issue_assigner",
         github_id: payload['issue']['number'],
         trigger_id: trigger_id,
-        repo_id: Repo.find_by!({
-          github_full_name: repo_full_name
-        }).id
+        repo_id: trigger.repo.id
       })
     end
   end

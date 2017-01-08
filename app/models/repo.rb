@@ -103,24 +103,10 @@ module Pushbit
         triggered_by: user.github_id
       )
       trigger.execute!
-
-      Action.create!({
-         kind: 'subscribe',
-         repo: self,
-         user: user,
-         github_id: github_id
-       }, without_protection: true)
     end
 
     def deactivate!(user)
       update(active: false, behaviors: [])
-
-      Action.create!(
-        kind: 'unsubscribe',
-        repo: self,
-        user: user,
-        github_id: github_id
-      )
     end
 
     private

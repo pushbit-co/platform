@@ -9,13 +9,6 @@ module Pushbit
           raise MailerError.new("Email template #{type} not available")
         end
 
-        puts "IDENT HERE"
-        puts data.keys.inspect
-        puts "IDENT MESSAGE"
-        puts message.inspect
-        puts "IDENT USER"
-        puts data["user"].inspect
-
         if respond_to? type
           Pony.mail(send(type, message, data))
         else
@@ -31,13 +24,6 @@ module Pushbit
         }
       end
 
-      def reminder(message, data)
-        {
-          to: data[:user].email,
-          subject: "You have stale issues",
-          body: message
-        }
-      end
     end
   end
 end

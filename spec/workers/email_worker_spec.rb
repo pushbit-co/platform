@@ -7,7 +7,7 @@ describe "perform" do
   context "with a valid email type" do
     it "sends an email" do
       expect(Pony).to receive(:mail)
-      worker.perform(:signedup, user.id)
+      worker.perform(:signedup, {:user => user})
     end
   end
 end

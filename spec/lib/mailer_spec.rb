@@ -10,7 +10,7 @@ describe Pushbit::Mailer do
         expect(options[:subject]).to eql("Welcome to Pushbit")
       end
 
-      Pushbit::Mailer.mail(:signedup, user.id)
+      Pushbit::Mailer.mail(:signedup, {:user => user})
     end
   end
 end

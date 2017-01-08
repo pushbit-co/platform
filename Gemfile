@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "rack", "1.5.4"
 gem "thin"
-gem "rake", "11.3.0"
+gem "rake", "12.0.0"
 gem "sinatra"
 gem "sinatra-contrib"
 gem "sinatra-asset-pipeline"

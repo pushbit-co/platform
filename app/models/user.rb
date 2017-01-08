@@ -5,7 +5,7 @@ module Pushbit
 
     attr_accessible :email, :login, :name, :onboarding_skipped
     before_create :set_beta
-    after_create :create_action, :send_welcome_email
+    after_create :send_welcome_email
 
     has_many :memberships, dependent: :destroy
     has_many :repos, through: :memberships
@@ -82,14 +82,6 @@ module Pushbit
     end
 
     private
-
-    def create_action
-      Action.create!({
-                       kind: 'signedup',
-                       user: self,
-                       github_id: github_id
-                     }, without_protection: true)
-    end
 
     def send_welcome_email
       EmailWorker.perform_async(:signedup, id)
