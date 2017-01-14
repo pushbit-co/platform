@@ -32,6 +32,10 @@ gem "parallel"
 gem "ankusa"
 gem "sshkey"
 
+group :assets do
+  gem "uglifier"
+end
+
 group :development, :test do
   gem "rspec"
   gem "webmock"

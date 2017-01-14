@@ -10,11 +10,13 @@ RUN npm config set registry http://registry.npmjs.org/
 
 ADD ./Gemfile ./Gemfile
 ADD ./Gemfile.lock ./Gemfile.lock
-RUN bundle install
-
 WORKDIR /app
 ADD . /app
 
+RUN bundle install --jobs 20 --retry 5 --without development test
+
 ADD ./package.json ./package.json
-RUN npm install
+RUN npm i && npm i -g webpack
 RUN npm run build
+
+RUN RACK_ENV=production PRECOMPILE=true bundle exec rake assets:precompile --trace
