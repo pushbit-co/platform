@@ -1,5 +1,7 @@
 import $ from 'jquery';
+import SimpleMDE from 'simplemde';
 import {addCSRFField} from '../libs/forms';
+import debounce from 'lodash/debounce';
 
 $.extend($.expr[':'], {
   containsi: (elem, i, match) =>
@@ -10,6 +12,7 @@ $.extend($.expr[':'], {
 const behaviors = {
   init: () => {
     behaviors.injectTeams();
+    behaviors.augmentTextareas();
     $(document).on('click', 'button.expand', behaviors.expandBehavior);
     $(document).on('input', 'input.search', behaviors.filterBehaviors);
     $(document).on('change', '.content input', behaviors.saveSettings);
@@ -20,6 +23,25 @@ const behaviors = {
     const term = $(ev.currentTarget).val();
     $('li.behavior').hide();
     $(`li.behavior:containsi(${term})`).show();
+  },
+
+  augmentTextareas: () => {
+    const textareas = document.getElementsByTagName('textarea');
+    const textareaCount = textareas.length;
+
+    for (let i = 0; i < textareaCount; i++) {
+      const element = textareas[i];
+      const editor = new SimpleMDE({ // eslint-disable-line
+        spellChecker: false,
+        element
+      });
+      editor.codemirror.on('change', debounce(() => {
+        element.value = editor.value();
+        behaviors.saveSettings({
+          currentTarget: element
+        });
+      }, 1000));
+    }
   },
 
   injectTeams: () => {

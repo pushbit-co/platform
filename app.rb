@@ -131,7 +131,7 @@ module Pushbit
         img_src: %w(avatars.githubusercontent.com www.google-analytics.com avatars2.githubusercontent.com q.stripe.com avatars.githubusercontent.com 'self'),
         script_src: %w('unsafe-inline' www.google-analytics.com checkout.stripe.com code.jquery.com maxcdn.bootstrapcdn.com 'self'),
         font_src: %w(fonts.gstatic.com maxcdn.bootstrapcdn.com 'self'),
-        style_src: %w(checkout.stripe.com fonts.googleapis.com maxcdn.bootstrapcdn.com 'self'),
+        style_src: %w(cdn.jsdelivr.net checkout.stripe.com fonts.googleapis.com maxcdn.bootstrapcdn.com 'self'),
         block_all_mixed_content: true
       }
     end

@@ -42,7 +42,7 @@ Pushbit::Behavior.create!({
 
 Pushbit::Behavior.create!({
   kind: "issue_welcomer",
-  name: "Guest Contributor Welcome",
+  name: "Contributor Welcome",
   image: "comment",
   description: "Replies to issues created by non-collaborators with a custom welcome message.",
   triggers: ["issue_opened"],

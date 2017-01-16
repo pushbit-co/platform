@@ -34,6 +34,11 @@
 
   label {
     font-weight: 600;
+    width: 100%;
+  }
+
+  select {
+    max-width: 300px;
   }
 
   .description {

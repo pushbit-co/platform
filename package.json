@@ -20,6 +20,8 @@
     "expose-loader": "^0.7.1",
     "jquery": "^3.1.0",
     "jstz": "^1.0.7",
+    "lodash": "^4.17.4",
+    "simplemde": "^1.11.2",
     "webpack": "^1.13.1"
   }
 }
