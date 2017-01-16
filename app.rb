@@ -38,12 +38,14 @@ require_relative "app/helpers/date_helpers"
 
 require_relative "app/presenters/action_presenter"
 
-require_relative "app/models"
-require_relative "app/routes"
-require_relative "app/workers"
-require_relative "app/policies"
+unless ENV['PRECOMPILE']
+  require_relative "app/models"
+  require_relative "app/routes"
+  require_relative "app/workers"
+  require_relative "app/policies"
+end
 
-Stripe.api_key = ENV.fetch('STRIPE_SECRET_KEY')
+Stripe.api_key = ENV['STRIPE_SECRET_KEY']
 WillPaginate.per_page = 20
 
 module Pushbit
@@ -59,10 +61,11 @@ module Pushbit
       set :views, 'app/views'
 
       # settings for asset pipeline
-      set :assets_precompile, %w(bundle.js app.scss *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2)
+      set :assets_precompile, %w(bundle.js app.scss app.css *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2)
+      set :assets_protocol, :https
       set :assets_css_compressor, :sass
       set :assets_js_compressor, :uglifier
-      set :assets_prefix, %w(assets app/assets)
+      set :assets_prefix, %w(app/assets)
     end
 
     Warden::Strategies.add(:basic) do
@@ -101,7 +104,7 @@ module Pushbit
                                path: '/',
                                expire_after: 60 * 60 * 24 * 365,
                                httponly: true,
-                               secure: ENV.fetch("RACK_ENV") != 'development'
+                               secure: ENV.fetch('RACK_ENV') != 'development'
 
     use Rack::Deflater
     use Rack::PostBodyContentTypeParser
@@ -167,7 +170,7 @@ module Pushbit
         expires: Time.now + (60 * 60 * 24 * 180),
         path: '/',
         httponly: true,
-        secure: ENV.fetch("RACK_ENV") != "development"
+        secure: ENV.fetch('RACK_ENV') != "development"
       }
 
       # this is a Rack method, that basically asks
