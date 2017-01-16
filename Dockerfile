@@ -13,7 +13,7 @@ ADD ./Gemfile.lock ./Gemfile.lock
 WORKDIR /app
 ADD . /app
 
-RUN bundle install --jobs 20 --retry 5 --without development test
+RUN bundle install --jobs 20 --retry 5
 
 ADD ./package.json ./package.json
 RUN npm i && npm i -g webpack

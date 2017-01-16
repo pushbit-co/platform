@@ -6,4 +6,5 @@ module Pushbit
   autoload :TriggerWorker,                "app/workers/trigger_worker"
   autoload :IssueAssignerWorker,          "app/workers/issue_assigner_worker"
   autoload :IssueLabellerWorker,          "app/workers/issue_labeller_worker"
+  autoload :IssueWelcomerWorker,          "app/workers/issue_welcomer_worker"
 end

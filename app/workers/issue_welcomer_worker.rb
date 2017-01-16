@@ -5,16 +5,13 @@ module Pushbit
       payload = trigger.payload
       repo_full_name = payload['repository']['full_name']
 
-      # If the issue has already been assigned then lets not reassign
-      return if payload['issue']['assignee'].present?
-
       # Find all collaborators
-      collaborator_logins = client.collaborators(repo_full_name).pluck(:login)
+      collaborator_logins = client.collaborators(repo_full_name).map(&:login)
 
       # If this comment is by a collaborator then short circuit
-      return if collaborator_logins.include? payload['user']['login']
+      return if collaborator_logins.include? payload['issue']['user']['login']
 
-      # If this behavior doesn't have a comment set then there is nothing to say
+      # If this behavior doesn't have a comment configured then there is nothing to say
       return if settings['comment'].empty?
 
       # Leave a welcome comment!
