@@ -10,9 +10,6 @@ module Pushbit
       # Find possible assignees, filter our bot
       collaborators = client.collaborators(repo_full_name).select { |c| c.login != ENV.fetch('GITHUB_BOT_LOGIN') }
 
-      puts payload['pull_request']['number']
-
-
       # Choose one randomly
       collaborator = collaborators.sample
       assignee = collaborator.login
